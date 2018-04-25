@@ -6,16 +6,16 @@ export default {
 	},
 	getters: {},
 	mutations: {
-		setCategories(state, categories) {
-			state.data = categories;
+		setTypes(state, types) {
+			state.data = types;
 		}
 	},
 	actions: {
-		getAllCategories({ state, commit }) {
+		getAllTypes({ state, commit }) {
 			Vue.$axios
-				.get('/conversationcategory')
+				.get('/conversationtype')
 				.then((response) => {
-					commit('setCategories', response.data);
+					commit('setTypes', response.data);
 				})
 				.catch((error) => {
 					console.log(error.response);
