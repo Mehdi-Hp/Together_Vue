@@ -1,0 +1,12 @@
+.o-keynote {
+	display: flex;
+	flex-direction: column;
+
+	&__title {
+	}
+
+	&__desc {
+		display: flex;
+		flex-direction: column;
+	}
+}

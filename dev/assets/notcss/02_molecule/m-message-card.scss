@@ -1,0 +1,12 @@
+.m-message-card {
+	display: flex;
+	flex-direction: column;
+	padding: $gutter--thin;
+	background-color: mix(white, black, 93%);
+
+	&__title {
+	}
+
+	&__desc {
+	}
+}

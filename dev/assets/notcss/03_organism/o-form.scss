@@ -1,0 +1,42 @@
+.o-form {
+	display: flex;
+	flex-direction: column;
+
+	&__row {
+		display: flex;
+		margin-bottom: 0.5em;
+		flex-shrink: 0;
+	}
+
+	&__column {
+		flex-grow: 1;
+		min-height: 1.5em;
+		background: mix(white, black, 96%);
+		margin-right: 0.5em;
+		&:last-of-type {
+			margin-right: 0;
+		}
+
+		&--small {
+			width: 100px;
+			flex-grow: 0;
+		}
+
+		&--medium {
+			width: 50%;
+			flex-grow: 0;
+		}
+
+		&--big {
+			width: 80%;
+		}
+	}
+
+	&__submit-holder {
+		margin-top: $gutter--thin;
+	}
+
+	&__submit-button {
+		font-size: ms(0);
+	}
+}

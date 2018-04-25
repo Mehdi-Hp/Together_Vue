@@ -1,0 +1,49 @@
+.l-sent {
+	display: flex;
+	flex-direction: column;
+
+	&__keynote {
+		margin-bottom: $gutter;
+	}
+
+	&__message-card {
+		margin-bottom: $gutter--thin;
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	&__message {
+		align-self: flex-start;
+
+		&--warning {
+			padding: 0.5em;
+			background-color: mix(white, black, 90%);
+		}
+	}
+
+	&__link-holder {
+		margin-top: $gutter;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: $gutter--thin;
+		position: relative;
+	}
+
+	&__link {
+		padding: 1em;
+		background-color: mix(white, black, 96%);
+		text-decoration: underline;
+	}
+
+	&__open {
+		margin-left: 0.5em;
+		position: absolute;
+		right: 0;
+		left: 100%;
+	}
+}
