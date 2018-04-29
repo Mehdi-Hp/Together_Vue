@@ -42,6 +42,9 @@ export default {
 	props: [],
 	data() {
 		return {};
+	},
+	created() {
+		this.$store.dispatch('getConversation', this.$route.params.id);
 	}
 };
 </script>

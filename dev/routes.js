@@ -19,7 +19,7 @@ export default [
 		component: Sent
 	},
 	{
-		path: '/conversation',
+		path: '/conversation/:id',
 		component: Conversation
 	},
 	{

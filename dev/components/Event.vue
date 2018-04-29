@@ -7,12 +7,7 @@
 <script>
 export default {
 	name: 'Event',
-	props: {
-		data: {
-			type: Object,
-			required: true
-		}
-	},
+	props: ['data'],
 	data() {
 		return {};
 	}

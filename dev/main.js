@@ -14,7 +14,7 @@ Object.defineProperty(Vue, '$axios', { value: axios });
 Vue.$axios.defaults.baseURL = '/api';
 
 Vue.use(SimpleVueValidation);
-Object.defineProperty(Vue, '$validator', { value: SimpleVueValidation.Validator });
+Vue.prototype.$validator = SimpleVueValidation.Validator;
 
 Vue.use(VueRouter);
 const router = new VueRouter({

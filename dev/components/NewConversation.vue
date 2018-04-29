@@ -14,7 +14,10 @@
 		</keynote>
 
 		<div class="l-new-conversation__content">
-			<form class="l-new-conversation__form | o-form">
+			<form
+				class="l-new-conversation__form | o-form"
+				@submit.prevent
+			>
 				<div class="o-form__row">
 					<div class="o-form__column">
 						<textfield
@@ -84,6 +87,7 @@
 					<button
 						class="o-form__submit-button | a-button"
 						@click="crateConversation"
+						@keydown.enter.prevent="crateConversation"
 					>
 						Send Anonymously
 					</button>
@@ -124,12 +128,39 @@ export default {
 		this.$store.dispatch('getAllAssignees');
 	},
 	methods: {
-		crateConversation() {}
+		crateConversation() {
+			this.$validate();
+			if (!this.validation.errors.length) {
+				this.$store.dispatch('createConversation', {
+					title: this.title,
+					description: this.description,
+					typeId: this.typeId,
+					assigneeId: this.assigneeId
+				});
+			} else {
+				console.log('ERROR', this.validation.errors);
+			}
+		}
 	},
 	validators: {
 		title: {
 			cache: true,
 			debounce: 200,
+			validator(value) {
+				return this.$validator.value(value).required();
+			}
+		},
+		description: {
+			validator(value) {
+				return this.$validator.value(value).required();
+			}
+		},
+		typeId: {
+			validator(value) {
+				return this.$validator.value(value).required();
+			}
+		},
+		assigneeId: {
 			validator(value) {
 				return this.$validator.value(value).required();
 			}
