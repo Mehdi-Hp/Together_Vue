@@ -17,10 +17,10 @@ export default {
 					.post('/conversation', {
 						title,
 						description,
-						typeId,
+						categoryId: typeId,
 						assigneeId
 					})
-					.then(({ data: conversationId }) => {
+					.then(({ data: { id: { conversationId } } }) => {
 						commit('addConversation', {
 							title,
 							description,
@@ -29,8 +29,8 @@ export default {
 							conversationId
 						});
 					})
-					.catch((error) => {
-						console.error(error);
+					.catch(({ response }) => {
+						console.error(response);
 					});
 			});
 		},
@@ -38,17 +38,43 @@ export default {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
 					.get(`/conversation/${conversationId}`)
-					.then(({ title, description, typeId, assigneeId, conversationId }) => {
-						commit('addConversation', {
-							title,
-							description,
-							typeId,
-							assigneeId,
-							conversationId
-						});
+					.then(({ data: { id, number, subject, type, state, tags, assignee, creationDate, events } }) => {
+						const newConversation = {
+							id,
+							number,
+							creationDate,
+							title: subject,
+							state,
+							type,
+							assignee,
+							tags,
+							events
+						};
+						commit('addConversation', newConversation);
+
+						resolve(newConversation);
+					})
+					.catch((error) => {
+						reject(error);
+					});
+			});
+		},
+		createMessage({ state, commit, dispatch }, { text, replyToMessageId, mood, conversationId }) {
+			return new Promise((resolve, reject) => {
+				Vue.$axios
+					.post('/conversation/message', {
+						text,
+						replyToMessageId,
+						mood,
+						conversationId
+					})
+					.then((response) => {
+						console.table(response.data);
+						resolve(response.data);
 					})
 					.catch((error) => {
 						console.error(error);
+						reject(error.response);
 					});
 			});
 		}

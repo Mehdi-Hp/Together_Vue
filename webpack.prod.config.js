@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const postcssPlugins = require('./postcss.prod.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
@@ -131,7 +132,8 @@ module.exports = {
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
 			quiet: true
-		})
+		}),
+		new BundleAnalyzerPlugin()
 	],
 	resolve: {
 		alias: {

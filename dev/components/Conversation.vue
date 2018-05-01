@@ -2,21 +2,21 @@
 	<section class="l-conversation">
 		<aside class="l-conversation__summary">
 			<div class="l-conversation__state-management">
-				<span class="l-conversation__current-state">READ</span>
+				<span class="l-conversation__current-state">{{ data.state }}</span>
 				<button class="l-conversation__change-state">Delete</button>
 			</div>
 			<div class="l-conversation__message-card | m-message-card">
 				<h4 class="m-message-card__title">
-					shstoghsi5ue ghoijegeklrg
+					{{ data.title }}
 				</h4>
 				<div class="m-message-card__desc">
-					uoyttthaeoltp o;rgha rtueo;hor jdhg ohusdrg o;bshn;gboh seo;rghuoyttthaeoltp o;rgha rtueo;hor jdhg ohusdrg o;bshn;gboh seo;rghuoyttthaeoltp o;rgha rtueo;hor jdhg ohusdrg o;bshn;gboh seo;rghuoyttthaeoltp o;rgha rtueo;hor jdhg ohusdrg o;bshn;gboh seo;rgh
+					{{ data.events && data.events[0].text }}
 				</div>
 			</div>
 			<div class="l-conversation__seat">
 				<div class="l-conversation__seat-items">
-					<span class="l-conversation__seat-item">Category</span>
-					<span class="l-conversation__seat-item">MiddleMan</span>
+					<span class="l-conversation__seat-item">{{ data.type }}</span>
+					<span class="l-conversation__seat-item">{{ data.assignee }}</span>
 				</div>
 				<select class="l-conversation__seat">
 					<option>skghsoirgyh</option>
@@ -27,7 +27,13 @@
 				</select>
 			</div>
 		</aside>
-		<messages class="l-conversation__messages"></messages>
+		<messages
+			class="l-conversation__messages"
+			:events="data.events"
+			@addMessage="appendMessage"
+			@messageSettled="makeMessageSettled"
+			@esageFaild="removeUnsettledMessaeg"
+		></messages>
 	</section>
 </template>
 
@@ -41,10 +47,35 @@ export default {
 	},
 	props: [],
 	data() {
-		return {};
+		return {
+			data: {}
+		};
 	},
 	created() {
-		this.$store.dispatch('getConversation', this.$route.params.id);
+		this.$store
+			.dispatch('getConversation', this.$route.params.id)
+			.then((conversation) => {
+				this.data = conversation;
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	},
+	methods: {
+		appendMessage(message) {
+			this.data.events.unshift(message);
+		},
+		makeMessageSettled() {
+			const messageToSettle = this.data.events.find((event) => {
+				return event.notSettledYet;
+			});
+			messageToSettle.notSettledYet = false;
+		},
+		removeUnsettledMessaeg() {
+			this.data.events = this.data.events.filter((event) => {
+				return !event.notSettledYet;
+			});
+		}
 	}
 };
 </script>

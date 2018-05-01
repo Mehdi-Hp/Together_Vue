@@ -154,5 +154,5 @@ module.exports = smp.wrap({
 	performance: {
 		hints: false
 	},
-	devtool: 'eval'
+	devtool: 'cheap-module-source-map'
 });

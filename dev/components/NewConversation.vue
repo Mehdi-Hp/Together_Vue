@@ -2,14 +2,10 @@
 	<section class="l-new-conversation">
 		<keynote class="l-new-conversation__keynote">
 			<template slot="title">
-				ljhsrgi
+				New Conversation
 			</template>
 			<template slot="desc">
-				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr
-				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr
-				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr
-				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr
-				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr
+
 			</template>
 		</keynote>
 
