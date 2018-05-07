@@ -20,7 +20,7 @@ export default {
 						categoryId: typeId,
 						assigneeId
 					})
-					.then(({ data: { id: { conversationId } } }) => {
+					.then(({ data: { id: conversationId } }) => {
 						commit('addConversation', {
 							title,
 							description,
@@ -28,6 +28,7 @@ export default {
 							assigneeId,
 							conversationId
 						});
+						resolve(conversationId);
 					})
 					.catch(({ response }) => {
 						console.error(response);

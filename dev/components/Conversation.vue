@@ -79,3 +79,47 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.l-conversation {
+	&__summary {
+		margin-bottom: $gutter;
+	}
+
+	&__state-management {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: $gutter--thin;
+		font-size: ms(1);
+	}
+
+	&__message-card {
+		margin-bottom: $gutter--thin;
+	}
+
+	&__seat {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__seat-items {
+	}
+
+	&__seat-item {
+		margin-right: $gutter--thin;
+	}
+
+	&__messages {
+		background-color: mix(white, black, 95%);
+		flex-grow: 1;
+	}
+
+	&__events {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__event {
+	}
+}
+</style>

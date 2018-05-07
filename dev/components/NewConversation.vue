@@ -82,8 +82,8 @@
 				<div class="o-form__submit-holder">
 					<button
 						class="o-form__submit-button | a-button"
-						@click="crateConversation"
-						@keydown.enter.prevent="crateConversation"
+						@click="createConversation"
+						@keydown.enter.prevent="createConversation"
 					>
 						Send Anonymously
 					</button>
@@ -124,17 +124,29 @@ export default {
 		this.$store.dispatch('getAllAssignees');
 	},
 	methods: {
-		crateConversation() {
+		createConversation() {
 			this.$validate();
 			if (!this.validation.errors.length) {
-				this.$store.dispatch('createConversation', {
-					title: this.title,
-					description: this.description,
-					typeId: this.typeId,
-					assigneeId: this.assigneeId
-				});
+				this.$store
+					.dispatch('createConversation', {
+						title: this.title,
+						description: this.description,
+						typeId: this.typeId,
+						assigneeId: this.assigneeId
+					})
+					.then((conversationId) => {
+						this.$router.push({
+							name: 'created',
+							params: {
+								conversationId
+							}
+						});
+					})
+					.catch((error) => {
+						console.error(error);
+					});
 			} else {
-				console.log('ERROR', this.validation.errors);
+				console.error(this.validation.errors);
 			}
 		}
 	},
@@ -164,3 +176,24 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.l-new-conversation {
+	display: flex;
+	flex-direction: column;
+
+	&__keynote {
+	}
+
+	&__content {
+		width: 100%;
+		display: flex;
+		margin-top: $gutter;
+	}
+
+	&__form {
+		width: 100%;
+		overflow-y: scroll;
+	}
+}
+</style>

@@ -13,3 +13,17 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.m-event {
+	display: flex;
+	width: 100%;
+	padding: 1em;
+	margin-bottom: 1em;
+	background-color: mix(white, black, 85%);
+
+	&--not-settled {
+		opacity: 0.3;
+	}
+}
+</style>

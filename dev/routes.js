@@ -1,8 +1,18 @@
-import Start from './components/Start.vue';
-import NewConversation from './components/NewConversation.vue';
-import Sent from './components/Sent.vue';
-import Conversation from './components/Conversation.vue';
-import Search from './components/Search.vue';
+const Start = () => {
+	return import('./components/Start.vue');
+};
+const NewConversation = () => {
+	return import('./components/NewConversation.vue');
+};
+const CreatedConversation = () => {
+	return import('./components/CreatedConversation.vue');
+};
+const Conversation = () => {
+	return import('./components/Conversation.vue');
+};
+const Search = () => {
+	return import('./components/Search.vue');
+};
 
 export default [
 	{
@@ -15,8 +25,10 @@ export default [
 		component: NewConversation
 	},
 	{
-		path: '/sent',
-		component: Sent
+		path: '/created',
+		name: 'created',
+		component: CreatedConversation,
+		props: true
 	},
 	{
 		path: '/conversation/:id',

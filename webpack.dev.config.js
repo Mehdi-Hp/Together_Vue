@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
 const postcssPlugins = require('./postcss.dev.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
@@ -53,10 +54,10 @@ module.exports = smp.wrap({
 				exclude: [nodeModulesPath]
 			},
 			{
-				test: /(\.scss|\.pcss)$/,
+				test: /(\.scss|\.pcss|\.css)$/,
 				use: [
 					{
-						loader: 'style-loader'
+						loader: 'vue-style-loader'
 					},
 					{
 						loader: 'css-loader',
@@ -66,6 +67,7 @@ module.exports = smp.wrap({
 							minimize: false
 						}
 					},
+					'sass-loader',
 					{
 						loader: 'postcss-loader',
 						options: {
@@ -74,7 +76,6 @@ module.exports = smp.wrap({
 							plugins: postcssPlugins
 						}
 					},
-					'sass-loader',
 					{
 						loader: 'sass-resources-loader',
 						options: {
@@ -112,6 +113,7 @@ module.exports = smp.wrap({
 		namedModules: true
 	},
 	plugins: [
+		new VueLoaderPlugin(),
 		new HtmlWebpackPlugin({
 			template: 'index.dev.html',
 			filename: 'index.html'

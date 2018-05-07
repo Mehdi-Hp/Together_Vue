@@ -60,3 +60,29 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.a-textfield {
+	min-height: 2rem;
+	background: mix(white, black, 93%);
+	border: 2px solid mix(white, black, 91%);
+
+	&__input {
+		height: 2rem;
+		width: 100%;
+		background-color: transparent;
+		padding: 0.5em;
+		font-size: 1.5em;
+	}
+
+	&__textarea {
+		height: 6rem;
+		width: 100%;
+		background-color: transparent;
+		padding: 0.5em;
+		font-size: 1.5em;
+		resize: vertical;
+		line-height: 0.8;
+	}
+}
+</style>

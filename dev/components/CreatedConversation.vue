@@ -2,7 +2,7 @@
 	<section class="l-sent">
 		<keynote class="l-sent__keynote">
 			<template slot="title">
-				ljhsrgilraug
+				Conversation got created.
 			</template>
 			<template slot="desc">
 				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;
@@ -27,13 +27,13 @@
 			</p>
 			<div class="l-sent__link-holder">
 				<router-link
-					to="/conversation"
+					:to="`/conversation/${conversationId}`"
 					class="l-sent__link"
 				>
-					Go to conversation
+					{{ conversationId }}
 				</router-link>
 				<router-link
-					to="/conversation"
+					:to="`/conversation/${conversationId}`"
 					class="l-sent__open"
 				>
 					Go
@@ -48,12 +48,65 @@
 import Keynote from './Keynote.vue';
 
 export default {
-	name: 'Sent',
+	name: 'CreatedConversation',
 	components: {
 		Keynote
 	},
+	props: ['conversationId'],
 	data() {
 		return {};
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.l-sent {
+	display: flex;
+	flex-direction: column;
+
+	&__keynote {
+		margin-bottom: $gutter;
+	}
+
+	&__message-card {
+		margin-bottom: $gutter--thin;
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	&__message {
+		align-self: flex-start;
+
+		&--warning {
+			padding: 0.5em;
+			background-color: mix(white, black, 90%);
+		}
+	}
+
+	&__link-holder {
+		margin-top: $gutter;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: $gutter--thin;
+		position: relative;
+	}
+
+	&__link {
+		padding: 1em;
+		background-color: mix(white, black, 96%);
+		text-decoration: underline;
+	}
+
+	&__open {
+		margin-left: 0.5em;
+		position: absolute;
+		right: 0;
+		left: 100%;
+	}
+}
+</style>

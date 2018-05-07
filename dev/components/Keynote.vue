@@ -18,3 +18,18 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.o-keynote {
+	display: flex;
+	flex-direction: column;
+
+	&__title {
+	}
+
+	&__desc {
+		display: flex;
+		flex-direction: column;
+	}
+}
+</style>

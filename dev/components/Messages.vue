@@ -90,3 +90,32 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.o-messages {
+	padding: $gutter;
+	overflow-y: scroll;
+
+	&__form {
+		display: flex;
+		margin-bottom: $gutter--thin;
+	}
+
+	&__textfield {
+		flex-grow: 1;
+	}
+
+	&__send {
+		font-weight: bold;
+		font-size: ms(0);
+	}
+
+	&__events {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__event {
+	}
+}
+</style>

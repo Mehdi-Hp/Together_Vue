@@ -33,3 +33,21 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.l-start {
+	display: flex;
+	flex-direction: column;
+
+	&__keynote {
+	}
+
+	&__content {
+		display: flex;
+	}
+
+	&__new-advice {
+		margin-top: $gutter;
+	}
+}
+</style>

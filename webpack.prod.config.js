@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const postcssPlugins = require('./postcss.prod.config');
@@ -14,6 +15,7 @@ const mainJSPath = path.resolve(__dirname, 'dev', 'main.js');
 
 module.exports = {
 	entry: [mainJSPath],
+	context: path.resolve(__dirname),
 	output: {
 		path: productionPath,
 		publicPath: './',
@@ -54,23 +56,18 @@ module.exports = {
 				exclude: [nodeModulesPath]
 			},
 			{
-				test: /(\.scss|\.pcss)$/,
+				test: /(\.scss|\.pcss|\.css)$/,
 				use: [
-					MiniCssExtractPlugin.loader,
+					// MiniCssExtractPlugin.loader,
+					{
+						loader: 'vue-style-loader'
+					},
 					{
 						loader: 'css-loader',
 						options: {
 							importLoaders: 4,
 							import: false,
-							minimize: true
-						}
-					},
-					{
-						loader: 'postcss-loader',
-						options: {
-							syntax: 'postcss-scss',
-							map: false,
-							plugins: postcssPlugins
+							minimize: false
 						}
 					},
 					'sass-loader',
@@ -79,7 +76,7 @@ module.exports = {
 						options: {
 							syntax: 'postcss-scss',
 							map: false,
-							plugins: []
+							plugins: postcssPlugins
 						}
 					},
 					{
@@ -88,7 +85,8 @@ module.exports = {
 							resources: ['./dev/assets/notcss/_utils/_all-utils.scss']
 						}
 					}
-				]
+				],
+				exclude: [nodeModulesPath]
 			},
 			{
 				test: /\.js$/,
@@ -114,6 +112,7 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new VueLoaderPlugin(),
 		new HtmlWebpackPlugin({
 			template: 'index.prod.html',
 			inject: false,

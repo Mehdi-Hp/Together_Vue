@@ -32,3 +32,29 @@ export default {
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.l-search {
+	&__keynote {
+		margin-bottom: $gutter--fat;
+	}
+
+	&__content {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+		width: 25em;
+		padding: $gutter;
+	}
+
+	&__textfield {
+	}
+
+	&__submit {
+	}
+}
+</style>
