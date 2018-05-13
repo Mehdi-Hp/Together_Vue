@@ -1,3 +1,7 @@
+:root {
+	font-size: ms(0);
+}
+
 html {
 	font-size: 100%;
 	min-height: 100%;
@@ -5,23 +9,31 @@ html {
 }
 
 body {
-	font-family: $script-typeface;
+	font-family: $default-typeface;
 	font-size: ms(0);
 	min-height: 100%;
 	height: 100%;
-	overflow: hidden;
 	direction: rtl;
 	text-align: right;
+	line-height: 1.2;
 }
 
 input,
 textarea,
 select {
-	font-family: $script-typeface;
+	font-family: $default-typeface;
 }
 
 main {
 	width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-weight: normal;
 }
 
 h1 {

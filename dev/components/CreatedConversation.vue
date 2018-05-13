@@ -65,11 +65,11 @@ export default {
 	flex-direction: column;
 
 	&__keynote {
-		margin-bottom: $gutter;
+		margin-bottom: $gutter--fat;
 	}
 
 	&__message-card {
-		margin-bottom: $gutter--thin;
+		margin-bottom: $gutter;
 	}
 
 	&__content {
@@ -88,11 +88,11 @@ export default {
 	}
 
 	&__link-holder {
-		margin-top: $gutter;
+		margin-top: $gutter--fat;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-bottom: $gutter--thin;
+		margin-bottom: $gutter;
 		position: relative;
 	}
 

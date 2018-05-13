@@ -1,7 +1,9 @@
-$golden-ratio: 1.618;
-@ant-gutters #{$golden-ratio * 2}rem;
-$gutter: $golden-ratio * 2em;
+$minor-third: 1.2;
+$gutter: 2.352rem;
 $gutter--thin: $gutter / 2;
 $gutter--fat: $gutter * 2;
+$gutter--fater: $gutter * 4;
 
-$general-width: 1200px;
+$general-width: 56.47rem; /* 960/16 */
+
+@ant-gutters #{$minor-third * 2}rem;

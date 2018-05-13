@@ -1,20 +1,22 @@
 <template>
 	<main class="p-app">
-		<v-header></v-header>
+		<v-header class="p-app__header"></v-header>
 		<router-view class="p-app__content"></router-view>
-		<footer class="p-app__footer">
-		</footer>
+		<v-footer class="p-app__footer">
+		</v-footer>
 	</main>
 </template>
 
 <script>
 import './assets/notcss/00_base/base.scss';
 import VHeader from './components/Header.vue';
+import VFooter from './components/Footer.vue';
 
 export default {
 	name: 'App',
 	components: {
-		VHeader
+		VHeader,
+		VFooter
 	},
 	data() {
 		return {};
@@ -29,17 +31,20 @@ export default {
 	align-items: center;
 	width: 100%;
 
+	&__header {
+	}
+
 	&__content {
 		display: flex;
 		flex-direction: column;
-		min-height: 100vh;
+		min-height: calc(100vh - 400px);
 		width: 100%;
 		max-width: $general-width;
+		padding: $gutter--fat 0 $gutter--fater 0;
+		color: $text-black;
 	}
 
 	&__footer {
-		width: 100%;
-		max-width: $general-width;
 		height: 200px;
 	}
 }

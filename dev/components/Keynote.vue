@@ -23,13 +23,18 @@ export default {
 .o-keynote {
 	display: flex;
 	flex-direction: column;
+	color: $black-4;
+	margin-bottom: $gutter--fat;
 
 	&__title {
+		margin-bottom: $gutter;
+		color: $main-color;
 	}
 
 	&__desc {
 		display: flex;
 		flex-direction: column;
+		line-height: 1.5;
 	}
 }
 </style>

@@ -188,7 +188,7 @@ export default {
 	&__content {
 		width: 100%;
 		display: flex;
-		margin-top: $gutter;
+		margin-top: $gutter--fat;
 	}
 
 	&__form {

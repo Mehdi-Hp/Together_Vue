@@ -13,6 +13,9 @@ const Conversation = () => {
 const Search = () => {
 	return import('./components/Search.vue');
 };
+const Login = () => {
+	return import('./components/Login.vue');
+};
 
 export default [
 	{
@@ -37,6 +40,10 @@ export default [
 	{
 		path: '/search',
 		component: Search
+	},
+	{
+		path: '/login',
+		component: Login
 	},
 	{
 		path: '*'

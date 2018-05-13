@@ -65,7 +65,7 @@ export default {
 .a-textfield {
 	min-height: 2rem;
 	background: mix(white, black, 93%);
-	border: 2px solid mix(white, black, 91%);
+	border: 1px solid mix(white, black, 91%);
 
 	&__input {
 		height: 2rem;
@@ -83,6 +83,10 @@ export default {
 		font-size: 1.5em;
 		resize: vertical;
 		line-height: 0.8;
+	}
+
+	&__label {
+		font-weight: 300;
 	}
 }
 </style>

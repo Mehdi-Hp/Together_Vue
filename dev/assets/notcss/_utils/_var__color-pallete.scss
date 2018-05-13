@@ -1,6 +1,19 @@
 $white: white;
-$white-1: shade($white, 2%);
-$white-2: shade($white, 4%);
-$white-3: shade($white, 6%);
-$white-4: shade($white, 8%);
-$white-5: shade($white, 10%);
+$white-1: shade($white, 3%);
+$white-2: shade($white, 6%);
+$white-3: shade($white, 9%);
+$white-4: shade($white, 12%);
+$white-5: shade($white, 15%);
+
+$black: black;
+$black-1: tint($black, 10%);
+$black-2: tint($black, 20%);
+$black-3: tint($black, 30%);
+$black-4: tint($black, 40%);
+$black-5: tint($black, 50%);
+
+$green: #37aa42;
+$green-light: #4bb26e;
+$green-lighter: #8acf9e;
+
+$main-color: $green;

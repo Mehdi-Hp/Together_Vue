@@ -83,18 +83,18 @@ export default {
 <style scoped lang="scss">
 .l-conversation {
 	&__summary {
-		margin-bottom: $gutter;
+		margin-bottom: $gutter--fat;
 	}
 
 	&__state-management {
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: $gutter--thin;
+		margin-bottom: $gutter;
 		font-size: ms(1);
 	}
 
 	&__message-card {
-		margin-bottom: $gutter--thin;
+		margin-bottom: $gutter;
 	}
 
 	&__seat {
@@ -106,7 +106,7 @@ export default {
 	}
 
 	&__seat-item {
-		margin-right: $gutter--thin;
+		margin-right: $gutter;
 	}
 
 	&__messages {

@@ -48,7 +48,7 @@ export default {
 		display: flex;
 		flex-direction: column;
 		width: 25em;
-		padding: $gutter;
+		padding: $gutter--fat;
 	}
 
 	&__textfield {

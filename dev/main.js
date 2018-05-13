@@ -9,6 +9,8 @@ import App from './App.vue';
 import Routes from './routes';
 import store from './store/index';
 
+import Keynote from './components/Keynote.vue';
+
 Vue.use(VueAxios, axios);
 Object.defineProperty(Vue, '$axios', { value: axios });
 Vue.$axios.defaults.baseURL = '/api';
@@ -30,6 +32,8 @@ const router = new VueRouter({
 		};
 	}
 });
+
+Vue.component('Keynote', Keynote);
 
 new Vue({
 	el: '#app',

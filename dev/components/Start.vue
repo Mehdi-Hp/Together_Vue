@@ -47,7 +47,7 @@ export default {
 	}
 
 	&__new-advice {
-		margin-top: $gutter;
+		margin-top: $gutter--fat;
 	}
 }
 </style>

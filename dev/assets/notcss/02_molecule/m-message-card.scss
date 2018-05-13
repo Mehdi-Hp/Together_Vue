@@ -1,7 +1,7 @@
 .m-message-card {
 	display: flex;
 	flex-direction: column;
-	padding: $gutter--thin;
+	padding: $gutter;
 	background-color: mix(white, black, 93%);
 
 	&__title {

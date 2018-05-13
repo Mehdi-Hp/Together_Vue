@@ -93,12 +93,12 @@ export default {
 
 <style scoped lang="scss">
 .o-messages {
-	padding: $gutter;
+	padding: $gutter--fat;
 	overflow-y: scroll;
 
 	&__form {
 		display: flex;
-		margin-bottom: $gutter--thin;
+		margin-bottom: $gutter;
 	}
 
 	&__textfield {

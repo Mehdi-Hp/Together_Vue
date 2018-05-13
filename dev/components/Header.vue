@@ -4,7 +4,7 @@
 			<div class="o-header__logo">
 				<img
 					class="o-header__logo-image"
-					src="images/logo.png"
+					src="../assets/images/logo.png"
 					alt="together app logo"
 				/>
 			</div>
@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import '../assets/images/logo.png';
-
 export default {
 	name: 'Header',
 	props: [],
@@ -27,7 +25,7 @@ export default {
 <style scoped lang="scss">
 .o-header {
 	width: 100%;
-	height: 200px;
+	height: 230px;
 	background: $white-1;
 
 	&__content {
@@ -38,12 +36,11 @@ export default {
 		display: flex;
 		align-items: flex-end;
 		justify-content: flex-end;
-		padding: $gutter--thin 0;
+		padding: $gutter 0;
 	}
 
 	&__logo {
-		width: 300px;
-		height: 70px;
+		height: 60px;
 	}
 
 	&__logo-image {
