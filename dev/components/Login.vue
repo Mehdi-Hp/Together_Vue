@@ -8,14 +8,17 @@
 				مسیحیان فعلی تعصب کمتری دارند و این کمی تعصب مربوط به خود آنها نیست، بلکه بایستی از نسل‌ها آزاد اندیشانی سپاسگزار باشند که از زمان رنسانس تا به امروز تلاش کرده‌اند و مسیحیان را از بسیاری از عقاید خود شرمنده کرده‌اند.
 			</template>
 		</keynote>
-		<form class="l-login__form">
+		<form
+			class="l-login__form"
+			@submit.prevent
+		>
 			<field
 				class="l-login__field"
 				name="username"
 				label="نام کاربری"
 				type="text"
 				direction="ltr"
-				@input="(username) => { username = username }"
+				@input="(newValue) => { username = newValue }"
 			></field>
 			<field
 				class="l-login__field"
@@ -23,11 +26,13 @@
 				label="رمز عبور"
 				type="password"
 				direction="ltr"
-				@input="(password) => { password = password }"
+				@input="(newValue) => { password = newValue }"
 			></field>
 			<v-button
 				class="l-login__submit"
 				mode="normal"
+				@click="doLogin"
+				@keydown.enter.prevent="doLogin"
 			>
 				ورود به سیستم
 			</v-button>
@@ -50,7 +55,27 @@ export default {
 	},
 	props: [],
 	data() {
-		return {};
+		return {
+			username: '',
+			password: ''
+		};
+	},
+	methods: {
+		doLogin() {
+			console.table({
+				username: this.username,
+				password: this.password
+			});
+			this.axios
+				.get('/signin')
+				.then(({ data: { token } }) => {
+					this.$ls.set('token', token);
+					this.axios.defaults.headers.common.Authorization = token;
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		}
 	}
 };
 </script>

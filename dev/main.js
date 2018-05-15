@@ -5,6 +5,7 @@ import VueRouter from 'vue-router';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import SimpleVueValidation from 'simple-vue-validator';
+import VueLocalStorage from 'vue-ls';
 import App from './App.vue';
 import Routes from './routes';
 import store from './store/index';
@@ -17,6 +18,8 @@ Vue.$axios.defaults.baseURL = '/api';
 
 Vue.use(SimpleVueValidation);
 Vue.prototype.$validator = SimpleVueValidation.Validator;
+
+Vue.use(VueLocalStorage);
 
 Vue.use(VueRouter);
 const router = new VueRouter({

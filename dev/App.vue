@@ -20,6 +20,9 @@ export default {
 	},
 	data() {
 		return {};
+	},
+	mounted() {
+		this.axios.defaults.headers.common.Authorization = this.$ls.get('token');
 	}
 };
 </script>
@@ -45,7 +48,6 @@ export default {
 	}
 
 	&__footer {
-		height: 200px;
 	}
 }
 </style>
