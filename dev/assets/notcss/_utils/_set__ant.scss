@@ -4,6 +4,5 @@ $gutter--thin: $gutter / 2;
 $gutter--fat: $gutter * 2;
 $gutter--fater: $gutter * 4;
 
-$general-width: 56.47rem; /* 960/16 */
-
+$general-width: 43.125em; /* 690/16 */
 @ant-gutters #{$minor-third * 2}rem;

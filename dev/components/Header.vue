@@ -28,14 +28,15 @@ export default {
 	height: 230px;
 	background: $white-1;
 
-	&:after {
+	&:before {
 		content: '';
 		position: absolute 0 0 0 0;
 		background: url('../assets/images/top_circles.png');
 		background-repeat: no-repeat;
-		background-size: 55vw;
+		background-size: 46vw;
 		background-position: 40% 0;
-		opacity: 0.6;
+		opacity: 0.8;
+		pointer-events: none;
 	}
 
 	&__content {
@@ -52,6 +53,7 @@ export default {
 	&__logo {
 		height: 60px;
 		z-index: g-index('land');
+		margin-left: -3vw;
 	}
 
 	&__logo-image {

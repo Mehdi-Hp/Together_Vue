@@ -33,6 +33,7 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
+	background-color: shade(white, 2%);
 
 	&__header {
 	}
@@ -43,7 +44,7 @@ export default {
 		min-height: calc(100vh - 400px);
 		width: 100%;
 		max-width: $general-width;
-		padding: $gutter--fat 0 $gutter--fater 0;
+		padding: $gutter--fat;
 		color: $text-black;
 	}
 

@@ -3,59 +3,61 @@
 		v-if="events"
 		class="o-messages"
 	>
-		<form
-			class="o-messages__form"
-			@submit.prevent
-		>
-			<textfield
-				text="Title"
-				type="text"
-				name="message"
-				class="o-messages__textfield"
-				@inputChange="(value) => text = value"
-			/>
-			<button
-				class="o-messages__send | a-button"
-				@click="sendMessage"
-				@keydown.enter.prevent="sendMessage"
+		<div class="o-messages__inner">
+			<form
+				class="o-messages__form"
+				@submit.prevent
 			>
-				Send
-			</button>
-		</form>
-		<section class="o-messages__events">
-			<event
-				class="o-messages__event | m-event"
-				:class="{
-					'm-event--not-settled': event.notSettledYet
-				}"
-				v-for="event in events"
-				:key="event.id"
-			>
-				<span
-					class="m-event__content"
-					v-if="event.type.toLowerCase() === 'message'"
+				<field
+					text="Title"
+					type="text"
+					name="message"
+					class="o-messages__textfield"
+					@inputChange="(value) => text = value"
+				/>
+				<button
+					class="o-messages__send | a-button"
+					@click="sendMessage"
+					@keydown.enter.prevent="sendMessage"
 				>
-					{{ event.text }} at {{ event.time }}
-				</span>
-				<span
-					class="m-event__content"
-					v-if="event.type.toLowerCase() !== 'message'"
+					Send
+				</button>
+			</form>
+			<section class="o-messages__events">
+				<event
+					class="o-messages__event | m-event"
+					:class="{
+						'm-event--not-settled': event.notSettledYet
+					}"
+					v-for="event in events"
+					:key="event.id"
 				>
-					{{ event.type }} at {{ event.time }}
-				</span>
-			</event>
-		</section>
+					<span
+						class="m-event__content"
+						v-if="event.type.toLowerCase() === 'message'"
+					>
+						{{ event.text }} at {{ event.time }}
+					</span>
+					<span
+						class="m-event__content"
+						v-if="event.type.toLowerCase() !== 'message'"
+					>
+						{{ event.type }} at {{ event.time }}
+					</span>
+				</event>
+			</section>
+		</div>
 	</article>
 </template>
 
 <script>
-import Textfield from './Textfield.vue';
+import Field from './Field.vue';
 import Event from './Event.vue';
 
 export default {
 	name: 'Messages',
 	components: {
-		Textfield,
+		Field,
 		Event
 	},
 	props: ['events'],
@@ -93,8 +95,13 @@ export default {
 
 <style scoped lang="scss">
 .o-messages {
-	padding: $gutter--fat;
 	overflow-y: scroll;
+
+	&__inner {
+		max-width: $general-width;
+		margin: auto;
+		padding: 0 $gutter--fat 0 $gutter--thin;
+	}
 
 	&__form {
 		display: flex;

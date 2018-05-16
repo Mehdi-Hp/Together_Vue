@@ -3,28 +3,45 @@
 		<aside class="l-conversation__summary">
 			<div class="l-conversation__state-management">
 				<span class="l-conversation__current-state">{{ data.state }}</span>
-				<button class="l-conversation__change-state">Delete</button>
+				<button
+					class="l-conversation__change-state"
+					v-if="false"
+				>
+					Delete
+				</button>
 			</div>
-			<div class="l-conversation__message-card | m-message-card">
-				<h4 class="m-message-card__title">
+			<keynote class="l-conversation__keynote">
+				<template slot="title">
 					{{ data.title }}
-				</h4>
-				<div class="m-message-card__desc">
+				</template>
+				<template slot="desc">
 					{{ data.events && data.events[0].text }}
-				</div>
-			</div>
+				</template>
+			</keynote>
 			<div class="l-conversation__seat">
-				<div class="l-conversation__seat-items">
-					<span class="l-conversation__seat-item">{{ data.type }}</span>
-					<span class="l-conversation__seat-item">{{ data.assignee }}</span>
+				<div class="l-conversation__information">
+					<div class="l-conversation__info">
+						<span class="l-conversation__info-title">
+							گروه :
+						</span>
+						<span class="l-conversation__info-value">
+							{{ data.type }}
+						</span>
+					</div>
+					<div class="l-conversation__info">
+						<span class="l-conversation__info-title">
+							بررسی توسط :
+						</span>
+						<span class="l-conversation__info-value">
+							{{ data.assignee }}
+						</span>
+					</div>
 				</div>
-				<select class="l-conversation__seat">
-					<option>skghsoirgyh</option>
-					<option>skghsoirgyh</option>
-					<option>skghsoirgyh</option>
-					<option>skghsoirgyh</option>
-					<option>skghsoirgyh</option>
-				</select>
+				<tags
+					class="l-conversation__tags"
+					:tags="data.tags"
+				>
+				</tags>
 			</div>
 		</aside>
 		<messages
@@ -39,11 +56,13 @@
 
 <script>
 import Messages from './Messages.vue';
+import Tags from './Tags.vue';
 
 export default {
 	name: 'Conversation',
 	components: {
-		Messages
+		Messages,
+		Tags
 	},
 	props: [],
 	data() {
@@ -82,15 +101,33 @@ export default {
 
 <style scoped lang="scss">
 .l-conversation {
+	max-width: 100%;
+	padding: 0;
+
 	&__summary {
+		padding: $gutter $gutter--fat;
+		padding-bottom: 0;
+		margin: auto;
 		margin-bottom: $gutter--fat;
+		max-width: $general-width;
 	}
 
 	&__state-management {
 		display: flex;
 		justify-content: space-between;
+		margin-bottom: $gutter--thin;
+		font-size: ms(-1);
+	}
+
+	&__current-state {
+		display: flex;
+		align-items: center;
+		background-color: $white-6;
+		border-radius: 5px;
+		padding: 0.5em;
+		font-weight: 500;
+		color: $black-4;
 		margin-bottom: $gutter;
-		font-size: ms(1);
 	}
 
 	&__message-card {
@@ -99,19 +136,33 @@ export default {
 
 	&__seat {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
 	}
 
-	&__seat-items {
+	&__information {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: $gutter;
 	}
 
-	&__seat-item {
-		margin-right: $gutter;
+	&__info {
+		font-size: ms(-1);
+		margin-bottom: 1em;
+	}
+
+	&__info-title {
+		color: $black-6;
+		margin-left: 0.25em;
+	}
+
+	&__info-value {
+		color: $main-color;
 	}
 
 	&__messages {
 		background-color: mix(white, black, 95%);
 		flex-grow: 1;
+		padding-top: $gutter--fat;
 	}
 
 	&__events {
