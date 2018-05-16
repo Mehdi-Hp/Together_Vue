@@ -69,8 +69,8 @@ export default {
 			this.axios
 				.get('/signin')
 				.then(({ data: { token } }) => {
-					this.$ls.set('token', token);
-					this.axios.defaults.headers.common.Authorization = token;
+					this.$ls.set('token', `Bearer ${token}`);
+					this.axios.defaults.headers.common.Authorization = this.$ls.get('token');
 				})
 				.catch((error) => {
 					console.error(error);
