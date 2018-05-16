@@ -9,22 +9,34 @@
 		</div>
 		<ul class="o-footer__links">
 			<li class="o-footer__link-holder">
-				<a class="o-footer__link">
+				<a
+					class="o-footer__link"
+					href="#"
+				>
 					Website
 				</a>
 			</li>
 			<li class="o-footer__link-holder">
-				<a class="o-footer__link">
+				<a
+					class="o-footer__link"
+					href="#"
+				>
 					Instagram
 				</a>
 			</li>
 			<li class="o-footer__link-holder">
-				<a class="o-footer__link">
+				<a
+					class="o-footer__link"
+					href="#"
+				>
 					Linkdin
 				</a>
 			</li>
 			<li class="o-footer__link-holder">
-				<a class="o-footer__link">
+				<a
+					class="o-footer__link"
+					href="#"
+				>
 					Jobinja
 				</a>
 			</li>
@@ -52,6 +64,16 @@ export default {
 	align-items: center;
 	background-color: $footer-background;
 	padding: $gutter;
+
+	&:before {
+		content: '';
+		position: absolute 0 0 -11em 0;
+		background: url('../assets/images/bottom_circles.png');
+		background-repeat: no-repeat;
+		background-size: 45vw;
+		background-position: bottom right;
+		z-index: -1;
+	}
 
 	&__logo {
 		height: 100px;
