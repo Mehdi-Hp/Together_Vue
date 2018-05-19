@@ -4,28 +4,32 @@
 			برچسب‌ها:
 		</span>
 		<ul class="o-tags__items">
-			<li
+			<tag
 				class="o-tags__item"
 				v-for="tag in tags"
 				:key="tag.id"
+				:data="tag"
 			>
-				<span class="o-tags__text">
-					{{ tag.title }}
-				</span>
-				<button
-					class="o-tags__remove"
-				></button>
-			</li>
+			</tag>
 			<button
 				class="o-tags__new"
-			></button>
+			>
+				<icon-plus class="o-tags__new-icon" />
+			</button>
 		</ul>
 	</div>
 </template>
 
 <script>
+import Tag from './Tag.vue';
+import IconPlus from './icons/Plus.vue';
+
 export default {
 	name: 'Tags',
+	components: {
+		Tag,
+		IconPlus
+	},
 	props: ['tags'],
 	data() {
 		return {};
@@ -50,35 +54,12 @@ export default {
 	}
 
 	&__item {
-		display: flex;
-		justify-content: space-between;
 		margin-left: 1em;
 		margin-bottom: 1em;
-		background-color: $white-3;
-		border-radius: 10em;
-		color: $black-4;
-		padding: 0.45em 1.5em;
-		padding-left: 0.25em;
-		font-size: ms(-1);
 
 		&:last-of-type {
 			margin-bottom: 0;
 		}
-	}
-
-	&__text {
-		flex-grow: 1;
-		margin-left: 2em;
-		position: relative;
-		top: 0.2em;
-	}
-
-	&__remove {
-		width: 1.5em;
-		height: 1.5em;
-		border-radius: 50%;
-		padding: 0.25em;
-		background-color: transparent;
 	}
 
 	&__new {
@@ -88,9 +69,23 @@ export default {
 		background-color: $main-color;
 		color: white;
 		border-radius: 50%;
-		width: 2em;
-		height: 2em;
-		padding: 0;
+		width: 1.8rem;
+		height: 1.8rem;
+		padding: 0.6em;
+
+		&:hocus {
+			background-color: shade($main-color, 10%);
+		}
+
+		&:active {
+			transform: scale(0.98);
+		}
+	}
+
+	&__new-icon {
+		size: 100%;
+		stroke-width: 0.5em;
+		color: white;
 	}
 }
 </style>

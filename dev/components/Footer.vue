@@ -72,7 +72,6 @@ export default {
 		background-repeat: no-repeat;
 		background-size: 45vw;
 		background-position: bottom right;
-		z-index: -1;
 		pointer-events: none;
 	}
 

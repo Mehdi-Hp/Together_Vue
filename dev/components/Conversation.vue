@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import EventBus from '../EventBus';
 import Messages from './Messages.vue';
 import Tags from './Tags.vue';
 
@@ -80,7 +81,16 @@ export default {
 				console.error(error);
 			});
 	},
+	mounted() {
+		const self = this;
+		EventBus.$on('removeTag', (tagId) => {
+			self.removeTag(tagId);
+		});
+	},
 	methods: {
+		removeTag(tagId) {
+			this.$store.dispatch('removeConversationTag', tagId);
+		},
 		appendMessage(message) {
 			this.data.events.unshift(message);
 		},

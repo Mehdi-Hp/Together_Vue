@@ -78,6 +78,14 @@ export default {
 						reject(error.response);
 					});
 			});
+		},
+		removeConversationTag({ state, commit }, tagId) {
+			const tagIndexToRemove = state.data.tags.findIndex((tag) => {
+				return tag.id === tagId;
+			});
+			setTimeout(function() {
+				state.data.tags.splice(tagIndexToRemove, 1);
+			}, 2000);
 		}
 	}
 };
