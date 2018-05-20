@@ -32,17 +32,26 @@
 				}"
 			/>
 		</button>
+		<load-spinner
+			class="m-tag__spinner"
+			:class="{
+				'm-tag__spinner--is-visible': isRemoving
+			}"
+			:animate="isRemoving"
+		/>
 	</li>
 </template>
 
 <script>
 import EventBus from '../EventBus';
 import IconClose from './icons/Close.vue';
+import LoadSpinner from './icons/MaterialLoadSpinner.vue';
 
 export default {
 	name: 'Tag',
 	components: {
-		IconClose
+		IconClose,
+		LoadSpinner
 	},
 	props: ['data'],
 	data() {
@@ -77,9 +86,10 @@ $tag-height: 1.8rem;
 	height: $tag-height;
 	max-width: 100vw;
 	perspective: 10em;
+	will-change: max-width;
 	transition-duration: 0.15s;
-	transition-timing-function: ease-in-out;
-	transition-property: background-color, color, padding, max-width;
+	transition-timing-function: cubic-bezier(0.01, 0.93, 0.58, 1);
+	transition-property: background-color, color, padding, max-width, opacity;
 
 	&--is-hovered {
 		background-color: $red;
@@ -87,10 +97,12 @@ $tag-height: 1.8rem;
 	}
 
 	&--is-removing {
+		transition-delay: 0.2s;
 		padding: 0.25em;
 		max-width: $tag-height;
 		overflow: hidden;
-		transition-delay: 0.2s;
+		background-color: tint($red, 10%);
+		color: $white;
 	}
 
 	&__text {
@@ -99,12 +111,11 @@ $tag-height: 1.8rem;
 		position: relative;
 		opacity: 1;
 		transition-duration: 0.15s;
-		transition-timing-function: ease-in-out;
-		transform-origin: right;
+		transition-timing-function: ease-out;
 		transition-property: transform, opacity;
 
 		&--is-removing {
-			transform: rotateY(-65deg);
+			transform: scale(0.5);
 			opacity: 0;
 		}
 	}
@@ -121,7 +132,7 @@ $tag-height: 1.8rem;
 		position: relative;
 		top: 0.03em;
 		transition-duration: 0.15s;
-		transition-timing-function: ease-in-out;
+		transition-timing-function: ease-out;
 		transition-property: background-color, color;
 
 		&--is-hovered {
@@ -142,6 +153,23 @@ $tag-height: 1.8rem;
 		}
 
 		&--is-removing {
+		}
+	}
+
+	&__spinner {
+		position: absolute 0 0 0 0;
+		margin: auto;
+		color: white;
+		opacity: 0;
+		transform: scale(0.6);
+		transition-duration: 0.15s;
+		transition-timing-function: ease-out;
+		transition-property: opacity, transform;
+		transition-delay: 0.15s;
+
+		&--is-visible {
+			opacity: 1;
+			transform: scale(1);
 		}
 	}
 }

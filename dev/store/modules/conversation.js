@@ -85,7 +85,7 @@ export default {
 			});
 			setTimeout(function() {
 				state.data.tags.splice(tagIndexToRemove, 1);
-			}, 2000);
+			}, 20000);
 		}
 	}
 };
