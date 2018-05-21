@@ -53,7 +53,7 @@ export default {
 		Field,
 		VButton
 	},
-	props: [],
+	props: ['currentRoute'],
 	data() {
 		return {
 			username: '',
@@ -71,6 +71,9 @@ export default {
 				.then(({ data: { token } }) => {
 					this.$ls.set('token', `Bearer ${token}`);
 					this.axios.defaults.headers.common.Authorization = this.$ls.get('token');
+					if (this.currentRoute) {
+						this.$router.push(this.currentRoute);
+					}
 				})
 				.catch((error) => {
 					console.error(error);

@@ -43,7 +43,9 @@ export default [
 	},
 	{
 		path: '/login',
-		component: Login
+		component: Login,
+		name: 'login',
+		props: true
 	},
 	{
 		path: '*'

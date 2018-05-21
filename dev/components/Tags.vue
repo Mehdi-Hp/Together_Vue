@@ -11,28 +11,36 @@
 				:data="tag"
 			>
 			</tag>
-			<button
+			<dropdown
 				class="o-tags__new"
+				:state="dropdownState"
+				@toggleState="(newState) => { dropdownState = newState }"
 			>
-				<icon-plus class="o-tags__new-icon" />
-			</button>
+				<template slot="icon">
+					<icon-plus class="o-tags__new-icon" />
+				</template>
+			</dropdown>
 		</ul>
 	</div>
 </template>
 
 <script>
 import Tag from './Tag.vue';
+import Dropdown from './Dropdown.vue';
 import IconPlus from './icons/Plus.vue';
 
 export default {
 	name: 'Tags',
 	components: {
 		Tag,
+		Dropdown,
 		IconPlus
 	},
 	props: ['tags'],
 	data() {
-		return {};
+		return {
+			dropdownState: false
+		};
 	}
 };
 </script>
@@ -67,18 +75,16 @@ export default {
 		justify-content: center;
 		align-items: center;
 		background-color: $main-color;
-		color: white;
 		border-radius: 50%;
 		width: 1.8rem;
 		height: 1.8rem;
-		padding: 0.6em;
+		padding: 0.9em;
 
 		&:hocus {
 			background-color: shade($main-color, 10%);
 		}
 
 		&:active {
-			transform: scale(0.98);
 		}
 	}
 

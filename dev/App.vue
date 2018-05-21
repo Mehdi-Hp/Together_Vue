@@ -23,6 +23,29 @@ export default {
 	},
 	mounted() {
 		this.axios.defaults.headers.common.Authorization = this.$ls.get('token');
+
+		this.axios.interceptors.response.use(
+			(response) => {
+				return response;
+			},
+			({ response }) => {
+				if (response.status === 401) {
+					console.log('Unauthorized!');
+					this.$ls.remove('token');
+					const {
+						currentRoute: { fullPath }
+					} = this.$router;
+					this.$router.push({
+						name: 'login',
+						params: {
+							currentRoute: fullPath
+						}
+					});
+				} else {
+					console.log('Authorized!');
+				}
+			}
+		);
 	}
 };
 </script>

@@ -49,7 +49,7 @@
 			:events="data.events"
 			@addMessage="appendMessage"
 			@messageSettled="makeMessageSettled"
-			@esageFaild="removeUnsettledMessaeg"
+			@mesageFaild="removeUnsettledMessaeg"
 		></messages>
 	</section>
 </template>
