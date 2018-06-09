@@ -133,7 +133,7 @@ export default {
 	padding: 0;
 
 	&__summary {
-		padding: $gutter $gutter--fat;
+		padding: $gutter $gutter--fat $gutter 0;
 		padding-bottom: 0;
 		margin: auto;
 		margin-bottom: $gutter--fat;

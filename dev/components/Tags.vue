@@ -157,7 +157,7 @@ export default {
 	&__new-items {
 		display: flex;
 		flex-direction: column;
-		font-size: ms(-2);
+		font-size: ms(-1);
 		color: $black-3;
 		background-color: white;
 		padding: 1rem 0;

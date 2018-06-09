@@ -1,13 +1,16 @@
 <template>
 	<header class="o-header">
 		<div class="o-header__content">
-			<div class="o-header__logo">
+			<a
+				class="o-header__logo"
+				href="/"
+			>
 				<img
 					class="o-header__logo-image"
 					src="../assets/images/logo.png"
 					alt="together app logo"
 				/>
-			</div>
+			</a>
 		</div>
 	</header>
 </template>
@@ -33,7 +36,7 @@ export default {
 		position: absolute 0 0 0 0;
 		background: url('../assets/images/top_circles.png');
 		background-repeat: no-repeat;
-		background-size: 46vw;
+		background-size: 44%;
 		background-position: 40% 0;
 		opacity: 0.8;
 		pointer-events: none;
@@ -51,7 +54,7 @@ export default {
 	}
 
 	&__logo {
-		height: 60px;
+		height: 61px;
 		z-index: g-index('land');
 		margin-left: -3vw;
 	}
