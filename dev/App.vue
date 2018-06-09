@@ -46,6 +46,9 @@ export default {
 				}
 			}
 		);
+
+		this.$store.dispatch('getAllTypes');
+		this.$store.dispatch('getAllAssignees');
 	}
 };
 </script>

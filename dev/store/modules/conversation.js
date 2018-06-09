@@ -8,6 +8,18 @@ export default {
 	mutations: {
 		addConversation(state, payload) {
 			state.data = payload;
+		},
+		removeConversationTag(state, tagId) {
+			const tagIndexToUnselect = state.data.tags.findIndex((tag) => {
+				return tag.id === tagId;
+			});
+			state.data.tags[tagIndexToUnselect].isSelected = false;
+		},
+		addConversationTag(state, tagId) {
+			const tagIndexToSelect = state.data.tags.findIndex((tag) => {
+				return tag.id === tagId;
+			});
+			state.data.tags[tagIndexToSelect].isSelected = true;
 		}
 	},
 	actions: {
@@ -79,13 +91,41 @@ export default {
 					});
 			});
 		},
-		removeConversationTag({ state, commit }, tagId) {
-			const tagIndexToRemove = state.data.tags.findIndex((tag) => {
-				return tag.id === tagId;
+		addConversationTag({ state, commit }, { tagId, conversationId }) {
+			return new Promise((resolve, reject) => {
+				Vue.$axios
+					.patch(`conversation/${conversationId}`, {
+						op: 'add',
+						path: 'tags',
+						value: tagId
+					})
+					.then((response) => {
+						console.log(response);
+						commit('addConversationTag', tagId);
+						resolve(conversationId);
+					})
+					.catch(({ response }) => {
+						console.error(response);
+					});
 			});
-			setTimeout(function() {
-				state.data.tags.splice(tagIndexToRemove, 1);
-			}, 20000);
+		},
+		removeConversationTag({ state, commit }, { tagId, conversationId }) {
+			return new Promise((resolve, reject) => {
+				Vue.$axios
+					.patch(`conversation/${conversationId}`, {
+						op: 'remove',
+						path: 'tags',
+						value: tagId
+					})
+					.then((response) => {
+						console.log(response);
+						commit('removeConversationTag', tagId);
+						resolve(conversationId);
+					})
+					.catch(({ response }) => {
+						console.error(response);
+					});
+			});
 		}
 	}
 };

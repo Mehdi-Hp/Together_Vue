@@ -3,11 +3,11 @@
 		class="m-tag"
 		:class="{
 			'm-tag--is-hovered': isHovered,
-			'm-tag--is-removing': isRemoving
+			'm-tag--is-removing': isRemoving,
+			'm-tag--is-visible': data.isSelected
 		}"
 		@mouseover="isHovered = true"
 		@mouseleave="isHovered = false"
-		@click="remove"
 	>
 		<span
 			class="m-tag__text"
@@ -23,6 +23,7 @@
 				'm-tag__remove--is-hovered': isHovered,
 				'm-tag__remove--is-removing': isRemoving
 			}"
+			@click="remove"
 		>
 			<icon-close
 				class="m-tag__remove-icon"
@@ -79,17 +80,24 @@ $tag-height: 1.8rem;
 	background-color: $white-3;
 	border-radius: 10em;
 	color: $black-4;
-	padding: 0 1.5em;
-	padding-left: 0.25em;
 	font-size: ms(-1);
 	cursor: pointer;
 	height: $tag-height;
-	max-width: 100vw;
 	perspective: 10em;
 	will-change: max-width;
-	transition-duration: 0.15s;
-	transition-timing-function: cubic-bezier(0.01, 0.93, 0.58, 1);
-	transition-property: background-color, color, padding, max-width, opacity;
+	max-width: 0;
+	opacity: 0;
+	pointer-events: none;
+
+	&--is-visible {
+		max-width: 100vw;
+		padding: 0 1.5em;
+		padding-left: 0.25em;
+		opacity: 1;
+		pointer-events: all;
+		transition-duration: 0.15s;
+		transition-property: background-color, color, padding, max-width, opacity, margin;
+	}
 
 	&--is-hovered {
 		background-color: $red;
@@ -98,6 +106,7 @@ $tag-height: 1.8rem;
 
 	&--is-removing {
 		transition-delay: 0.2s;
+		transition-timing-function: cubic-bezier(0.01, 0.93, 0.58, 1);
 		padding: 0.25em;
 		max-width: $tag-height;
 		overflow: hidden;
@@ -128,7 +137,7 @@ $tag-height: 1.8rem;
 		display: flex;
 		align-items: center;
 		border-radius: 50%;
-		color: $black-4;
+		color: $black-5;
 		position: relative;
 		top: 0.03em;
 		transition-duration: 0.15s;

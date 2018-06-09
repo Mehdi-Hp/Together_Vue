@@ -1,11 +1,17 @@
 <template>
-	<div class="o-tags">
+	<div
+		class="o-tags"
+		v-if="tags"
+	>
 		<span class="o-tags__title">
 			برچسب‌ها:
 		</span>
 		<ul class="o-tags__items">
 			<tag
 				class="o-tags__item"
+				:class="{
+					'o-tags__item--is-visible': tag.isSelected
+				}"
 				v-for="tag in tags"
 				:key="tag.id"
 				:data="tag"
@@ -13,11 +19,35 @@
 			</tag>
 			<dropdown
 				class="o-tags__new"
+				:class="{
+					'o-tags__new--is-disabled': allSelected
+				}"
 				:state="dropdownState"
+				:disabled="allSelected"
 				@toggleState="(newState) => { dropdownState = newState }"
 			>
 				<template slot="icon">
-					<icon-plus class="o-tags__new-icon" />
+					<icon-plus
+						class="o-tags__new-icon"
+						:class="{
+							'o-tags__new-icon--is-disabled': allSelected
+						}"
+					/>
+				</template>
+				<template slot="content">
+					<ul class="o-tags__new-items">
+						<li
+							class="o-tags__new-item"
+							:class="{
+								'o-tags__new-item--is-visible': !tag.isSelected
+							}"
+							v-for="tag in tags"
+							:key="tag.id"
+							@click="addTag(tag.id)"
+						>
+							{{ tag.title }}
+						</li>
+					</ul>
 				</template>
 			</dropdown>
 		</ul>
@@ -25,6 +55,7 @@
 </template>
 
 <script>
+import EventBus from '../EventBus';
 import Tag from './Tag.vue';
 import Dropdown from './Dropdown.vue';
 import IconPlus from './icons/Plus.vue';
@@ -41,6 +72,21 @@ export default {
 		return {
 			dropdownState: false
 		};
+	},
+	computed: {
+		allSelected() {
+			return this.tags.every((tag) => {
+				return tag.isSelected;
+			});
+		}
+	},
+	methods: {
+		addTag(tagId) {
+			this.$nextTick(() => {
+				this.dropdownState = false;
+			});
+			EventBus.$emit('addTag', tagId);
+		}
 	}
 };
 </script>
@@ -62,11 +108,15 @@ export default {
 	}
 
 	&__item {
-		margin-left: 1em;
-		margin-bottom: 1em;
+		margin: 0;
 
 		&:last-of-type {
 			margin-bottom: 0;
+		}
+
+		&--is-visible {
+			margin-left: 1em;
+			margin-bottom: 1em;
 		}
 	}
 
@@ -84,7 +134,13 @@ export default {
 			background-color: shade($main-color, 10%);
 		}
 
-		&:active {
+		&--is-disabled {
+			background-color: $white-3;
+			pointer-events: none;
+
+			&:hocus {
+				background-color: $white-3;
+			}
 		}
 	}
 
@@ -92,6 +148,53 @@ export default {
 		size: 100%;
 		stroke-width: 0.5em;
 		color: white;
+
+		&--is-disabled {
+			color: $white-5;
+		}
+	}
+
+	&__new-items {
+		display: flex;
+		flex-direction: column;
+		font-size: ms(-2);
+		color: $black-3;
+		background-color: white;
+		padding: 1rem 0;
+	}
+
+	&__new-item {
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+		max-height: 0;
+		max-width: 0;
+		opacity: 0;
+		margin-bottom: 0;
+		padding: 0;
+		transition-duration: 0.1s;
+		transition-property: max-width, max-height, padding, margin;
+
+		&:hocus {
+			background-color: $white-1;
+			will-change: max-width, max-height, padding, margin;
+		}
+
+		&:active {
+			background-color: $white-3;
+		}
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+
+		&--is-visible {
+			margin-bottom: 0.25em;
+			padding: 0.5rem 1rem 0.5rem 1.5rem;
+			max-height: 100vh;
+			max-width: 100vw;
+			opacity: 1;
+		}
 	}
 }
 </style>

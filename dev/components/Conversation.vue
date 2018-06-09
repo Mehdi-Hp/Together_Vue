@@ -86,10 +86,28 @@ export default {
 		EventBus.$on('removeTag', (tagId) => {
 			self.removeTag(tagId);
 		});
+		EventBus.$on('addTag', (tagId) => {
+			self.addTag(tagId);
+		});
 	},
 	methods: {
+		addTag(tagId) {
+			this.$store
+				.dispatch('addConversationTag', {
+					tagId,
+					conversationId: this.data.id
+				})
+				.then(() => {})
+				.catch(() => {});
+		},
 		removeTag(tagId) {
-			this.$store.dispatch('removeConversationTag', tagId);
+			this.$store
+				.dispatch('removeConversationTag', {
+					tagId,
+					conversationId: this.data.id
+				})
+				.then(() => {})
+				.catch(() => {});
 		},
 		appendMessage(message) {
 			this.data.events.unshift(message);
