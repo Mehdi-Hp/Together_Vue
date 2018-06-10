@@ -129,7 +129,7 @@ module.exports = smp.wrap({
 	devServer: {
 		contentBase: path.resolve(__dirname, 'build'),
 		publicPath: '/',
-		noInfo: true,
+		noInfo: false,
 		compress: false,
 		historyApiFallback: true,
 		disableHostCheck: true,
@@ -146,7 +146,6 @@ module.exports = smp.wrap({
 			errors: true
 		},
 		open: false,
-		stats: 'minimal',
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
