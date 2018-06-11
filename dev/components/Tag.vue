@@ -3,7 +3,7 @@
 		class="m-tag"
 		:class="{
 			'm-tag--is-hovered': isHovered,
-			'm-tag--is-removing': isRemoving,
+			'm-tag--is-removing': data.isRemoving,
 			'm-tag--is-visible': data.isSelected
 		}"
 		@mouseover="isHovered = true"
@@ -12,7 +12,7 @@
 		<span
 			class="m-tag__text"
 			:class="{
-				'm-tag__text--is-removing': isRemoving
+				'm-tag__text--is-removing': data.isRemoving
 			}"
 		>
 			{{ data.title }}
@@ -21,7 +21,7 @@
 			class="m-tag__remove"
 			:class="{
 				'm-tag__remove--is-hovered': isHovered,
-				'm-tag__remove--is-removing': isRemoving
+				'm-tag__remove--is-removing': data.isRemoving
 			}"
 			@click="remove"
 		>
@@ -29,16 +29,16 @@
 				class="m-tag__remove-icon"
 				:class="{
 					'm-tag__remove-icon--is-hovered': isHovered,
-					'm-tag__remove-icon--is-removing': isRemoving
+					'm-tag__remove-icon--is-removing': data.isRemoving
 				}"
 			/>
 		</button>
 		<load-spinner
 			class="m-tag__spinner"
 			:class="{
-				'm-tag__spinner--is-visible': isRemoving
+				'm-tag__spinner--is-visible': data.isRemoving
 			}"
-			:animate="isRemoving"
+			:animate="data.isRemoving"
 		/>
 	</li>
 </template>
@@ -57,13 +57,11 @@ export default {
 	props: ['data'],
 	data() {
 		return {
-			isHovered: false,
-			isRemoving: false
+			isHovered: false
 		};
 	},
 	methods: {
 		remove() {
-			this.isRemoving = true;
 			EventBus.$emit('removeTag', this.data.id);
 		}
 	}

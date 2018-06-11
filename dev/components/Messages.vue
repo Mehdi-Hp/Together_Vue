@@ -86,7 +86,7 @@ export default {
 					}, 2000);
 				})
 				.catch((error) => {
-					this.$emit('messageFaild');
+					this.$emit('messageFailed');
 				});
 		}
 	}

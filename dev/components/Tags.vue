@@ -174,6 +174,7 @@ export default {
 		padding: 0;
 		transition-duration: 0.1s;
 		transition-property: max-width, max-height, padding, margin;
+		pointer-events: none;
 
 		&:hocus {
 			background-color: $white-1;
@@ -189,11 +190,11 @@ export default {
 		}
 
 		&--is-visible {
-			margin-bottom: 0.25em;
 			padding: 0.5rem 1rem 0.5rem 1.5rem;
 			max-height: 100vh;
 			max-width: 100vw;
 			opacity: 1;
+			pointer-events: all;
 		}
 	}
 }

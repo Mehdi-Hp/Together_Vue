@@ -1,6 +1,9 @@
 <template>
 	<section class="l-conversation">
-		<aside class="l-conversation__summary">
+		<aside
+			class="l-conversation__summary"
+			v-if="!notFound"
+		>
 			<div class="l-conversation__state-management">
 				<span class="l-conversation__current-state">{{ data.state }}</span>
 				<button
@@ -45,12 +48,14 @@
 			</div>
 		</aside>
 		<messages
+			v-if="Object.keys(data).length"
 			class="l-conversation__messages"
 			:events="data.events"
 			@addMessage="appendMessage"
 			@messageSettled="makeMessageSettled"
-			@mesageFaild="removeUnsettledMessaeg"
-		></messages>
+			@mesageFailed="removeUnsettledMessaeg"
+		>
+		</messages>
 	</section>
 </template>
 
@@ -63,12 +68,14 @@ export default {
 	name: 'Conversation',
 	components: {
 		Messages,
-		Tags
+		Tags,
+		Error
 	},
 	props: [],
 	data() {
 		return {
-			data: {}
+			data: {},
+			notFound: false
 		};
 	},
 	created() {
@@ -79,35 +86,33 @@ export default {
 			})
 			.catch((error) => {
 				console.error(error);
+				EventBus.$emit('error', {
+					status: error.status,
+					message: error.status === 404 ? 'گفت‌وگوی مورد نظر شما پیدا نشد.' : error.statusText
+				});
 			});
 	},
 	mounted() {
 		const self = this;
-		EventBus.$on('removeTag', (tagId) => {
-			self.removeTag(tagId);
-		});
 		EventBus.$on('addTag', (tagId) => {
 			self.addTag(tagId);
+		});
+		EventBus.$on('removeTag', (tagId) => {
+			self.removeTag(tagId);
 		});
 	},
 	methods: {
 		addTag(tagId) {
-			this.$store
-				.dispatch('addConversationTag', {
-					tagId,
-					conversationId: this.data.id
-				})
-				.then(() => {})
-				.catch(() => {});
+			this.$store.dispatch('addConversationTag', {
+				tagId,
+				conversationId: this.data.id
+			});
 		},
 		removeTag(tagId) {
-			this.$store
-				.dispatch('removeConversationTag', {
-					tagId,
-					conversationId: this.data.id
-				})
-				.then(() => {})
-				.catch(() => {});
+			this.$store.dispatch('removeConversationTag', {
+				tagId,
+				conversationId: this.data.id
+			});
 		},
 		appendMessage(message) {
 			this.data.events.unshift(message);
@@ -143,7 +148,7 @@ export default {
 	&__state-management {
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: $gutter--thin;
+		margin-bottom: $gutter--fat;
 		font-size: ms(-1);
 	}
 
@@ -155,7 +160,6 @@ export default {
 		padding: 0.5em;
 		font-weight: 500;
 		color: $black-4;
-		margin-bottom: $gutter;
 	}
 
 	&__message-card {

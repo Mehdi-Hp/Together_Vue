@@ -56,7 +56,8 @@ export default {
 	&__logo {
 		height: 61px;
 		z-index: g-index('land');
-		margin-left: -3vw;
+		margin-left: -4vw;
+		margin-bottom: 0.5rem;
 	}
 
 	&__logo-image {

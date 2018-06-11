@@ -1,13 +1,26 @@
 <template>
 	<main class="p-app">
 		<v-header class="p-app__header"></v-header>
-		<router-view class="p-app__content"></router-view>
+		<router-view
+			v-if="!error.hasError"
+			class="p-app__content"
+		>
+		</router-view>
+		<error
+			class="p-app__error"
+			v-if="error.hasError"
+			:status="error.status"
+			:message="error.message"
+		>
+		</error>
 		<v-footer class="p-app__footer">
 		</v-footer>
 	</main>
 </template>
 
 <script>
+import EventBus from './EventBus';
+import Error from './components/Error.vue';
 import './assets/notcss/00_base/base.scss';
 import VHeader from './components/Header.vue';
 import VFooter from './components/Footer.vue';
@@ -16,10 +29,18 @@ export default {
 	name: 'App',
 	components: {
 		VHeader,
-		VFooter
+		VFooter,
+		Error
 	},
 	data() {
-		return {};
+		return {
+			error: {
+				hasError: true
+			}
+		};
+	},
+	created() {
+		this.error.hasError = false;
 	},
 	mounted() {
 		this.axios.defaults.headers.common.Authorization = this.$ls.get('token');
@@ -41,11 +62,21 @@ export default {
 							currentRoute: fullPath
 						}
 					});
-				} else {
-					console.log('Authorized!');
+				} else if (response.status === 404) {
+					console.log('404 Not found!');
 				}
+				return Promise.reject(response);
 			}
 		);
+
+		EventBus.$on('error', ({ status, message }) => {
+			console.log(status);
+			this.error = {
+				hasError: true,
+				status,
+				message
+			};
+		});
 
 		this.$store.dispatch('getAllTypes');
 		this.$store.dispatch('getAllAssignees');
@@ -67,11 +98,15 @@ export default {
 	&__content {
 		display: flex;
 		flex-direction: column;
-		min-height: calc(100vh - 400px);
+		min-height: calc(100vh - 460px);
 		width: 100%;
 		max-width: $general-width;
 		padding: $gutter--fat;
-		color: $text-black;
+		color: $black-4;
+	}
+
+	&__error {
+		@extend .p-app__content;
 	}
 
 	&__footer {

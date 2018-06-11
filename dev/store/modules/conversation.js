@@ -9,17 +9,17 @@ export default {
 		addConversation(state, payload) {
 			state.data = payload;
 		},
-		removeConversationTag(state, tagId) {
-			const tagIndexToUnselect = state.data.tags.findIndex((tag) => {
-				return tag.id === tagId;
-			});
-			state.data.tags[tagIndexToUnselect].isSelected = false;
-		},
 		addConversationTag(state, tagId) {
 			const tagIndexToSelect = state.data.tags.findIndex((tag) => {
 				return tag.id === tagId;
 			});
 			state.data.tags[tagIndexToSelect].isSelected = true;
+		},
+		removeConversationTag(state, tagId) {
+			const tagIndexToUnselect = state.data.tags.findIndex((tag) => {
+				return tag.id === tagId;
+			});
+			state.data.tags[tagIndexToUnselect].isSelected = false;
 		}
 	},
 	actions: {
@@ -44,6 +44,7 @@ export default {
 					})
 					.catch(({ response }) => {
 						console.error(response);
+						reject(response);
 					});
 			});
 		},
@@ -63,12 +64,14 @@ export default {
 							tags,
 							events
 						};
+						newConversation.tags.forEach((tag) => {
+							tag.isRemoving = false;
+						});
 						commit('addConversation', newConversation);
-
 						resolve(newConversation);
 					})
-					.catch((error) => {
-						reject(error);
+					.catch((response) => {
+						reject(response);
 					});
 			});
 		},
@@ -96,7 +99,7 @@ export default {
 				Vue.$axios
 					.patch(`conversation/${conversationId}`, {
 						op: 'add',
-						path: 'tags',
+						path: 'tag',
 						value: tagId
 					})
 					.then((response) => {
@@ -111,16 +114,23 @@ export default {
 		},
 		removeConversationTag({ state, commit }, { tagId, conversationId }) {
 			return new Promise((resolve, reject) => {
+				const tagIndexToUnselect = state.data.tags.findIndex((tag) => {
+					return tag.id === tagId;
+				});
+				state.data.tags[tagIndexToUnselect].isRemoving = true;
 				Vue.$axios
 					.patch(`conversation/${conversationId}`, {
 						op: 'remove',
-						path: 'tags',
+						path: 'tag',
 						value: tagId
 					})
 					.then((response) => {
 						console.log(response);
-						commit('removeConversationTag', tagId);
-						resolve(conversationId);
+						setTimeout(() => {
+							commit('removeConversationTag', tagId);
+							state.data.tags[tagIndexToUnselect].isRemoving = false;
+							resolve(conversationId);
+						}, 1000);
 					})
 					.catch(({ response }) => {
 						console.error(response);

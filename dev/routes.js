@@ -16,6 +16,9 @@ const Search = () => {
 const Login = () => {
 	return import('./components/Login.vue');
 };
+const Error = () => {
+	return import('./components/Error.vue');
+};
 
 export default [
 	{
@@ -48,6 +51,8 @@ export default [
 		props: true
 	},
 	{
-		path: '*'
+		path: '*',
+		component: Error,
+		name: 'error'
 	}
 ];
