@@ -90,7 +90,7 @@ module.exports = smp.wrap({
 				use: {
 					loader: 'babel-loader',
 					options: {
-						plugins: ['@babel/plugin-syntax-object-rest-spread', 'lodash'],
+						plugins: ['lodash'],
 						presets: [
 							[
 								'@babel/preset-env',
