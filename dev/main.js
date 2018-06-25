@@ -9,6 +9,7 @@ import VueLocalStorage from 'vue-ls';
 import App from './App.vue';
 import Routes from './routes';
 import store from './store/index';
+import EventBus from './EventBus';
 
 import Keynote from './components/Keynote.vue';
 
@@ -18,6 +19,8 @@ Vue.$axios.defaults.baseURL = '/api';
 
 Vue.use(SimpleVueValidation);
 Vue.prototype.$validator = SimpleVueValidation.Validator;
+
+Vue.prototype.$bus = EventBus;
 
 Vue.use(VueLocalStorage);
 

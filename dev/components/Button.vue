@@ -2,7 +2,8 @@
 	<button
 		class="a-button"
 		:class="{
-			'a-button--normal': mode === 'normal'
+			'a-button--normal': mode === 'normal',
+			'a-button--error': mode === 'error'
 		}"
 		@click="$emit('click')"
 	>
@@ -30,6 +31,9 @@ export default {
 	transition-property: box-shadow, transform;
 	transition-duration: 0.15s;
 	transition-timing-function: ease-in-out;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	&:hocus {
 		box-shadow: 0px 6px 40px 3px rgba(0, 0, 0, 0.2);
@@ -45,6 +49,15 @@ export default {
 
 		&:hocus {
 			background: linear-gradient(to top, shade($green, 10%) 0%, shade($green-light, 10%) 100%);
+		}
+	}
+
+	&--error {
+		background: linear-gradient(to top, $red 0%, tint($red, 30%) 100%);
+		color: white;
+
+		&:hocus {
+			background: linear-gradient(to top, shade($red, 10%) 0%, shade(tint($red, 30%), 10%) 100%);
 		}
 	}
 }

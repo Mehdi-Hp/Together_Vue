@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import EventBus from '../EventBus';
 import Tag from './Tag.vue';
 import Dropdown from './Dropdown.vue';
 import IconPlus from './icons/Plus.vue';
@@ -85,7 +84,7 @@ export default {
 			this.$nextTick(() => {
 				this.dropdownState = false;
 			});
-			EventBus.$emit('addTag', tagId);
+			this.$bus.$emit('addTag', tagId);
 		}
 	}
 };

@@ -2,106 +2,37 @@
 	<section class="l-new-conversation">
 		<keynote class="l-new-conversation__keynote">
 			<template slot="title">
-				New Conversation
+				گفت‌وگوی جدید
 			</template>
 			<template slot="desc">
-
+				از اینجا می‌توانید گفت‌وگوی جدیدی را شروع کنید. این مکالمه کاملا رمزنگاری خواهد شد و فقط مدیر و فردی که لینک تولید شده را دارد به محتوای آن دسترسی دارد.
 			</template>
 		</keynote>
 
-		<div class="l-new-conversation__content">
-			<form
-				class="l-new-conversation__form | o-form"
-				@submit.prevent
+		<form
+			class="l-new-conversation__content"
+			@submit.prevent
+		>
+			<messages
+				class="l-new-conversation__messages"
+				field-only="true"
 			>
-				<div class="o-form__row">
-					<div class="o-form__column">
-						<textfield
-							text="Title"
-							type="text"
-							name="title"
-							class="o-form__textfield"
-							@inputChange="(value) => title = value"
-							@inputKeyup="$validate('title')"
-							:error="validation.firstError('title')"
-						/>
-					</div>
-					<div class="o-form__column | o-form__column--small">
-
-					</div>
-				</div>
-				<div class="o-form__row">
-					<div class="o-form__column">
-						<textfield
-							text="Description"
-							type="text"
-							name="description"
-							class="o-form__textfield"
-							@inputChange="(value) => description = value"
-							@inputKeyup="$validate('description')"
-							:error="validation.firstError('description')"
-						/>
-					</div>
-				</div>
-				<div class="o-form__row">
-					<div class="o-form__column | o-form__column--medium">
-						<div class="o-form__select | a-select">
-							<select
-								class="a-select__itself"
-								v-model="typeId"
-							>
-								<option
-									:value="type.id"
-									v-for="type in types"
-									:key="type.id"
-								>
-									{{ type.title }}
-								</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="o-form__row">
-					<div class="o-form__column | o-form__column--medium">
-						<div class="o-form__select | a-select">
-							<select
-								class="a-select__itself"
-								v-model="assigneeId"
-							>
-								<option
-									:value="assignee.id"
-									v-for="assignee in assignees"
-									:key="assignee.id"
-								>
-									{{ assignee.title }}
-								</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="o-form__submit-holder">
-					<button
-						class="o-form__submit-button | a-button"
-						@click="createConversation"
-						@keydown.enter.prevent="createConversation"
-					>
-						Send Anonymously
-					</button>
-				</div>
-			</form>
-		</div>
+			</messages>
+		</form>
 	</section>
 </template>
 
 <script>
 import Keynote from './Keynote.vue';
 import Textfield from './Textfield.vue';
+import Messages from './Messages.vue';
 
 export default {
 	name: 'NewAdvice',
 	components: {
 		Keynote,
-		Textfield
+		Textfield,
+		Messages
 	},
 	data() {
 		return {
@@ -183,12 +114,15 @@ export default {
 	flex-direction: column;
 
 	&__keynote {
+		margin-bottom: $gutter--fater;
 	}
 
 	&__content {
-		width: 100%;
-		display: flex;
-		margin-top: $gutter--fat;
+	}
+
+	&__messages {
+		overflow: visible;
+		margin-bottom: $gutter--fater;
 	}
 
 	&__form {

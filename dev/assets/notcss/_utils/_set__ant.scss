@@ -1,8 +1,14 @@
 $minor-third: 1.2;
-$gutter: 2rem;
+$gutter: 30px;
 $gutter--thin: $gutter / 2;
 $gutter--fat: $gutter * 2;
 $gutter--fater: $gutter * 4;
 
-$general-width: 46rem; /* 690/15 */
-@ant-gutters #{$minor-third * 2}rem;
+$general-width: 800px;
+$ant-columns-count: 12;
+$ant-gutter: 15px;
+
+$ant-column: (($general-width - ($ant-gutter * ($ant-columns-count - 1))) / $ant-columns-count);
+
+$inner-width: ($ant-column * 10) + ($ant-gutter * 9);
+@ant-gutters 15px;

@@ -28,7 +28,7 @@ export default {
 <style scoped lang="scss">
 .o-header {
 	width: 100%;
-	height: 230px;
+	height: 15rem;
 	background: $white-1;
 
 	&:before {
@@ -54,9 +54,9 @@ export default {
 	}
 
 	&__logo {
-		height: 61px;
+		height: 60px;
 		z-index: g-index('land');
-		margin-left: -4vw;
+		margin-left: -1vw;
 		margin-bottom: 0.5rem;
 	}
 

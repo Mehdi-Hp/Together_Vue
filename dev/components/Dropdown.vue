@@ -63,10 +63,10 @@ export default {
 	mounted() {
 		this.setElements();
 		this.elements.dropdownItems.removeAttribute('style');
-		console.table(this.elements);
+		// console.table(this.elements);
 		this.setStyles();
-		console.table(this.styles.initial);
-		console.table(this.styles.wanted);
+		// console.table(this.styles.initial);
+		// console.table(this.styles.wanted);
 		this.resetStyle();
 	},
 	methods: {

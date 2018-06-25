@@ -67,12 +67,25 @@ export default {
 				password: this.password
 			});
 			this.axios
-				.get('/signin')
-				.then(({ data: { token } }) => {
+				.get('/signin', {
+					params: {
+						email: this.username,
+						password: this.password
+					}
+				})
+				.then(({ data: { token, employeeId, fullName, role } }) => {
+					console.table({ token, employeeId, fullName, role });
 					this.$ls.set('token', `Bearer ${token}`);
+					this.$store.commit('setUser', {
+						employeeId,
+						name: fullName,
+						role
+					});
 					this.axios.defaults.headers.common.Authorization = this.$ls.get('token');
 					if (this.currentRoute) {
 						this.$router.push(this.currentRoute);
+					} else {
+						this.$router.push('/');
 					}
 				})
 				.catch((error) => {
@@ -92,6 +105,7 @@ export default {
 
 	&__field {
 		margin-bottom: $gutter / 2;
+		width: 300px;
 	}
 
 	&__submit {

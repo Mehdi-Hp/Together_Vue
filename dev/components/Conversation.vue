@@ -13,38 +13,47 @@
 					Delete
 				</button>
 			</div>
-			<keynote class="l-conversation__keynote">
-				<template slot="title">
-					{{ data.title }}
-				</template>
-				<template slot="desc">
-					{{ data.events && data.events[0].text }}
-				</template>
-			</keynote>
-			<div class="l-conversation__seat">
-				<div class="l-conversation__information">
-					<div class="l-conversation__info">
-						<span class="l-conversation__info-title">
-							گروه :
-						</span>
-						<span class="l-conversation__info-value">
-							{{ data.type }}
-						</span>
-					</div>
-					<div class="l-conversation__info">
-						<span class="l-conversation__info-title">
-							بررسی توسط :
-						</span>
-						<span class="l-conversation__info-value">
-							{{ data.assignee }}
-						</span>
+			<div class="l-conversation__content-holder">
+				<div class="l-conversation__emoji-holder">
+					<div class="l-conversation__emoji">
+
 					</div>
 				</div>
-				<tags
-					class="l-conversation__tags"
-					:tags="data.tags"
-				>
-				</tags>
+				<div class="l-conversation__content">
+					<keynote class="l-conversation__keynote">
+						<template slot="title">
+							{{ data.title }}
+						</template>
+						<template slot="desc">
+							{{ data.events && data.events[data.events.length - 2].text }}
+						</template>
+					</keynote>
+					<div class="l-conversation__seat">
+						<div class="l-conversation__information">
+							<div class="l-conversation__info">
+								<span class="l-conversation__info-title">
+									گروه :
+								</span>
+								<span class="l-conversation__info-value">
+									{{ data.type }}
+								</span>
+							</div>
+							<div class="l-conversation__info">
+								<span class="l-conversation__info-title">
+									بررسی توسط :
+								</span>
+								<span class="l-conversation__info-value">
+									{{ data.assignee }}
+								</span>
+							</div>
+						</div>
+						<tags
+							class="l-conversation__tags"
+							:tags="data.tags"
+						>
+						</tags>
+					</div>
+				</div>
 			</div>
 		</aside>
 		<messages
@@ -53,14 +62,13 @@
 			:events="data.events"
 			@addMessage="appendMessage"
 			@messageSettled="makeMessageSettled"
-			@mesageFailed="removeUnsettledMessaeg"
+			@messageFailed="errorUnsettledMessage"
 		>
 		</messages>
 	</section>
 </template>
 
 <script>
-import EventBus from '../EventBus';
 import Messages from './Messages.vue';
 import Tags from './Tags.vue';
 
@@ -86,19 +94,18 @@ export default {
 			})
 			.catch((error) => {
 				console.error(error);
-				EventBus.$emit('error', {
+				this.$bus.$emit('error', {
 					status: error.status,
 					message: error.status === 404 ? 'گفت‌وگوی مورد نظر شما پیدا نشد.' : error.statusText
 				});
 			});
 	},
 	mounted() {
-		const self = this;
-		EventBus.$on('addTag', (tagId) => {
-			self.addTag(tagId);
+		this.$bus.$on('addTag', (tagId) => {
+			this.addTag(tagId);
 		});
-		EventBus.$on('removeTag', (tagId) => {
-			self.removeTag(tagId);
+		this.$bus.$on('removeTag', (tagId) => {
+			this.removeTag(tagId);
 		});
 	},
 	methods: {
@@ -123,10 +130,13 @@ export default {
 			});
 			messageToSettle.notSettledYet = false;
 		},
-		removeUnsettledMessaeg() {
-			this.data.events = this.data.events.filter((event) => {
-				return !event.notSettledYet;
+		errorUnsettledMessage(errorMessage) {
+			const messageToSettle = this.data.events.find((event) => {
+				return event.notSettledYet;
 			});
+			messageToSettle.notSettledYet = true;
+			this.$set(messageToSettle, 'error', errorMessage);
+			console.log(messageToSettle);
 		}
 	}
 };
@@ -134,15 +144,36 @@ export default {
 
 <style scoped lang="scss">
 .l-conversation {
-	max-width: 100%;
 	padding: 0;
+	max-width: 100%;
 
 	&__summary {
-		padding: $gutter $gutter--fat $gutter 0;
-		padding-bottom: 0;
-		margin: auto;
-		margin-bottom: $gutter--fat;
-		max-width: $general-width;
+		display: flex;
+		flex-direction: column;
+		margin: $gutter auto $gutter--fat auto;
+		width: $inner-width;
+	}
+
+	&__content-holder {
+		display: flex;
+	}
+
+	&__emoji-holder {
+		display: flex;
+		width: $ant-column;
+		margin-left: $ant-gutter;
+		align-self: flex-start;
+		flex-shrink: 0;
+	}
+
+	&__emoji {
+		size: ms(5);
+		border-radius: 50%;
+		background-color: $white-6;
+	}
+
+	&__content {
+		flex-grow: 1;
 	}
 
 	&__state-management {
@@ -192,9 +223,9 @@ export default {
 	}
 
 	&__messages {
-		background-color: mix(white, black, 95%);
+		background-color: $white-2;
 		flex-grow: 1;
-		padding-top: $gutter--fat;
+		padding: $gutter 0 $gutter--fat 0;
 	}
 
 	&__events {

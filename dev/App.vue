@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import EventBus from './EventBus';
-import Error from './components/Error.vue';
+import jwtDecode from 'jwt-decode';
 import './assets/notcss/00_base/base.scss';
+import Error from './components/Error.vue';
 import VHeader from './components/Header.vue';
 import VFooter from './components/Footer.vue';
 
@@ -69,13 +69,23 @@ export default {
 			}
 		);
 
-		EventBus.$on('error', ({ status, message }) => {
-			console.log(status);
-			this.error = {
-				hasError: true,
-				status,
-				message
-			};
+		const decodedUser = jwtDecode(this.$ls.get('token').split(' ')[1]);
+		this.$store.commit('setUser', {
+			name: decodedUser.FullName,
+			email: decodedUser.Email,
+			employeeId: decodedUser.EmployeeId,
+			role: decodedUser.Title
+		});
+
+		this.$bus.$on('error', ({ status, message }) => {
+			if (status !== 401) {
+				console.log(status);
+				this.error = {
+					hasError: true,
+					status,
+					message
+				};
+			}
 		});
 
 		this.$store.dispatch('getAllTypes');
@@ -98,7 +108,7 @@ export default {
 	&__content {
 		display: flex;
 		flex-direction: column;
-		min-height: calc(100vh - 460px);
+		min-height: calc(100vh - 30rem);
 		width: 100%;
 		max-width: $general-width;
 		padding: $gutter--fat;

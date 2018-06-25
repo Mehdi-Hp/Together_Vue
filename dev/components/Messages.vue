@@ -1,29 +1,46 @@
 <template>
 	<article
-		v-if="events"
 		class="o-messages"
 	>
 		<div class="o-messages__inner">
 			<form
-				class="o-messages__form"
+				class="o-messages__form-holder"
+				:class="{
+					'o-messages__form-holder--has-error': hasError
+				}"
 				@submit.prevent
 			>
-				<field
-					text="Title"
-					type="text"
-					name="message"
-					class="o-messages__textfield"
-					@inputChange="(value) => text = value"
-				/>
-				<button
-					class="o-messages__send | a-button"
-					@click="sendMessage"
-					@keydown.enter.prevent="sendMessage"
-				>
-					Send
-				</button>
+				<div class="o-messages__form">
+					<div class="o-messages__emoji-toggler">
+
+					</div>
+					<textarea
+						rows="1"
+						text="Title"
+						type="textarea"
+						placeholder="متن پیام"
+						name="message"
+						class="o-messages__textfield"
+						@input="calcHeight"
+						v-model="text"
+						ref="text"
+					></textarea>
+					<v-button
+						class="o-messages__send"
+						mode="normal"
+						@click="sendMessage"
+						@keydown.enter.prevent="sendMessage"
+					>
+						ارسـال
+					</v-button>
+				</div>
+				<div class="o-messages__emojies">
+				</div>
 			</form>
-			<section class="o-messages__events">
+			<section
+				class="o-messages__events"
+				v-if="!fieldOnly"
+			>
 				<event
 					class="o-messages__event | m-event"
 					:class="{
@@ -31,19 +48,8 @@
 					}"
 					v-for="event in events"
 					:key="event.id"
+					:data="event"
 				>
-					<span
-						class="m-event__content"
-						v-if="event.type.toLowerCase() === 'message'"
-					>
-						{{ event.text }} at {{ event.time }}
-					</span>
-					<span
-						class="m-event__content"
-						v-if="event.type.toLowerCase() !== 'message'"
-					>
-						{{ event.type }} at {{ event.time }}
-					</span>
 				</event>
 			</section>
 		</div>
@@ -53,24 +59,33 @@
 <script>
 import Field from './Field.vue';
 import Event from './Event.vue';
+import VButton from './Button.vue';
 
 export default {
 	name: 'Messages',
 	components: {
 		Field,
-		Event
+		Event,
+		VButton
 	},
-	props: ['events'],
+	props: ['events', 'fieldOnly'],
 	data() {
 		return {
 			text: null
 		};
 	},
-	watch: {},
+	computed: {
+		hasError() {
+			return this.events.some((event) => {
+				return event.error;
+			});
+		}
+	},
 	methods: {
 		sendMessage() {
 			const message = {
 				text: this.text,
+				isCreatedByMyOwn: true,
 				conversationId: this.$route.params.id,
 				mood: 1,
 				replyToMessageId: null,
@@ -78,6 +93,10 @@ export default {
 				notSettledYet: true
 			};
 			this.$emit('addMessage', message);
+			this.text = null;
+			this.$nextTick(() => {
+				this.calcHeight();
+			});
 			this.$store
 				.dispatch('createMessage', message)
 				.then((newMessage) => {
@@ -86,8 +105,15 @@ export default {
 					}, 2000);
 				})
 				.catch((error) => {
-					this.$emit('messageFailed');
+					setTimeout(() => {
+						this.$emit('messageFailed', error);
+					}, 2000);
 				});
+		},
+		sendMessageAgain() {},
+		calcHeight() {
+			this.$refs.text.style.height = 'auto';
+			this.$refs.text.style.height = `${this.$refs.text.scrollHeight}px`;
 		}
 	}
 };
@@ -98,28 +124,69 @@ export default {
 	overflow-y: scroll;
 
 	&__inner {
-		max-width: $general-width;
+		width: $general-width;
+		max-width: 100%;
 		margin: auto;
-		padding: 0 $gutter--fat 0 $gutter--thin;
+	}
+
+	&__form-holder {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: $gutter;
+		background-color: $white;
+		border-radius: 10px;
+		overflow: hidden;
+		box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.07);
+
+		&--has-error {
+		}
 	}
 
 	&__form {
 		display: flex;
-		margin-bottom: $gutter;
+		padding: $gutter--thin;
+		box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.03);
+		z-index: g-index('land');
+	}
+
+	&__emoji-toggler {
+		width: $ant-column;
+		margin-left: $ant-gutter;
 	}
 
 	&__textfield {
 		flex-grow: 1;
+		width: auto;
+		border: none;
+		resize: none;
+		height: 40px;
+		padding-top: 0.5rem;
+		color: $black-3;
+		margin-left: $gutter;
+		transition: height 0.15s ease-in-out 0.1s;
+
+		&::-webkit-input-placeholder {
+			color: $black-6;
+		}
 	}
 
 	&__send {
-		font-weight: bold;
-		font-size: ms(0);
+		font-size: ms(-1);
+		height: 40px;
+		font-weight: 500;
+	}
+
+	&__emojies {
+		height: 75px;
+		background-color: $white-1;
+		display: none;
 	}
 
 	&__events {
 		display: flex;
 		flex-direction: column;
+		width: $inner-width;
+		margin: 0 auto;
 	}
 
 	&__event {

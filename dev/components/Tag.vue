@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import EventBus from '../EventBus';
 import IconClose from './icons/Close.vue';
 import LoadSpinner from './icons/MaterialLoadSpinner.vue';
 
@@ -62,7 +61,7 @@ export default {
 	},
 	methods: {
 		remove() {
-			EventBus.$emit('removeTag', this.data.id);
+			this.$bus.$emit('removeTag', this.data.id);
 		}
 	}
 };
@@ -130,12 +129,12 @@ $tag-height: 1.8rem;
 	&__remove {
 		width: calc(#{$tag-height} - 0.3rem);
 		height: calc(#{$tag-height} - 0.3rem);
-		padding: 0.55em;
+		padding: 0.6em;
 		background-color: transparent;
 		display: flex;
 		align-items: center;
 		border-radius: 50%;
-		color: $black-5;
+		color: $white-6;
 		position: relative;
 		top: 0.03em;
 		transition-duration: 0.15s;

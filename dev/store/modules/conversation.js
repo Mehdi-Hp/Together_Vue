@@ -6,8 +6,8 @@ export default {
 	},
 	getters: {},
 	mutations: {
-		addConversation(state, payload) {
-			state.data = payload;
+		addConversation(state, conversation) {
+			state.data = conversation;
 		},
 		addConversationTag(state, tagId) {
 			const tagIndexToSelect = state.data.tags.findIndex((tag) => {
@@ -64,6 +64,10 @@ export default {
 							tags,
 							events
 						};
+						newConversation.events.forEach((event) => {
+							event.error = null;
+							event.notSettledYet = false;
+						});
 						newConversation.tags.forEach((tag) => {
 							tag.isRemoving = false;
 						});
@@ -77,6 +81,12 @@ export default {
 		},
 		createMessage({ state, commit, dispatch }, { text, replyToMessageId, mood, conversationId }) {
 			return new Promise((resolve, reject) => {
+				console.table({
+					text,
+					replyToMessageId,
+					mood,
+					conversationId
+				});
 				Vue.$axios
 					.post('/conversation/message', {
 						text,
@@ -90,7 +100,7 @@ export default {
 					})
 					.catch((error) => {
 						console.error(error);
-						reject(error.response);
+						reject(error.data);
 					});
 			});
 		},
