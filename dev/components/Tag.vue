@@ -2,9 +2,10 @@
 	<li
 		class="m-tag"
 		:class="{
-			'm-tag--is-hovered': isHovered,
+			'm-tag--is-hovered': isHovered && $store.state.user.role === 'agent',
 			'm-tag--is-removing': data.isRemoving,
-			'm-tag--is-visible': data.isSelected
+			'm-tag--is-visible': data.isSelected,
+			'm-tag--is-anonym': $store.state.user.role !== 'agent'
 		}"
 		@mouseover="isHovered = true"
 		@mouseleave="isHovered = false"
@@ -12,7 +13,8 @@
 		<span
 			class="m-tag__text"
 			:class="{
-				'm-tag__text--is-removing': data.isRemoving
+				'm-tag__text--is-removing': data.isRemoving,
+				'm-tag__text--is-anonym': $store.state.user.role !== 'agent'
 			}"
 		>
 			{{ data.title }}
@@ -23,6 +25,7 @@
 				'm-tag__remove--is-hovered': isHovered,
 				'm-tag__remove--is-removing': data.isRemoving
 			}"
+			v-if="$store.state.user.role === 'agent'"
 			@click="remove"
 		>
 			<icon-close
@@ -78,7 +81,6 @@ $tag-height: 1.8rem;
 	border-radius: 10em;
 	color: $black-4;
 	font-size: ms(-1);
-	cursor: pointer;
 	height: $tag-height;
 	perspective: 10em;
 	will-change: max-width;
@@ -97,6 +99,7 @@ $tag-height: 1.8rem;
 	}
 
 	&--is-hovered {
+		cursor: pointer;
 		background-color: $red;
 		color: $white;
 	}
@@ -111,6 +114,10 @@ $tag-height: 1.8rem;
 		color: $white;
 	}
 
+	&--is-anonym {
+		padding: 0 1.5em;
+	}
+
 	&__text {
 		flex-grow: 1;
 		margin-left: 2em;
@@ -123,6 +130,10 @@ $tag-height: 1.8rem;
 		&--is-removing {
 			transform: scale(0.5);
 			opacity: 0;
+		}
+
+		&--is-anonym {
+			margin-left: 0;
 		}
 	}
 

@@ -76,12 +76,20 @@
 			<p class="m-event__text">
 				{{ data.text }}
 			</p>
+			<span
+				class="m-event__time"
+				:class="{
+					'm-event__time--for-me': data.isCreatedByMyOwn
+				}"
+			>
+				{{ messageTime }}
+			</span>
 		</div>
 		<span
 			class="m-event__content | m-event__content--plain"
 			v-if="data.type.toLowerCase() !== 'message'"
 		>
-			{{ data.type }} at {{ data.time }}
+			{{ persianType(data.type) }} در {{ persianDate(data.time) }}
 		</span>
 	</div>
 </template>
@@ -94,6 +102,8 @@ import IconError from './icons/Error.vue';
 import IconExclam from './icons/Exclam.vue';
 import VButton from './Button.vue';
 import LoadSpinner from './icons/MaterialLoadSpinner.vue';
+
+const PersianDate = require('persian-date');
 
 export default {
 	name: 'Event',
@@ -111,6 +121,29 @@ export default {
 		return {
 			seen: true
 		};
+	},
+	computed: {
+		messageTime() {
+			const today = new PersianDate();
+			const eventDate = new PersianDate(new Date(this.data.time).getTime());
+			console.log('today', today);
+			console.log('eventDate', eventDate);
+			if (eventDate.isSameDay(today)) {
+				return new PersianDate(this.data.time).format('HH:mm');
+			}
+			return this.persianDate(this.data.time);
+		}
+	},
+	methods: {
+		persianDate(date) {
+			return new PersianDate(date).format('D/MMMM/YYYY - HH:mm');
+		},
+		persianType(type) {
+			const persianTypes = {
+				Created: 'ایجاد شده'
+			};
+			return persianTypes[type];
+		}
 	}
 };
 </script>
@@ -314,6 +347,22 @@ export default {
 		width: 100%;
 		line-height: 1.7;
 		overflow: hidden;
+		color: mix($black-3, $green-light, 70%);
+
+		&--for-me {
+		}
+	}
+
+	&__time {
+		display: flex;
+		margin-top: $gutter--thin;
+		width: 100%;
+		font-size: ms(-2);
+		color: shade(white, 30%);
+
+		&--for-me {
+			color: mix($green-light, black, 90%);
+		}
 	}
 
 	&__controls {

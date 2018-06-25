@@ -25,6 +25,8 @@ import Error from './components/Error.vue';
 import VHeader from './components/Header.vue';
 import VFooter from './components/Footer.vue';
 
+const PersianDate = require('persian-date');
+
 export default {
 	name: 'App',
 	components: {
@@ -43,6 +45,8 @@ export default {
 		this.error.hasError = false;
 	},
 	mounted() {
+		this.initCalendar();
+
 		this.axios.defaults.headers.common.Authorization = this.$ls.get('token');
 
 		this.axios.interceptors.response.use(
@@ -90,6 +94,11 @@ export default {
 
 		this.$store.dispatch('getAllTypes');
 		this.$store.dispatch('getAllAssignees');
+	},
+	methods: {
+		initCalendar() {
+			PersianDate.toLocale('fa');
+		}
 	}
 };
 </script>

@@ -10,7 +10,7 @@
 			<tag
 				class="o-tags__item"
 				:class="{
-					'o-tags__item--is-visible': tag.isSelected
+					'o-tags__item--is-visible': tag.isSelected,
 				}"
 				v-for="tag in tags"
 				:key="tag.id"
@@ -22,6 +22,7 @@
 				:class="{
 					'o-tags__new--is-disabled': allSelected
 				}"
+				v-if="$store.state.user.role === 'agent'"
 				:state="dropdownState"
 				:disabled="allSelected"
 				@toggleState="(newState) => { dropdownState = newState }"
@@ -173,7 +174,6 @@ export default {
 		padding: 0;
 		transition-duration: 0.1s;
 		transition-property: max-width, max-height, padding, margin;
-		pointer-events: none;
 
 		&:hocus {
 			background-color: $white-1;
@@ -193,7 +193,6 @@ export default {
 			max-height: 100vh;
 			max-width: 100vw;
 			opacity: 1;
-			pointer-events: all;
 		}
 	}
 }
