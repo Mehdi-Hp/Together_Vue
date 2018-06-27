@@ -73,13 +73,15 @@ export default {
 			}
 		);
 
-		const decodedUser = jwtDecode(this.$ls.get('token').split(' ')[1]);
-		this.$store.commit('setUser', {
-			name: decodedUser.FullName,
-			email: decodedUser.Email,
-			employeeId: decodedUser.EmployeeId,
-			role: decodedUser.Title
-		});
+		if (this.$ls.get('token')) {
+			const decodedUser = jwtDecode(this.$ls.get('token').split(' ')[1]);
+			this.$store.commit('setUser', {
+				name: decodedUser.FullName,
+				email: decodedUser.Email,
+				employeeId: decodedUser.EmployeeId,
+				role: decodedUser.Title
+			});
+		}
 
 		this.$bus.$on('error', ({ status, message }) => {
 			if (status !== 401) {

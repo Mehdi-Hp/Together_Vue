@@ -3,7 +3,8 @@
 		class="a-button"
 		:class="{
 			'a-button--normal': mode === 'normal',
-			'a-button--error': mode === 'error'
+			'a-button--error': mode === 'error',
+			'a-button--nonsignificant': mode === 'nonsignificant'
 		}"
 		@click="$emit('click')"
 	>
@@ -28,19 +29,21 @@ export default {
 	padding: 0.5em 2em;
 	color: $white;
 	box-shadow: 0px 6px 25px 1px rgba(0, 0, 0, 0.15);
-	transition-property: box-shadow, transform;
+	transition-property: box-shadow, transform, background;
 	transition-duration: 0.15s;
 	transition-timing-function: ease-in-out;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: relative;
+	font-weight: 500;
 
 	&:hocus {
-		box-shadow: 0px 6px 40px 3px rgba(0, 0, 0, 0.2);
+		box-shadow: 0px 8px 40px 3px rgba(0, 0, 0, 0.2);
 	}
 
 	&:active {
-		box-shadow: 0px 6px 25px 0 rgba(0, 0, 0, 0.15);
+		box-shadow: 0px 8px 25px 0 rgba(0, 0, 0, 0.15);
 		transform: scale(0.99);
 	}
 
@@ -58,6 +61,15 @@ export default {
 
 		&:hocus {
 			background: linear-gradient(to top, shade($red, 10%) 0%, shade(tint($red, 30%), 10%) 100%);
+		}
+	}
+
+	&--nonsignificant {
+		background: $white-2;
+		color: $black-2;
+
+		&:hocus {
+			background: $white-3;
 		}
 	}
 }

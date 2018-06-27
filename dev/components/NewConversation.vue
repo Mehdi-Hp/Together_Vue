@@ -9,16 +9,7 @@
 			</template>
 		</keynote>
 
-		<form
-			class="l-new-conversation__content"
-			@submit.prevent
-		>
-			<messages
-				class="l-new-conversation__messages"
-				field-only="true"
-			>
-			</messages>
-		</form>
+		<message-sender class="l-new-conversation__message-sender" />
 	</section>
 </template>
 
@@ -26,13 +17,15 @@
 import Keynote from './Keynote.vue';
 import Textfield from './Textfield.vue';
 import Messages from './Messages.vue';
+import MessageSender from './MessageSender.vue';
 
 export default {
 	name: 'NewAdvice',
 	components: {
 		Keynote,
 		Textfield,
-		Messages
+		Messages,
+		MessageSender
 	},
 	data() {
 		return {
@@ -114,7 +107,6 @@ export default {
 	flex-direction: column;
 
 	&__keynote {
-		margin-bottom: $gutter--fater;
 	}
 
 	&__content {
@@ -122,7 +114,6 @@ export default {
 
 	&__messages {
 		overflow: visible;
-		margin-bottom: $gutter--fater;
 	}
 
 	&__form {

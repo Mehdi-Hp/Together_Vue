@@ -126,8 +126,6 @@ export default {
 		messageTime() {
 			const today = new PersianDate();
 			const eventDate = new PersianDate(new Date(this.data.time).getTime());
-			console.log('today', today);
-			console.log('eventDate', eventDate);
 			if (eventDate.isSameDay(today)) {
 				return new PersianDate(this.data.time).format('HH:mm');
 			}

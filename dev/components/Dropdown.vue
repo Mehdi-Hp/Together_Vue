@@ -14,21 +14,22 @@
 				'm-dropdown__inner--is-open': state
 			}"
 		>
-			<div class="m-dropdown__icon">
-				<slot name="icon"></slot>
-			</div>
-			<transition
-				name="m-dropdown__items"
-			>
-				<div
-					class="m-dropdown__items"
-					:class="{
-						'm-dropdown__items--is-open': state
-					}"
-				>
-					<slot name="content"></slot>
+			<div class="m-dropdown__look">
+				<div class="m-dropdown__icon">
+					<slot name="icon"></slot>
 				</div>
-			</transition>
+				<div class="m-dropdown__text">
+					<slot name="text"></slot>
+				</div>
+			</div>
+			<div
+				class="m-dropdown__after"
+				:class="{
+					'm-dropdown__after--is-open': state
+				}"
+			>
+				<slot name="content"></slot>
+			</div>
 		</div>
 	</div>
 </template>
@@ -41,11 +42,12 @@ export default {
 	directives: {
 		onClickaway
 	},
-	props: ['state', 'disabled'],
+	props: ['state', 'disabled', 'showHide'],
 	data() {
 		return {
 			elements: {},
-			styles: {}
+			styles: {},
+			alreadySetStyles: false
 		};
 	},
 	watch: {
@@ -62,51 +64,97 @@ export default {
 	},
 	mounted() {
 		this.setElements();
-		this.elements.dropdownItems.removeAttribute('style');
+		this.elements.dropdownInner.removeAttribute('style');
 		// console.table(this.elements);
 		this.setStyles();
 		// console.table(this.styles.initial);
 		// console.table(this.styles.wanted);
 		this.resetStyle();
+		if (this.state) {
+			this.expand();
+		}
 	},
 	methods: {
 		setElements() {
 			this.elements = {
-				dropdownIcon: this.$refs.dropdown.querySelector('.m-dropdown__icon'),
 				dropdownInner: this.$refs.dropdown.querySelector('.m-dropdown__inner'),
-				dropdownItems: this.$refs.dropdown.querySelector('.m-dropdown__items').firstElementChild
+				after: this.$refs.dropdown.querySelector('.m-dropdown__after').firstElementChild
 			};
 		},
 		setStyles() {
-			this.styles = {
-				initial: {
-					width: `${this.$refs.dropdown.offsetWidth + 1}px`,
-					height: `${this.$refs.dropdown.offsetHeight + 1}px`,
-					background: window.getComputedStyle(this.$refs.dropdown).getPropertyValue('background-color'),
-					borderRadius: window.getComputedStyle(this.$refs.dropdown).getPropertyValue('border-radius')
-				},
-				wanted: {
-					width: Math.abs(this.elements.dropdownInner.getBoundingClientRect().right - this.elements.dropdownItems.getBoundingClientRect().left),
-					height: Math.abs(this.elements.dropdownInner.getBoundingClientRect().top - this.elements.dropdownItems.getBoundingClientRect().bottom),
-					background: window.getComputedStyle(this.elements.dropdownItems).getPropertyValue('background-color')
+			if (!this.alreadySetStyles) {
+				this.styles = {
+					initial: {
+						width: `${this.$refs.dropdown.offsetWidth}px`,
+						height: `${this.$refs.dropdown.querySelector('.m-dropdown__look').offsetHeight}px`,
+						background: window.getComputedStyle(this.$refs.dropdown).getPropertyValue('background-color'),
+						borderRadius: window.getComputedStyle(this.$refs.dropdown).getPropertyValue('border-radius'),
+						padding: window.getComputedStyle(this.$refs.dropdown).getPropertyValue('padding')
+					},
+					wanted: {
+						width: `${Math.abs(this.$refs.dropdown.getBoundingClientRect().right - this.elements.after.getBoundingClientRect().left)}px`,
+						height: `${Math.abs(this.$refs.dropdown.getBoundingClientRect().top - this.elements.after.getBoundingClientRect().bottom)}px`,
+						background: window.getComputedStyle(this.elements.after).getPropertyValue('background-color'),
+						borderRadius: window.getComputedStyle(this.elements.after).getPropertyValue('border-radius')
+					}
+				};
+				if (!this.showHide) {
+					const wantedWidth = Math.abs(this.$refs.dropdown.getBoundingClientRect().right - this.elements.after.getBoundingClientRect().left);
+					const minWidth = this.$refs.dropdown.offsetWidth;
+					if (wantedWidth < minWidth) {
+						this.styles.wanted.width = `${minWidth}px`;
+					}
+					// console.log('wantedWidth', wantedWidth);
+					// console.log('minWidth', minWidth);
 				}
-			};
+				this.alreadySetStyles = true;
+			} else {
+				this.styles = {
+					initial: {
+						width: `${this.$refs.dropdown.offsetWidth}px`,
+						height: `${this.$refs.dropdown.offsetHeight}px`,
+						background: this.styles.initial.background,
+						borderRadius: this.styles.initial.borderRadius,
+						padding: this.styles.initial.padding
+					},
+					wanted: {
+						width: `${Math.abs(this.$refs.dropdown.getBoundingClientRect().right - this.elements.after.getBoundingClientRect().left)}px`,
+						height: `${Math.abs(this.$refs.dropdown.getBoundingClientRect().top - this.elements.after.getBoundingClientRect().bottom)}px`,
+						background: window.getComputedStyle(this.elements.after).getPropertyValue('background-color'),
+						borderRadius: window.getComputedStyle(this.elements.after).getPropertyValue('border-radius')
+					}
+				};
+				if (!this.showHide) {
+					const wantedWidth = Math.abs(this.$refs.dropdown.getBoundingClientRect().right - this.elements.after.getBoundingClientRect().left);
+					const minWidth = this.$refs.dropdown.offsetWidth;
+					if (wantedWidth < minWidth) {
+						this.styles.wanted.width = `${minWidth}px`;
+					}
+					// console.log('wantedWidth', wantedWidth);
+					// console.log('minWidth', minWidth);
+				}
+			}
 		},
 		resetStyle() {
 			this.setStyles();
-			this.elements.dropdownIcon.style.width = this.styles.initial.width;
-			this.elements.dropdownIcon.style.height = this.styles.initial.height;
 			this.elements.dropdownInner.style.width = this.styles.initial.width;
 			this.elements.dropdownInner.style.height = this.styles.initial.height;
 			this.elements.dropdownInner.style.borderRadius = this.styles.initial.borderRadius;
 			this.elements.dropdownInner.style.backgroundColor = this.styles.initial.background;
+			this.elements.dropdownInner.style.padding = this.styles.initial.padding;
+			this.$refs.dropdown.style.padding = 'initial';
+			this.$refs.dropdown.style.backgroundColor = 'transparent';
+			this.$refs.dropdown.style.borderRadius = 0;
+			this.$refs.dropdown.style.width = this.styles.initial.width;
+			this.$refs.dropdown.style.height = this.styles.initial.height;
+			this.elements.dropdownInner.style.position = 'absolute';
 		},
 		expand() {
 			this.setStyles();
-			this.elements.dropdownInner.style.borderRadius = 0;
-			this.elements.dropdownInner.style.width = `${this.styles.wanted.width}px`;
-			this.elements.dropdownInner.style.height = `${this.styles.wanted.height}px`;
-			this.elements.dropdownInner.style.backgroundColor = this.styles.wanted.background;
+			this.elements.dropdownInner.style.width = this.styles.wanted.width;
+			this.elements.dropdownInner.style.height = this.styles.wanted.height;
+			this.elements.dropdownInner.style.borderRadius = this.styles.wanted.borderRadius;
+			this.elements.dropdownInner.style.backgroundColor = this.styles.wanted.backgroundColor;
 		},
 		openState() {
 			this.$emit('toggleState', true);
@@ -129,59 +177,56 @@ export default {
 	&--is-open {
 		border-radius: 0;
 	}
-
 	&__inner {
-		position: absolute 0 0 0 0;
 		overflow: hidden;
-		size: 100%;
-		box-sizing: content-box;
-		background-color: white;
+		top: 0px;
+		right: 0px;
+		bottom: 0px;
+		left: 0px;
 		transition: border-radius, border-top-right-radius 0.2s 0.1s, width, height, opacity, padding, background-color, box-shadow;
 		transition-duration: 0.2s;
 		transition-timing-function: ease-in;
 		cursor: pointer;
-		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
-
-		&:before {
-			content: '';
-			position: absolute 0 0 0 0;
-			background-color: transparentize(black, 1);
-		}
-
-		&:hocus {
-			&:before {
-				background-color: transparentize(black, 0.8);
-			}
-		}
 
 		&--is-open {
-			border-radius: 0;
-			transition: border-radius, border-top-right-radius, width, height, opacity, padding, background-color, box-shadow;
-			transition-duration: 0.15s;
-			transition-timing-function: cubic-bezier(0, 0.65, 0, 0.9);
+			transition: border-radius 0.2s, border-top-right-radius 0.2s, width 0.2s 0.1s, height 0.2s 0.1s, opacity 0.2s 0.1s, padding 0.2s 0.1s, background-color 0.2s 0.1s, box-shadow 0.2s 0.1s;
+			transition-duration: 0.2s;
+			transition-timing-function: cubic-bezier(0.05, 0.55, 0.4, 0.85);
 			box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
-
-			&:before {
-				visibility: hidden;
-			}
 		}
+	}
+
+	&__after {
+		position: absolute 0 0 0 0;
+		overflow: hidden;
+		size: 100%;
+		box-sizing: content-box;
+		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
+		cursor: default;
 	}
 
 	&__icon {
-		position: absolute 0 0 auto auto;
-		padding: 0.5em;
 		display: flex;
 		align-items: center;
-		& svg {
-		}
 	}
 
-	&__items {
+	&__text {
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+	}
+
+	&__look {
+		display: flex;
+		cursor: pointer;
+	}
+
+	&__after {
 		position: absolute;
 		top: 0;
+		right: 0;
 		margin: auto;
 		transition: opacity 0.15s 0.2s;
-		opacity: 0;
 		pointer-events: none;
 
 		&--is-open {

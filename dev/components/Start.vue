@@ -2,19 +2,29 @@
 	<section class="l-start">
 		<keynote class="l-start__keynote">
 			<template slot="title">
-				ljhsrgilraug
+				‌فرصت کاری
 			</template>
 			<template slot="desc">
-				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;so r
+				‌ کشفیات ما نشون می‌ده که زنبورهای عسل می‌تونن مفهوم بزرگتر و کوچیکتر رو بفهمن و تابلوی خالی رو با مفهوم صفر ببینن و اون رو در مقایسه با بقیه اعداد، بسنجن. با توجه به این مساله، می‌توانیم سطح زنبور رو در درک صفر با نخستی‌های (پرایمیت‌های) غیرانسان مشابه بدونیم چون اون‌ها هم درک می‌کنن که صفر از یک کمتر است.
 			</template>
 		</keynote>
 
 		<div class="l-start__content">
-			<router-link
-				to="/new"
-				class="l-start__new-advice | a-button"
-			>
-				New Anonymous Message
+			<router-link to="/new">
+				<v-button
+					class="l-start__new-advice"
+					mode="normal"
+				>
+					گفت‌و‌گوی جدید
+				</v-button>
+			</router-link>
+			<router-link to="/login">
+				<v-button
+					class="l-start__login"
+					mode="nonsignificant"
+				>
+					ورود
+				</v-button>
 			</router-link>
 		</div>
 	</section>
@@ -22,11 +32,13 @@
 
 <script>
 import Keynote from './Keynote.vue';
+import VButton from './Button.vue';
 
 export default {
 	name: 'Start',
 	components: {
-		Keynote
+		Keynote,
+		VButton
 	},
 	data() {
 		return {};
@@ -44,10 +56,22 @@ export default {
 
 	&__content {
 		display: flex;
+		align-items: center;
+		margin-top: $gutter;
+		margin-bottom: $gutter--fat;
 	}
 
 	&__new-advice {
-		margin-top: $gutter--fat;
+		font-weight: 500;
+		margin-left: $gutter;
+	}
+
+	&__login {
+		box-shadow: none;
+
+		&:hocus {
+			box-shadow: none;
+		}
 	}
 }
 </style>
