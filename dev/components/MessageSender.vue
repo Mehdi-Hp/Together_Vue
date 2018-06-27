@@ -1,7 +1,50 @@
 <template>
-	<form class="o-message-sender">
+	<form
+		class="o-message-sender"
+		@submit.prevent
+	>
 		<div class="o-message-sender__main">
 			<div class="o-message-sender__row">
+				<dropdown
+					class="o-message-sender__dropdown"
+					:state="dropdown.category"
+					:show-hide="false"
+					@toggleState="(newState) => { dropdown.category = newState }"
+				>
+					<template slot="text">
+						<div class="o-message-sender__dropdown-texts">
+							<span
+								class="o-message-sender__dropdown-text"
+								v-if="!message.category"
+							>
+								موضوع
+							</span>
+							<span
+								class="o-message-sender__dropdown-selected"
+								v-if="message.category"
+							>
+								{{ categoryFromId(message.category) }}
+							</span>
+						</div>
+					</template>
+					<template slot="content">
+						<ul class="o-message-sender__dropdown-items">
+							<li
+								class="o-message-sender__dropdown-item"
+								v-for="category in categories"
+								:key="category.id"
+								@click="setCategory(category.id)"
+							>
+								{{ category.title }}
+							</li>
+						</ul>
+					</template>
+				</dropdown>
+			</div>
+			<div class="o-message-sender__row">
+				<div class="o-message-sender__emoji-toggler">
+					<div class="o-message-sender__emoji-toggler-icon"></div>
+				</div>
 				<input
 					type="text"
 					class="o-message-sender__textfield"
@@ -11,9 +54,6 @@
 				/>
 			</div>
 			<div class="o-message-sender__row">
-				<div class="o-message-sender__emoji-toggler">
-					<div class="o-message-sender__emoji-toggler-icon"></div>
-				</div>
 				<textarea
 					placeholder="متن پیام"
 					class="o-message-sender__textarea"
@@ -23,85 +63,62 @@
 					ref="text"
 				></textarea>
 			</div>
+			<div class="o-message-sender__row">
+				<dropdown
+					class="o-message-sender__dropdown"
+					:state="dropdown.assignee"
+					:show-hide="false"
+					@toggleState="(newState) => { dropdown.assignee = newState }"
+				>
+					<template slot="icon">
+						<icon-person
+							class="o-message-sender__dropdown-icon"
+							:class="{
+								'o-message-sender__dropdown-icon--is-selected': message.assignee
+							}"
+						/>
+					</template>
+					<template slot="text">
+						<div class="o-message-sender__dropdown-texts">
+							<span
+								class="o-message-sender__dropdown-text"
+								v-if="!message.assignee"
+							>
+								بررسی کننده
+							</span>
+							<span
+								class="o-message-sender__dropdown-selected"
+								v-if="message.assignee"
+							>
+								{{ assigneeFromId(message.assignee) }}
+							</span>
+						</div>
+					</template>
+					<template slot="content">
+						<ul class="o-message-sender__dropdown-items">
+							<li
+								class="o-message-sender__dropdown-item"
+								v-for="assignee in assignees"
+								:key="assignee.id"
+								@click="setAssignee(assignee.id)"
+							>
+								{{ assignee.title }}
+							</li>
+						</ul>
+					</template>
+				</dropdown>
+			</div>
 		</div>
 		<div class="o-message-sender__extra">
-			<dropdown
-				class="o-message-sender__dropdown"
-				:state="dropdown.assignee"
-				:show-hide="false"
-				@toggleState="(newState) => { dropdown.assignee = newState }"
-			>
-				<template slot="icon">
-					<icon-person class="o-message-sender__dropdown-icon" />
-				</template>
-				<template slot="text">
-					<div class="o-message-sender__dropdown-texts">
-						<span
-							class="o-message-sender__dropdown-text"
-							v-if="!message.assignee"
-						>
-							شخص ثالث
-						</span>
-						<span
-							class="o-message-sender__dropdown-selected"
-							v-if="message.assignee"
-						>
-							{{ assigneeFromId(message.assignee) }}
-						</span>
-					</div>
-				</template>
-				<template slot="content">
-					<ul class="o-message-sender__dropdown-items">
-						<li
-							class="o-message-sender__dropdown-item"
-							v-for="assignee in assignees"
-							:key="assignee.id"
-							@click="setAssignee(assignee.id)"
-						>
-							{{ assignee.title }}
-						</li>
-					</ul>
-				</template>
-			</dropdown>
-			<dropdown
-				class="o-message-sender__dropdown"
-				:state="dropdown.category"
-				:show-hide="false"
-				@toggleState="(newState) => { dropdown.category = newState }"
-			>
-				<template slot="text">
-					<div class="o-message-sender__dropdown-texts">
-						<span
-							class="o-message-sender__dropdown-text"
-							v-if="!message.category"
-						>
-							موضوع
-						</span>
-						<span
-							class="o-message-sender__dropdown-selected"
-							v-if="message.category"
-						>
-							{{ categoryFromId(message.category) }}
-						</span>
-					</div>
-				</template>
-				<template slot="content">
-					<ul class="o-message-sender__dropdown-items">
-						<li
-							class="o-message-sender__dropdown-item"
-							v-for="category in categories"
-							:key="category.id"
-							@click="setCategory(category.id)"
-						>
-							{{ category.title }}
-						</li>
-					</ul>
-				</template>
-			</dropdown>
 		</div>
 		<div class="o-message-sender__controls">
 			<v-button
 				mode="normal"
+				@click="send"
+				class="o-message-sender__send"
+				:class="{
+					'o-message-sender__send--is-showing': !hasError && isTouched
+				}"
 			>
 				ایجاد گفت‌وگو
 			</v-button>
@@ -143,7 +160,16 @@ export default {
 		},
 		categories() {
 			return this.$store.state.type.data;
+		},
+		hasError() {
+			return !!this.validation.errors.length;
+		},
+		isTouched() {
+			return !!this.validation.touchedRecords.length;
 		}
+	},
+	mounted() {
+		this.$validate();
 	},
 	methods: {
 		setAssignee(id) {
@@ -173,6 +199,51 @@ export default {
 				return category.id === id;
 			});
 			return categoryName.title;
+		},
+		send() {
+			this.$validate();
+			if (!this.hasError) {
+				this.$store
+					.dispatch('createConversation', {
+						title: this.message.title,
+						description: this.message.description,
+						typeId: this.message.category,
+						assigneeId: this.message.assignee
+					})
+					.then((conversationId) => {
+						this.$router.push({
+							name: 'created',
+							params: {
+								conversationId
+							}
+						});
+					})
+					.catch((error) => {
+						console.error(error);
+					});
+			}
+		}
+	},
+	validators: {
+		'message.title': {
+			validator(value) {
+				return this.$validator.value(value).required();
+			}
+		},
+		'message.text': {
+			validator(value) {
+				return this.$validator.value(value).required();
+			}
+		},
+		'message.category': {
+			validator(value) {
+				return this.$validator.value(value).required();
+			}
+		},
+		'message.assignee': {
+			validator(value) {
+				return this.$validator.value(value).required();
+			}
 		}
 	}
 };
@@ -188,21 +259,21 @@ export default {
 		flex-direction: column;
 		background-color: $white;
 		border-radius: 10px;
-		overflow: hidden;
 		box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.07);
 	}
 
 	&__row {
 		width: 100%;
 		display: flex;
+		border-bottom: 1px solid $white-1;
 
-		&:first-of-type {
-			border-bottom: 1px solid $white-1;
+		&:last-of-type {
+			border-bottom: none;
 		}
 	}
 
 	&__textfield {
-		padding: $gutter--thin;
+		padding: 1.25em 0 $gutter--thin $gutter--thin;
 		width: 100%;
 		border: none;
 		background: white;
@@ -234,7 +305,7 @@ export default {
 		resize: none;
 		color: $black-3;
 		height: calc(2.5em + #{$gutter--thin * 2});
-		padding: 1.25em 0 $gutter--thin $gutter--thin;
+		padding: $gutter--thin;
 		&::-webkit-input-placeholder {
 			color: $black-6;
 			font-weight: 300;
@@ -250,10 +321,11 @@ export default {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: $white;
+		background-color: $white-1;
 		border-radius: 10em;
 		padding: 0.5em 1em;
 		margin-left: $ant-gutter;
+		margin: $gutter--thin;
 	}
 
 	&__dropdown-texts {
@@ -261,9 +333,6 @@ export default {
 		flex-direction: column;
 		font-size: ms(-1);
 		position: relative;
-
-		&--is-selected {
-		}
 	}
 	&__dropdown-text {
 	}
@@ -276,6 +345,10 @@ export default {
 	&__dropdown-icon {
 		padding: 0;
 		margin-left: 0.5em;
+
+		&--is-selected {
+			color: $green;
+		}
 	}
 
 	&__dropdown-items {
@@ -283,7 +356,7 @@ export default {
 		flex-direction: column;
 		font-size: ms(-1);
 		color: $black-3;
-		background-color: white;
+		background-color: $white-1;
 		padding: 1em 0;
 		padding-top: 0;
 		box-sizing: border-box;
@@ -291,6 +364,7 @@ export default {
 		top: 3em;
 		width: 10em;
 		border-radius: 5px;
+		z-index: g-index('mountain');
 	}
 
 	&__dropdown-item {
@@ -312,6 +386,14 @@ export default {
 	}
 
 	&__send {
+		opacity: 0.2;
+		transition: opacity 0.15s;
+		cursor: not-allowed;
+
+		&--is-showing {
+			opacity: 1;
+			cursor: pointer;
+		}
 	}
 }
 </style>

@@ -73,30 +73,6 @@ export default {
 				console.error(this.validation.errors);
 			}
 		}
-	},
-	validators: {
-		title: {
-			cache: true,
-			debounce: 200,
-			validator(value) {
-				return this.$validator.value(value).required();
-			}
-		},
-		description: {
-			validator(value) {
-				return this.$validator.value(value).required();
-			}
-		},
-		typeId: {
-			validator(value) {
-				return this.$validator.value(value).required();
-			}
-		},
-		assigneeId: {
-			validator(value) {
-				return this.$validator.value(value).required();
-			}
-		}
 	}
 };
 </script>
