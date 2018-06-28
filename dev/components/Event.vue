@@ -35,7 +35,7 @@
 					<v-button
 						class="m-event__resend"
 						mode="error"
-						@click="this.$emit('resendMessage')"
+						@click="$emit('retry', index)"
 					>
 						<icon-exclam class="m-event__control-icon" />
 						تلاش مجدد
@@ -73,13 +73,20 @@
 					/>
 				</div>
 			</div>
-			<p class="m-event__text">
+			<p
+				class="m-event__text"
+				:class="{
+					'm-event__text--for-me': data.isCreatedByMyOwn,
+					'm-event__text--has-error': data.error
+				}"
+			>
 				{{ data.text }}
 			</p>
 			<span
 				class="m-event__time"
 				:class="{
-					'm-event__time--for-me': data.isCreatedByMyOwn
+					'm-event__time--for-me': data.isCreatedByMyOwn,
+					'm-event__time--has-error': data.error
 				}"
 			>
 				{{ messageTime }}
@@ -116,7 +123,7 @@ export default {
 		VButton,
 		LoadSpinner
 	},
-	props: ['data'],
+	props: ['data', 'index'],
 	data() {
 		return {
 			seen: true
@@ -345,9 +352,15 @@ export default {
 		width: 100%;
 		line-height: 1.7;
 		overflow: hidden;
-		color: mix($black-3, $green-light, 70%);
+		color: $black-5;
+		transition: color 0.15s;
 
 		&--for-me {
+			color: mix($black-3, $green-light, 60%);
+		}
+
+		&--has-error {
+			color: tint($red, 80%);
 		}
 	}
 
@@ -360,6 +373,12 @@ export default {
 
 		&--for-me {
 			color: mix($green-light, black, 90%);
+		}
+		&--for-me {
+			color: mix($green-light, black, 90%);
+		}
+		&--has-error {
+			color: tint($red, 70%);
 		}
 	}
 

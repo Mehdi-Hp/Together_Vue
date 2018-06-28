@@ -9,7 +9,11 @@
 			</template>
 		</keynote>
 
-		<message-sender class="l-new-conversation__message-sender" />
+		<message-sender
+			class="l-new-conversation__message-sender"
+			mode="expand"
+			@send="createConversation"
+		/>
 	</section>
 </template>
 
@@ -28,12 +32,7 @@ export default {
 		MessageSender
 	},
 	data() {
-		return {
-			title: null,
-			description: null,
-			typeId: null,
-			assigneeId: null
-		};
+		return {};
 	},
 	computed: {
 		types() {
@@ -48,17 +47,13 @@ export default {
 		this.$store.dispatch('getAllAssignees');
 	},
 	methods: {
-		createConversation() {
+		createConversation(message) {
 			this.$validate();
 			if (!this.validation.errors.length) {
 				this.$store
-					.dispatch('createConversation', {
-						title: this.title,
-						description: this.description,
-						typeId: this.typeId,
-						assigneeId: this.assigneeId
-					})
+					.dispatch('createConversation', message)
 					.then((conversationId) => {
+						console.log(conversationId);
 						this.$router.push({
 							name: 'created',
 							params: {

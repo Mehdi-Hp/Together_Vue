@@ -10,32 +10,11 @@
 				}"
 				@submit.prevent
 			>
-				<div class="o-messages__form">
-					<div class="o-messages__emoji-toggler">
-
-					</div>
-					<textarea
-						rows="1"
-						text="Title"
-						type="textarea"
-						placeholder="متن پیام"
-						name="message"
-						class="o-messages__textfield"
-						@input="calcHeight"
-						v-model="text"
-						ref="text"
-					></textarea>
-					<v-button
-						class="o-messages__send"
-						mode="normal"
-						@click="sendMessage"
-						@keydown.enter.prevent="sendMessage"
-					>
-						ارسـال
-					</v-button>
-				</div>
-				<div class="o-messages__emojies">
-				</div>
+				<message-sender
+					class="o-messages__message-sender"
+					mode="mini"
+					@send="sendMessage"
+				/>
 			</form>
 			<section
 				class="o-messages__events"
@@ -46,9 +25,11 @@
 					:class="{
 						'm-event--not-settled': event.notSettledYet
 					}"
-					v-for="event in events"
+					v-for="(event, eventIndex) in events"
+					:index="eventIndex"
 					:key="event.id"
 					:data="event"
+					@retry="sendMessageAgain"
 				>
 				</event>
 			</section>
@@ -57,6 +38,7 @@
 </template>
 
 <script>
+import MessageSender from './MessageSender.vue';
 import Field from './Field.vue';
 import Event from './Event.vue';
 import VButton from './Button.vue';
@@ -64,6 +46,7 @@ import VButton from './Button.vue';
 export default {
 	name: 'Messages',
 	components: {
+		MessageSender,
 		Field,
 		Event,
 		VButton
@@ -82,38 +65,51 @@ export default {
 		}
 	},
 	methods: {
-		sendMessage() {
+		sendMessage({ text, mood }) {
 			const message = {
-				text: this.text,
+				text,
 				isCreatedByMyOwn: true,
 				conversationId: this.$route.params.id,
-				mood: 1,
+				mood,
 				replyToMessageId: null,
 				type: 'message',
-				notSettledYet: true
+				notSettledYet: true,
+				time: new Date().toISOString()
 			};
 			this.$emit('addMessage', message);
-			this.text = null;
-			this.$nextTick(() => {
-				this.calcHeight();
-			});
 			this.$store
 				.dispatch('createMessage', message)
-				.then((newMessage) => {
+				.then((message) => {
 					setTimeout(() => {
 						this.$emit('messageSettled');
 					}, 2000);
 				})
 				.catch((error) => {
 					setTimeout(() => {
-						this.$emit('messageFailed', error);
+						this.$emit('messageFailed', { error });
 					}, 2000);
 				});
 		},
-		sendMessageAgain() {},
-		calcHeight() {
-			this.$refs.text.style.height = 'auto';
-			this.$refs.text.style.height = `${this.$refs.text.scrollHeight}px`;
+		sendMessageAgain(messageIndex) {
+			const message = {
+				text: this.events[messageIndex].text,
+				mood: this.events[messageIndex].mood,
+				conversationId: this.$route.params.id
+			};
+			this.$store.state.conversation.data.events[messageIndex].notSettledYet = true;
+			this.$store.state.conversation.data.events[messageIndex].error = null;
+			this.$store
+				.dispatch('createMessage', message)
+				.then((message) => {
+					setTimeout(() => {
+						this.$emit('messageSettled', messageIndex);
+					}, 2000);
+				})
+				.catch((error) => {
+					setTimeout(() => {
+						this.$emit('messageFailed', { messageIndex, error });
+					}, 2000);
+				});
 		}
 	}
 };
@@ -121,8 +117,6 @@ export default {
 
 <style scoped lang="scss">
 .o-messages {
-	overflow-y: scroll;
-
 	&__inner {
 		width: $general-width;
 		max-width: 100%;

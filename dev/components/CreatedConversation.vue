@@ -2,10 +2,10 @@
 	<section class="l-sent">
 		<keynote class="l-sent__keynote">
 			<template slot="title">
-				Conversation got created.
+				گفت‌وگو ساخه شد
 			</template>
 			<template slot="desc">
-				kjr g;oisdrjeg ;osirgje; osrgj;so rkjr g;oisdrjeg ;osirgje; osrgj;
+
 			</template>
 		</keynote>
 
@@ -20,10 +20,13 @@
 
 		<div class="l-sent__content">
 			<p class="l-sent__message">
-				Your message sent as ANONYMOUS and a random link generated for you.
+				پیام شما به صورت ناشناس ارسال، و یک لینک منحصر به‌فرد به این منظور شاخته شد.
 			</p>
 			<p class="l-sent__message | l-sent__message--warning">
-				Make sure you wont lose the link. It's not recoverable.
+				<icon-alert class="l-sent__message-icon" />
+				مطمئن شوید لینک را جایی ذخیره خواهید کرد.
+				<br />
+				در صورت از دست دادن لینک، راهی برای رسیدن به این گفت‌و‌گو نخواهید داشت.
 			</p>
 			<div class="l-sent__link-holder">
 				<router-link
@@ -46,11 +49,13 @@
 
 <script>
 import Keynote from './Keynote.vue';
+import IconAlert from './icons/Alert.vue';
 
 export default {
 	name: 'CreatedConversation',
 	components: {
-		Keynote
+		Keynote,
+		IconAlert
 	},
 	props: ['conversationId'],
 	data() {
@@ -79,12 +84,24 @@ export default {
 	}
 
 	&__message {
+		display: flex;
+		align-items: center;
 		align-self: flex-start;
+		margin-top: $gutter--thin;
 
 		&--warning {
-			padding: 0.5em;
-			background-color: mix(white, black, 90%);
+			font-size: ms(-1);
+			font-weight: 500;
+			color: $red;
+			background-color: $white-1;
+			line-height: 2;
+			padding: 1em;
 		}
+	}
+
+	&__message-icon {
+		font-size: ms(2);
+		margin-left: 0.5em;
 	}
 
 	&__link-holder {

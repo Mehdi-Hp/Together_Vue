@@ -4,7 +4,10 @@
 		@submit.prevent
 	>
 		<div class="o-message-sender__main">
-			<div class="o-message-sender__row">
+			<div
+				class="o-message-sender__row"
+				v-if="mode === 'expand'"
+			>
 				<dropdown
 					class="o-message-sender__dropdown"
 					:state="dropdown.category"
@@ -41,7 +44,10 @@
 					</template>
 				</dropdown>
 			</div>
-			<div class="o-message-sender__row">
+			<div
+				class="o-message-sender__row"
+				v-if="mode === 'expand'"
+			>
 				<div class="o-message-sender__emoji-toggler">
 					<div class="o-message-sender__emoji-toggler-icon"></div>
 				</div>
@@ -54,16 +60,46 @@
 				/>
 			</div>
 			<div class="o-message-sender__row">
+				<div
+					class="o-message-sender__emoji-toggler"
+					v-if="mode === 'mini'"
+				>
+					<div class="o-message-sender__emoji-toggler-icon"></div>
+				</div>
 				<textarea
 					placeholder="متن پیام"
 					class="o-message-sender__textarea"
+					:class="{
+						'o-message-sender__textarea--to-center': mode === 'mini'
+					}"
 					name="text"
 					v-model="message.text"
 					@input="calcHeight"
 					ref="text"
 				></textarea>
+				<div
+					class="o-message-sender__controls"
+					:class="{
+						'o-message-sender__controls--dont-grow': mode === 'mini'
+					}"
+					v-if="mode === 'mini'"
+				>
+					<v-button
+						mode="normal"
+						@click="send"
+						class="o-message-sender__send"
+						:class="{
+							'o-message-sender__send--is-showing': validation.isPassed('message.text')
+						}"
+					>
+						ارسال
+					</v-button>
+				</div>
 			</div>
-			<div class="o-message-sender__row">
+			<div
+				class="o-message-sender__row"
+				v-if="mode === 'expand'"
+			>
 				<dropdown
 					class="o-message-sender__dropdown"
 					:state="dropdown.assignee"
@@ -107,21 +143,22 @@
 						</ul>
 					</template>
 				</dropdown>
+				<div
+					class="o-message-sender__controls"
+					v-if="mode === 'expand'"
+				>
+					<v-button
+						mode="normal"
+						@click="send"
+						class="o-message-sender__send"
+						:class="{
+							'o-message-sender__send--is-showing': !hasError && isTouched
+						}"
+					>
+						ایجاد گفت‌وگو
+					</v-button>
+				</div>
 			</div>
-		</div>
-		<div class="o-message-sender__extra">
-		</div>
-		<div class="o-message-sender__controls">
-			<v-button
-				mode="normal"
-				@click="send"
-				class="o-message-sender__send"
-				:class="{
-					'o-message-sender__send--is-showing': !hasError && isTouched
-				}"
-			>
-				ایجاد گفت‌وگو
-			</v-button>
 		</div>
 	</form>
 </template>
@@ -138,13 +175,13 @@ export default {
 		Dropdown,
 		IconPerson
 	},
-	props: [],
+	props: ['mode'],
 	data() {
 		return {
 			message: {
 				title: null,
 				text: null,
-				mood: null,
+				mood: 1,
 				assignee: null,
 				category: null
 			},
@@ -202,26 +239,21 @@ export default {
 		},
 		send() {
 			this.$validate();
-			if (!this.hasError) {
-				this.$store
-					.dispatch('createConversation', {
-						title: this.message.title,
-						description: this.message.description,
-						typeId: this.message.category,
-						assigneeId: this.message.assignee
-					})
-					.then((conversationId) => {
-						this.$router.push({
-							name: 'created',
-							params: {
-								conversationId
-							}
-						});
-					})
-					.catch((error) => {
-						console.error(error);
-					});
+			if (this.mode === 'mini' && this.validation.isPassed('message.text')) {
+				this.$emit('send', {
+					text: this.message.text
+				});
+			} else if (!this.hasError) {
+				this.$emit('send', {
+					title: this.message.title,
+					description: this.message.text,
+					typeId: this.message.category,
+					assigneeId: this.message.assignee
+				});
 			}
+			this.message.text = null;
+			this.$validate();
+			this.calcHeight();
 		}
 	},
 	validators: {
@@ -310,6 +342,10 @@ export default {
 			color: $black-6;
 			font-weight: 300;
 		}
+
+		&--to-center {
+			padding-top: 1.25em;
+		}
 	}
 
 	&__extra {
@@ -382,7 +418,14 @@ export default {
 	&__controls {
 		display: flex;
 		justify-content: flex-end;
-		margin-top: $gutter;
+		flex-grow: 1;
+		align-items: center;
+		padding: $gutter--thin;
+
+		&--dont-grow {
+			flex-grow: 0;
+			align-items: flex-start;
+		}
 	}
 
 	&__send {

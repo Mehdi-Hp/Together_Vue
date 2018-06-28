@@ -124,19 +124,28 @@ export default {
 		appendMessage(message) {
 			this.data.events.unshift(message);
 		},
-		makeMessageSettled() {
-			const messageToSettle = this.data.events.find((event) => {
-				return event.notSettledYet;
-			});
+		makeMessageSettled(eventIndex) {
+			let messageToSettle;
+			if (eventIndex) {
+				messageToSettle = this.data.events[eventIndex];
+			} else {
+				messageToSettle = this.data.events.find((event) => {
+					return event.notSettledYet;
+				});
+			}
 			messageToSettle.notSettledYet = false;
 		},
-		errorUnsettledMessage(errorMessage) {
-			const messageToSettle = this.data.events.find((event) => {
-				return event.notSettledYet;
-			});
-			messageToSettle.notSettledYet = true;
-			this.$set(messageToSettle, 'error', errorMessage);
-			console.log(messageToSettle);
+		errorUnsettledMessage({ error, messageIndex }) {
+			let messageToSettle;
+			if (typeof messageIndex !== 'undefined') {
+				messageToSettle = this.data.events[messageIndex];
+			} else {
+				messageToSettle = this.data.events.find((event) => {
+					return event.notSettledYet;
+				});
+			}
+			messageToSettle.notSettledYet = false;
+			this.$set(messageToSettle, 'error', error);
 		}
 	}
 };
@@ -186,9 +195,7 @@ export default {
 	&__current-state {
 		display: flex;
 		align-items: center;
-		background-color: $white-6;
 		border-radius: 5px;
-		padding: 0.5em;
 		font-weight: 500;
 		color: $black-4;
 	}
