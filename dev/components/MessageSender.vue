@@ -360,6 +360,7 @@ export default {
 		background-color: $white-1;
 		border-radius: 10em;
 		padding: 0.5em 1em;
+		height: 2em;
 		margin-left: $ant-gutter;
 		margin: $gutter--thin;
 	}
@@ -393,13 +394,13 @@ export default {
 		font-size: ms(-1);
 		color: $black-3;
 		background-color: $white-1;
+		border-top: 1px solid $white-2;
 		padding: 1em 0;
-		padding-top: 0;
 		box-sizing: border-box;
 		position: absolute;
 		top: 3em;
 		width: 10em;
-		border-radius: 5px;
+		border-radius: 0 0 5px 5px;
 		z-index: g-index('mountain');
 	}
 
@@ -411,7 +412,7 @@ export default {
 		cursor: pointer;
 
 		&:hocus {
-			background-color: $white-1;
+			background-color: $white-2;
 		}
 	}
 

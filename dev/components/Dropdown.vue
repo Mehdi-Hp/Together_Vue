@@ -25,6 +25,7 @@
 			<div
 				class="m-dropdown__after"
 				:class="{
+					'm-dropdown__after--is-hidden': showHide,
 					'm-dropdown__after--is-open': state
 				}"
 			>
@@ -154,7 +155,7 @@ export default {
 			this.elements.dropdownInner.style.width = this.styles.wanted.width;
 			this.elements.dropdownInner.style.height = this.styles.wanted.height;
 			this.elements.dropdownInner.style.borderRadius = this.styles.wanted.borderRadius;
-			this.elements.dropdownInner.style.backgroundColor = this.styles.wanted.backgroundColor;
+			this.elements.dropdownInner.style.backgroundColor = this.styles.wanted.background;
 		},
 		openState() {
 			this.$emit('toggleState', true);
@@ -203,6 +204,17 @@ export default {
 		box-sizing: content-box;
 		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0);
 		cursor: default;
+		transition: opacity 0.15s;
+		pointer-events: none;
+
+		&--is-hidden {
+			opacity: 0;
+		}
+
+		&--is-vidible {
+			opacity: 1;
+			pointer-events: all;
+		}
 	}
 
 	&__icon {

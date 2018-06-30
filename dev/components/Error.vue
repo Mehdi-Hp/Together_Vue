@@ -2,10 +2,10 @@
 	<section class="l-error">
 		<div class="l-error__status">
 			<h2 class="l-error__status-number">
-				{{ status }}
+				{{ getStatus }}
 			</h2>
 			<span class="l-error__status-message">
-				{{ message }}
+				{{ getMessage }}
 			</span>
 		</div>
 		<div class="l-error__ctas">
@@ -32,7 +32,14 @@ export default {
 	data() {
 		return {};
 	},
-	computed: {}
+	computed: {
+		getStatus() {
+			return this.status || 404;
+		},
+		getMessage() {
+			return this.message || 'صفحه درخواستی شما پیدا نشد.';
+		}
+	}
 };
 </script>
 

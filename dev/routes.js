@@ -10,6 +10,9 @@ const CreatedConversation = () => {
 const Conversation = () => {
 	return import('./components/Conversation.vue');
 };
+const Conversations = () => {
+	return import('./components/Conversations.vue');
+};
 const Search = () => {
 	return import('./components/Search.vue');
 };
@@ -35,6 +38,10 @@ export default [
 		name: 'created',
 		component: CreatedConversation,
 		props: true
+	},
+	{
+		path: '/conversations',
+		component: Conversations
 	},
 	{
 		path: '/conversation/:id',

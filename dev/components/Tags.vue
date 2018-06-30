@@ -22,10 +22,11 @@
 				:class="{
 					'o-tags__new--is-disabled': allSelected
 				}"
-				v-if="$store.state.user.role === 'agent'"
 				:state="dropdownState"
-				:disabled="allSelected"
+				:show-hide="true"
 				@toggleState="(newState) => { dropdownState = newState }"
+				v-if="$store.state.user.employeeId"
+				:disabled="allSelected"
 			>
 				<template slot="icon">
 					<icon-plus
@@ -126,17 +127,16 @@ export default {
 		align-items: center;
 		background-color: $main-color;
 		border-radius: 50%;
-		width: 1.8rem;
-		height: 1.8rem;
-		padding: 0.9em;
+		size: 1.7em;
+		padding: 0.3em;
 
 		&:hocus {
 			background-color: shade($main-color, 10%);
 		}
 
 		&--is-disabled {
-			background-color: $white-3;
 			pointer-events: none;
+			opacity: 0.2;
 
 			&:hocus {
 				background-color: $white-3;
@@ -145,9 +145,11 @@ export default {
 	}
 
 	&__new-icon {
-		size: 100%;
-		stroke-width: 0.5em;
+		stroke-width: 0.3em;
 		color: white;
+		position: relative;
+		top: 0;
+		right: 1px;
 
 		&--is-disabled {
 			color: $white-5;
@@ -159,21 +161,27 @@ export default {
 		flex-direction: column;
 		font-size: ms(-1);
 		color: $black-3;
-		background-color: white;
-		padding: 1rem 0;
+		background-color: $white;
+		border-top: 1px solid $white-2;
+		padding: 1em 0;
+		box-sizing: border-box;
+		position: absolute;
+		width: 10em;
+		border-radius: 0 0 5px 5px;
+		z-index: g-index('mountain');
 	}
 
 	&__new-item {
-		display: flex;
-		align-items: center;
-		white-space: nowrap;
 		max-height: 0;
 		max-width: 0;
 		opacity: 0;
 		margin-bottom: 0;
-		padding: 0;
 		transition-duration: 0.1s;
 		transition-property: max-width, max-height, padding, margin;
+		align-items: center;
+		white-space: nowrap;
+		cursor: pointer;
+		display: none;
 
 		&:hocus {
 			background-color: $white-1;
@@ -193,6 +201,7 @@ export default {
 			max-height: 100vh;
 			max-width: 100vw;
 			opacity: 1;
+			display: flex;
 		}
 	}
 }

@@ -7,8 +7,6 @@
 			'm-tag--is-visible': data.isSelected,
 			'm-tag--is-anonym': $store.state.user.role !== 'agent'
 		}"
-		@mouseover="isHovered = true"
-		@mouseleave="isHovered = false"
 	>
 		<span
 			class="m-tag__text"
@@ -27,6 +25,8 @@
 			}"
 			v-if="$store.state.user.role === 'agent'"
 			@click="remove"
+			@mouseover="isHovered = true"
+			@mouseleave="isHovered = false"
 		>
 			<icon-close
 				class="m-tag__remove-icon"
@@ -166,7 +166,7 @@ $tag-height: 1.8rem;
 		stroke-width: 0.75em;
 
 		&--is-hovered {
-			stroke-width: 0.85em;
+			stroke-width: 1.5em;
 		}
 
 		&--is-removing {
