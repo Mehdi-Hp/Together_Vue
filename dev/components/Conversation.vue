@@ -50,6 +50,7 @@
 						<tags
 							class="l-conversation__tags"
 							:tags="data.tags"
+							v-if="$store.getters.isEmployee"
 						>
 						</tags>
 					</div>
