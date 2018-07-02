@@ -2,6 +2,7 @@
 	<form
 		class="o-message-sender"
 		@submit.prevent
+		autocomplete="off"
 	>
 		<div class="o-message-sender__main">
 			<div
@@ -57,6 +58,7 @@
 					name="title"
 					placeholder="تیتر"
 					v-model="message.title"
+					autocomplete="off"
 				/>
 			</div>
 			<div class="o-message-sender__row">
