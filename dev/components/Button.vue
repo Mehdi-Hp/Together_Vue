@@ -8,15 +8,24 @@
 		}"
 		@click="$emit('click')"
 	>
-		<slot>
-		</slot>
+		<icon-loader
+			class="a-button__icon"
+			v-if="isLoading"
+			:animate="isLoading"
+		/>
+		<slot></slot>
 	</button>
 </template>
 
 <script>
+import IconLoader from './icons/MaterialLoadSpinner.vue';
+
 export default {
 	name: 'Button',
-	props: ['mode'],
+	components: {
+		IconLoader
+	},
+	props: ['mode', 'isLoading'],
 	data() {
 		return {};
 	}
@@ -71,6 +80,10 @@ export default {
 		&:hocus {
 			background: $white-3;
 		}
+	}
+
+	&__icon {
+		margin-left: 0.5em;
 	}
 }
 </style>

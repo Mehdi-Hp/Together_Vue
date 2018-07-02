@@ -14,6 +14,7 @@
 					class="o-messages__message-sender"
 					mode="mini"
 					@send="sendMessage"
+					:is-busy="isBusy"
 				/>
 			</form>
 			<section
@@ -54,6 +55,7 @@ export default {
 	props: ['events', 'fieldOnly'],
 	data() {
 		return {
+			isBusy: false,
 			text: null
 		};
 	},
@@ -66,6 +68,7 @@ export default {
 	},
 	methods: {
 		sendMessage({ text, mood }) {
+			this.isBusy = true;
 			const message = {
 				text,
 				isCreatedByMyOwn: true,
@@ -81,11 +84,13 @@ export default {
 				.dispatch('createMessage', message)
 				.then((message) => {
 					setTimeout(() => {
+						this.isBusy = false;
 						this.$emit('messageSettled');
 					}, 2000);
 				})
 				.catch((error) => {
 					setTimeout(() => {
+						this.isBusy = false;
 						this.$emit('messageFailed', { error });
 					}, 2000);
 				});

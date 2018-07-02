@@ -13,6 +13,7 @@
 			class="l-new-conversation__message-sender"
 			mode="expand"
 			@send="createConversation"
+			:is-busy="isBusy"
 		/>
 	</section>
 </template>
@@ -32,7 +33,9 @@ export default {
 		MessageSender
 	},
 	data() {
-		return {};
+		return {
+			isBusy: false
+		};
 	},
 	computed: {
 		types() {
@@ -52,9 +55,11 @@ export default {
 	},
 	methods: {
 		createConversation(message) {
+			this.isBusy = true;
 			this.$store
 				.dispatch('createConversation', message)
 				.then((conversationId) => {
+					this.isBusy = true;
 					console.log(conversationId);
 					this.$router.push({
 						name: 'created',

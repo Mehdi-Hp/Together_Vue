@@ -93,6 +93,7 @@
 						:class="{
 							'o-message-sender__send--is-showing': validation.isPassed('message.text')
 						}"
+						:is-loading="isLoading"
 					>
 						ارسال
 					</v-button>
@@ -156,6 +157,7 @@
 						:class="{
 							'o-message-sender__send--is-showing': !hasError && isTouched
 						}"
+						:is-loading="isBusy"
 					>
 						ایجاد گفت‌وگو
 					</v-button>
@@ -177,7 +179,7 @@ export default {
 		Dropdown,
 		IconPerson
 	},
-	props: ['mode'],
+	props: ['mode', 'isBusy'],
 	data() {
 		return {
 			message: {
