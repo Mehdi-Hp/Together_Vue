@@ -178,12 +178,12 @@ export default {
 					});
 			});
 		},
-		markConversationAsRead({ state, commit }, { conversationId }) {
+		markConversationAsRead({ state, commit }, conversationId) {
 			Vue.$axios
 				.patch(`conversations/${conversationId}`, {
-					op: 'add',
-					path: 'tag'
-					// value: tagId
+					op: 'replace',
+					path: 'state',
+					value: 'read'
 				})
 				.then((response) => {})
 				.catch(({ response }) => {

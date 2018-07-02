@@ -92,6 +92,7 @@ export default {
 			.dispatch('getConversation', this.$route.params.id)
 			.then((conversation) => {
 				this.data = conversation;
+				this.$store.dispatch('markConversationAsRead', this.data.id);
 			})
 			.catch((error) => {
 				console.error(error);

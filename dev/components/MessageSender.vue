@@ -93,7 +93,7 @@
 						:class="{
 							'o-message-sender__send--is-showing': validation.isPassed('message.text')
 						}"
-						:is-loading="isLoading"
+						:is-loading="isBusy"
 					>
 						ارسال
 					</v-button>

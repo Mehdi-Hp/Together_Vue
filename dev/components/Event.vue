@@ -94,7 +94,7 @@
 		</div>
 		<span
 			class="m-event__content | m-event__content--plain"
-			v-if="data.type.toLowerCase() !== 'message'"
+			v-if="data.type.toLowerCase() !== 'message' && data.type.toLowerCase() === 'created'"
 		>
 			{{ persianType(data.type) }} در {{ persianDate(data.time) }}
 		</span>

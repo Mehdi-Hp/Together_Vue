@@ -64,17 +64,7 @@ export default {
 				if (response.status === 401) {
 					console.log('Unauthorized!');
 					this.$ls.remove('token');
-					const {
-						currentRoute: { fullPath }
-					} = this.$router;
-					this.$router.push({
-						name: 'login',
-						params: {
-							currentRoute: fullPath
-						}
-					});
-				} else if (response.status === 404) {
-					console.log('404 Not found!');
+					this.$store.dispatch('getToken');
 				}
 				return Promise.reject(response);
 			}
@@ -88,6 +78,8 @@ export default {
 				employeeId: decodedUser.EmployeeId,
 				role: decodedUser.Title
 			});
+		} else {
+			this.$store.dispatch('getToken');
 		}
 
 		this.$bus.$on('error', ({ status, message }) => {
