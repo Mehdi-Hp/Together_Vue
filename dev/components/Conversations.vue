@@ -13,7 +13,7 @@
 			<header class="l-conversations__header">
 				<span class="l-conversations__text | l-conversations__text--badge | l-conversations__text--badge--is-header"></span>
 				<span class="l-conversations__text | l-conversations__text--title"></span>
-				<span class="l-conversations__text"></span>
+				<span class="l-conversations__text | l-conversations__text--type"></span>
 				<span
 					class="l-conversations__text | l-conversations__text--time"
 					@click="() => { sortedBy = 'creationTime'; sortOrder = oppositeOrder; }"
@@ -203,11 +203,13 @@ export default {
 
 		&--title {
 			color: $green;
-			flex-grow: 2;
+			flex-grow: 3;
 		}
 
 		&--type {
 			font-size: ms(-1);
+			flex-grow: 0;
+			max-width: 80px;
 		}
 
 		&--time {
