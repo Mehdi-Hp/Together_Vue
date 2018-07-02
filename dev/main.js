@@ -6,12 +6,15 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import SimpleVueValidation from 'simple-vue-validator';
 import VueLocalStorage from 'vue-ls';
+import VueVisible from 'vue-visible';
 import App from './App.vue';
 import Routes from './routes';
 import store from './store/index';
 import EventBus from './EventBus';
 
 import Keynote from './components/Keynote.vue';
+
+Vue.use(VueVisible);
 
 Vue.use(VueAxios, axios);
 Object.defineProperty(Vue, '$axios', { value: axios });

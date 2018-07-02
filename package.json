@@ -20,6 +20,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cross-env": "^5.1.6",
+    "fast-sort": "^1.5.1",
     "jwt-decode": "^2.2.0",
     "passport-local": "^1.0.0",
     "persian-date": "^1.0.5",
@@ -36,6 +37,7 @@
     "vue-ls": "^3.0.5",
     "vue-router": "^3.0.1",
     "vue-touch-ripple": "^3.0.0",
+    "vue-visible": "^1.0.2",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

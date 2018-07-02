@@ -30,13 +30,13 @@
 			</p>
 			<div class="l-sent__link-holder">
 				<router-link
-					:to="`/conversation/${conversationId}`"
+					:to="`/conversations/${conversationId}`"
 					class="l-sent__link"
 				>
 					{{ conversationId }}
 				</router-link>
 				<router-link
-					:to="`/conversation/${conversationId}`"
+					:to="`/conversations/${conversationId}`"
 					class="l-sent__open"
 				>
 					Go

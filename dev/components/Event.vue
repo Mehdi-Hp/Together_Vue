@@ -134,9 +134,9 @@ export default {
 			const today = new PersianDate();
 			const eventDate = new PersianDate(new Date(this.data.time).getTime());
 			if (eventDate.isSameDay(today)) {
-				return new PersianDate(this.data.time).format('HH:mm');
+				return new PersianDate(new Date(this.data.time).getTime()).format('HH:mm');
 			}
-			return this.persianDate(this.data.time);
+			return this.persianDate(new Date(this.data.time).getTime());
 		}
 	},
 	methods: {

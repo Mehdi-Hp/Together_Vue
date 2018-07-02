@@ -5,7 +5,14 @@ export default {
 		role: null,
 		email: null
 	},
-	getters: {},
+	getters: {
+		isAdmin(state) {
+			return state.role === 'agent';
+		},
+		isEmployee(state) {
+			return !!state.employeeId;
+		}
+	},
 	mutations: {
 		setUser(state, { role, employeeId, name, email }) {
 			state.role = role.toLowerCase();

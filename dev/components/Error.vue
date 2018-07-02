@@ -9,23 +9,41 @@
 			</span>
 		</div>
 		<div class="l-error__ctas">
-			<a
-				class="l-error__cta"
-				href="/"
+			<router-link
+				to="/conversations"
+				v-if="$store.state.user.employeeId"
 			>
-				<icon-list class="l-error__cta-icon | l-error__cta-icon--list"></icon-list>
-				لیست گفت‌وگوها
-			</a>
+				<v-button
+					mode="normal"
+					class="l-error__cta"
+				>
+					<icon-list class="l-error__cta-icon | l-error__cta-icon--list"></icon-list>
+					لیست گفت‌وگوها
+				</v-button>
+			</router-link>
+			<router-link
+				to="/new"
+				v-if="!$store.state.user.employeeId"
+			>
+				<v-button
+					mode="normal"
+					class="l-error__cta"
+				>
+					گفت‌وگوی جدید
+				</v-button>
+			</router-link>
 		</div>
 	</section>
 </template>
 
 <script>
 import IconList from './icons/List.vue';
+import VButton from './Button.vue';
 
 export default {
 	name: 'Error',
 	components: {
+		VButton,
 		IconList
 	},
 	props: ['status', 'message'],
@@ -57,11 +75,12 @@ export default {
 		font-size: ms(5);
 		text-decoration: underline;
 		color: shade($red, 30%);
-		font-weight: 900;
+		font-weight: 100;
 	}
 
 	&__status-message {
-		font-weight: 300;
+		font-weight: 500;
+		color: $black-6;
 	}
 
 	&__ctas {
@@ -70,12 +89,6 @@ export default {
 	}
 
 	&__cta {
-		display: flex;
-		align-items: center;
-		background-color: $white-2;
-		color: $black-4;
-		padding: 0.5em 1em;
-		font-weight: 500;
 	}
 
 	&__cta-icon {

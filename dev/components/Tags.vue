@@ -25,7 +25,6 @@
 				:state="dropdownState"
 				:show-hide="true"
 				@toggleState="(newState) => { dropdownState = newState }"
-				v-if="$store.state.user.employeeId"
 				:disabled="allSelected"
 			>
 				<template slot="icon">

@@ -1,11 +1,19 @@
 import Vue from 'vue';
+import sort from 'fast-sort';
 
 export default {
 	state: {
-		data: {}
+		data: {},
+		list: []
 	},
 	getters: {},
 	mutations: {
+		listConversations(state, conversations) {
+			const sortedConversations = sort(conversations).asc((conversation) => {
+				return conversation.time;
+			});
+			state.list = sortedConversations;
+		},
 		addConversation(state, conversation) {
 			state.data = conversation;
 		},
@@ -20,13 +28,26 @@ export default {
 				return tag.id === tagId;
 			});
 			state.data.tags[tagIndexToUnselect].isSelected = false;
+		},
+		sortConversationsList(state, { field, order }) {
+			let sortedConversations;
+			if (order === 'asc') {
+				sortedConversations = sort(state.list).asc((conversation) => {
+					return conversation.time;
+				});
+			} else {
+				sortedConversations = sort(state.list).desc((conversation) => {
+					return conversation.time;
+				});
+			}
+			state.list = sortedConversations;
 		}
 	},
 	actions: {
 		createConversation({ state, commit }, { title, description, typeId, assigneeId }) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
-					.post('/conversation', {
+					.post('/conversations', {
 						title,
 						description,
 						categoryId: typeId,
@@ -48,10 +69,20 @@ export default {
 					});
 			});
 		},
+		getConversations({ state, commit }) {
+			return new Promise((resolve, reject) => {
+				Vue.$axios
+					.get(`/conversations`)
+					.then(({ data: { data: conversations } }) => {
+						commit('listConversations', conversations);
+					})
+					.catch((response) => {});
+			});
+		},
 		getConversation({ state, commit }, conversationId) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
-					.get(`/conversation/${conversationId}`)
+					.get(`/conversations/${conversationId}`)
 					.then(({ data: { id, number, subject, type, state, tags, assignee, creationDate, events } }) => {
 						const newConversation = {
 							id,
@@ -88,7 +119,7 @@ export default {
 					conversationId
 				});
 				Vue.$axios
-					.post('/conversation/message', {
+					.post('/conversations/messages', {
 						text,
 						replyToMessageId,
 						mood: null,
@@ -107,7 +138,7 @@ export default {
 		addConversationTag({ state, commit }, { tagId, conversationId }) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
-					.patch(`conversation/${conversationId}`, {
+					.patch(`conversations/${conversationId}`, {
 						op: 'add',
 						path: 'tag',
 						value: tagId
@@ -129,7 +160,7 @@ export default {
 				});
 				state.data.tags[tagIndexToUnselect].isRemoving = true;
 				Vue.$axios
-					.patch(`conversation/${conversationId}`, {
+					.patch(`conversations/${conversationId}`, {
 						op: 'remove',
 						path: 'tag',
 						value: tagId
@@ -146,6 +177,18 @@ export default {
 						console.error(response);
 					});
 			});
+		},
+		markConversationAsRead({ state, commit }, { conversationId }) {
+			Vue.$axios
+				.patch(`conversations/${conversationId}`, {
+					op: 'add',
+					path: 'tag'
+					// value: tagId
+				})
+				.then((response) => {})
+				.catch(({ response }) => {
+					console.error(response);
+				});
 		}
 	}
 };

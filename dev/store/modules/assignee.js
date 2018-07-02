@@ -13,7 +13,7 @@ export default {
 	actions: {
 		getAllAssignees({ state, commit }) {
 			Vue.$axios
-				.get('/conversationassignee')
+				.get('/conversationassignees')
 				.then((response) => {
 					commit('setAssignees', response.data);
 				})

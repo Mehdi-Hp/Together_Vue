@@ -222,8 +222,10 @@ export default {
 			});
 		},
 		calcHeight() {
-			this.$refs.text.style.height = '0px';
-			this.$refs.text.style.height = `${this.$refs.text.scrollHeight}px`;
+			this.$nextTick(() => {
+				this.$refs.text.style.height = '0px';
+				this.$refs.text.style.height = `${this.$refs.text.scrollHeight}px`;
+			});
 		},
 		assigneeFromId(id) {
 			const assigneeName = this.assignees.find((assignee) => {

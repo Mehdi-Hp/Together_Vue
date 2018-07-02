@@ -13,7 +13,7 @@ export default {
 	actions: {
 		getAllTypes({ state, commit }) {
 			Vue.$axios
-				.get('/conversationtype')
+				.get('/conversationtypes')
 				.then((response) => {
 					commit('setTypes', response.data);
 				})

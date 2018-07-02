@@ -18,7 +18,10 @@
 					گفت‌و‌گوی جدید
 				</v-button>
 			</router-link>
-			<router-link to="/login">
+			<router-link
+				to="/login"
+				v-if="!hasToken"
+			>
 				<v-button
 					class="l-start__login"
 					mode="nonsignificant"
@@ -42,6 +45,19 @@ export default {
 	},
 	data() {
 		return {};
+	},
+	computed: {
+		hasToken() {
+			return !!this.$ls.get('token');
+		},
+		isAdmin() {
+			return !!this.$store.state.user.employeeId;
+		}
+	},
+	mounted() {
+		if (this.isAdmin) {
+			this.$router.push('/conversations');
+		}
 	}
 };
 </script>

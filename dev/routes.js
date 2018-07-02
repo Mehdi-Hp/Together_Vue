@@ -44,7 +44,7 @@ export default [
 		component: Conversations
 	},
 	{
-		path: '/conversation/:id',
+		path: '/conversations/:id',
 		component: Conversation
 	},
 	{
