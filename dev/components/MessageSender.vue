@@ -255,7 +255,9 @@ export default {
 					assigneeId: this.message.assignee
 				});
 			}
-			this.message.text = null;
+			if (this.mode === 'mini') {
+				this.message.text = null;
+			}
 			this.$validate();
 			this.calcHeight();
 		}

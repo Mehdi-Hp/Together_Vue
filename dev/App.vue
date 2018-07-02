@@ -41,6 +41,13 @@ export default {
 			}
 		};
 	},
+	watch: {
+		$route(from, to) {
+			if (this.error.hasError) {
+				this.error.hasError = false;
+			}
+		}
+	},
 	created() {
 		this.error.hasError = false;
 	},
@@ -84,14 +91,12 @@ export default {
 		}
 
 		this.$bus.$on('error', ({ status, message }) => {
-			if (status !== 401) {
-				console.log(status);
-				this.error = {
-					hasError: true,
-					status,
-					message
-				};
-			}
+			console.log(status);
+			this.error = {
+				hasError: true,
+				status,
+				message
+			};
 		});
 
 		this.$store.dispatch('getAllTypes');

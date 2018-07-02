@@ -42,31 +42,30 @@ export default {
 			return this.$store.state.assignee.data;
 		}
 	},
-	created() {
-		this.$store.dispatch('getAllTypes');
-		this.$store.dispatch('getAllAssignees');
+	mounted() {
+		if (this.$store.getters.isEmployee) {
+			this.$bus.$emit('error', {
+				status: 401,
+				message: 'شما نمی‌توانید گفت‌وگویی را ایجاد کنید.'
+			});
+		}
 	},
 	methods: {
 		createConversation(message) {
-			this.$validate();
-			if (!this.validation.errors.length) {
-				this.$store
-					.dispatch('createConversation', message)
-					.then((conversationId) => {
-						console.log(conversationId);
-						this.$router.push({
-							name: 'created',
-							params: {
-								conversationId
-							}
-						});
-					})
-					.catch((error) => {
-						console.error(error);
+			this.$store
+				.dispatch('createConversation', message)
+				.then((conversationId) => {
+					console.log(conversationId);
+					this.$router.push({
+						name: 'created',
+						params: {
+							conversationId
+						}
 					});
-			} else {
-				console.error(this.validation.errors);
-			}
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		}
 	}
 };
