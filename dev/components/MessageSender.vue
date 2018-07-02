@@ -346,6 +346,10 @@ export default {
 		padding: $gutter--thin;
 		height: 3.8em;
 
+		&::-webkit-scrollbar {
+			width: 0 !important;
+		}
+
 		&::-webkit-input-placeholder {
 			color: $black-6;
 			font-weight: 300;
