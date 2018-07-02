@@ -67,7 +67,7 @@ export default {
 
 	&:before {
 		content: '';
-		position: absolute 0 0 -11em 0;
+		position: absolute 0 0 0 0;
 		background: url('../assets/images/bottom_circles.png');
 		background-repeat: no-repeat;
 		background-size: 45vw;
