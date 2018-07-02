@@ -344,6 +344,8 @@ export default {
 		color: $black-3;
 		height: calc(2.5em + #{$gutter--thin * 2});
 		padding: $gutter--thin;
+		height: 3.8em;
+
 		&::-webkit-input-placeholder {
 			color: $black-6;
 			font-weight: 300;
