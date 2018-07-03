@@ -49,8 +49,18 @@
 				class="o-message-sender__row"
 				v-if="mode === 'expand'"
 			>
-				<div class="o-message-sender__emoji-toggler">
-					<div class="o-message-sender__emoji-toggler-icon"></div>
+				<div
+					class="o-message-sender__emoji-toggler"
+					:class="{
+						'o-message-sender__emoji-toggler--is-active': emoji.selector,
+						'o-message-sender__emoji-toggler--is-selected': message.mood
+					}"
+				>
+					<img
+						class="o-message-sender__emoji-toggler-image"
+						:src="getSlecetedMoodImage"
+						@click="emoji.selector = !emoji.selector"
+					/>
 				</div>
 				<input
 					type="text"
@@ -62,11 +72,25 @@
 				/>
 			</div>
 			<div class="o-message-sender__row">
+				<emojies
+					class="o-message-sender__emojies"
+					:class="{
+						'o-message-sender__emojies--is-visible': emoji.selector
+					}"
+					:value="message.mood"
+					@change="selectMood"
+				/>
+			</div>
+			<div class="o-message-sender__row">
 				<div
 					class="o-message-sender__emoji-toggler"
 					v-if="mode === 'mini'"
 				>
-					<div class="o-message-sender__emoji-toggler-icon"></div>
+					<img
+						class="o-message-sender__emoji-toggler-image"
+						src="../assets/images/emoji.png"
+						@click="emoji.selector = !emoji.selector"
+					/>
 				</div>
 				<textarea
 					placeholder="متن پیام"
@@ -168,6 +192,7 @@
 </template>
 
 <script>
+import Emojies from './Emojies.vue';
 import VButton from './Button.vue';
 import Dropdown from './Dropdown.vue';
 import IconPerson from './icons/Person.vue';
@@ -175,6 +200,7 @@ import IconPerson from './icons/Person.vue';
 export default {
 	name: 'MessageSender',
 	components: {
+		Emojies,
 		VButton,
 		Dropdown,
 		IconPerson
@@ -185,13 +211,17 @@ export default {
 			message: {
 				title: null,
 				text: null,
-				mood: 1,
+				mood: null,
 				assignee: null,
 				category: null
 			},
 			dropdown: {
 				assignee: false,
 				category: false
+			},
+			emoji: {
+				selector: false,
+				isSelected: false
 			}
 		};
 	},
@@ -207,6 +237,19 @@ export default {
 		},
 		isTouched() {
 			return !!this.validation.touchedRecords.length;
+		},
+		getSlecetedMoodImage() {
+			const sources = {
+				1: '/images/emoji--happy.png',
+				2: '/images/emoji--gratefull.png',
+				3: '/images/emoji--cry.png',
+				4: '/images/emoji--frustrated.png',
+				5: '/images/emoji--angry.png'
+			};
+			if (this.message.mood) {
+				return sources[this.message.mood];
+			}
+			return '/images/emoji.png';
 		}
 	},
 	mounted() {
@@ -242,6 +285,10 @@ export default {
 				return category.id === id;
 			});
 			return categoryName.title;
+		},
+		selectMood(value) {
+			this.message.mood = value;
+			this.emoji.selector = false;
 		},
 		send() {
 			this.$validate();
@@ -313,7 +360,7 @@ export default {
 	}
 
 	&__textfield {
-		padding: 1.25em 0 $gutter--thin $gutter--thin;
+		padding: 0.75em 0 $gutter--thin $gutter--thin;
 		width: 100%;
 		border: none;
 		background: white;
@@ -328,12 +375,60 @@ export default {
 		padding-left: 0;
 		width: $ant-column;
 		margin-left: $ant-gutter;
+		transition: filter 0.15s, opacity 0.15s;
+		filter: grayscale(1);
+		opacity: 0.5;
+		cursor: pointer;
+
+		&:hocus {
+			filter: grayscale(0);
+			opacity: 1;
+		}
+
+		&--is-active {
+			filter: grayscale(0);
+			opacity: 1;
+		}
+
+		&--is-selected {
+			filter: grayscale(0);
+			opacity: 1;
+		}
 	}
 
-	&__emoji-toggler-icon {
+	&__emoji-toggler-image {
 		background: $white-1;
 		border-radius: 50%;
-		size: 40px;
+		size: 2em;
+	}
+
+	&__emojies {
+		position: relative;
+		transition: max-height 0.25s, padding 0.25s, opacity 0.25s;
+		max-height: 0;
+		padding: 0 $gutter--thin;
+		opacity: 0;
+		background-color: mix($white-1, white, 50%);
+		box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.08), inset 0 -10px 15px -10px rgba(0, 0, 0, 0.08);
+		will-change: max-height, padding;
+
+		&--is-visible {
+			max-height: 5em;
+			padding: $gutter--thin;
+			opacity: 1;
+		}
+
+		&:before {
+			content: '';
+			position: absolute;
+			bottom: calc(100% - 0.6em);
+			right: 1.4em;
+			size: 1.2em;
+			transform: rotateZ(45deg);
+			background-color: mix($white-1, white, 50%);
+			box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.08), inset 10px 0 15px -10px rgba(0, 0, 0, 0.08);
+			z-index: g-index('cloud');
+		}
 	}
 
 	&__textarea {
