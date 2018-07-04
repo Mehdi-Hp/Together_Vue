@@ -1,5 +1,8 @@
 <template>
-	<section class="l-start">
+	<section
+		class="l-start"
+		v-if="isAdmin"
+	>
 		<keynote class="l-start__keynote">
 			<template slot="title">
 				‌فرصت کاری

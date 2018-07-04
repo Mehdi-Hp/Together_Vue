@@ -107,7 +107,9 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
 	width: 100%;
+	min-height: 100vh;
 	background-color: shade(white, 2%);
 
 	&__header {
