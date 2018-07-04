@@ -14,11 +14,13 @@
 				</button>
 			</div>
 			<div class="l-conversation__content-holder">
-				<div class="l-conversation__emoji-holder">
+				<div
+					class="l-conversation__emoji-holder"
+				>
 					<img
 						class="l-conversation__emoji"
 						:src="getSlecetedMoodImage"
-						v-if="data.events[data.events.length - 2].mood"
+						v-if="data.events.length && data.events[data.events.length - 2].mood"
 					/>
 				</div>
 				<div class="l-conversation__content">
@@ -27,7 +29,7 @@
 							{{ data.title }}
 						</template>
 						<template slot="desc">
-							{{ data.events && data.events[data.events.length - 2].text }}
+							{{ data.events.length && data.events[data.events.length - 2].text }}
 						</template>
 					</keynote>
 					<div class="l-conversation__seat">
@@ -86,13 +88,17 @@ export default {
 	props: [],
 	data() {
 		return {
-			data: {},
+			data: {
+				events: []
+			},
 			notFound: false
 		};
 	},
 	computed: {
 		getSlecetedMoodImage() {
-			return getImageFromMood(this.data.events[this.data.events.length - 2].mood);
+			if (this.data.events.length) {
+				return getImageFromMood(this.data.events[this.data.events.length - 2].mood);
+			}
 		}
 	},
 	created() {
@@ -103,7 +109,6 @@ export default {
 				this.$store.dispatch('markConversationAsRead', this.data.id);
 			})
 			.catch((error) => {
-				console.error(error);
 				this.$bus.$emit('error', {
 					status: error.status,
 					message: error.status === 404 ? 'گفت‌وگوی مورد نظر شما پیدا نشد.' : error.statusText

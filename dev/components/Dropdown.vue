@@ -74,6 +74,9 @@ export default {
 		if (this.state) {
 			this.expand();
 		}
+		this.$bus.$on('dropdownDataUpdate', () => {
+			this.resetStyle();
+		});
 	},
 	methods: {
 		setElements() {

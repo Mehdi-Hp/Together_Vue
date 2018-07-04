@@ -257,6 +257,14 @@ export default {
 			return getImageFromMood(this.message.mood);
 		}
 	},
+	watch: {
+		assignees() {
+			this.$bus.$emit('dropdownDataUpdate');
+		},
+		categories() {
+			this.$bus.$emit('dropdownDataUpdate');
+		}
+	},
 	mounted() {
 		this.$validate();
 	},
