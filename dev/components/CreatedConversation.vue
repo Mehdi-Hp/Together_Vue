@@ -57,9 +57,11 @@ export default {
 		Keynote,
 		IconAlert
 	},
-	props: ['conversationId'],
+	// props: ['conversationId'],
 	data() {
-		return {};
+		return {
+			conversationId: '070bb7a9-d05a-4181-b11f-1a0c520d69be'
+		};
 	}
 };
 </script>

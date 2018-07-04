@@ -16,11 +16,13 @@
 			<div class="l-conversation__content-holder">
 				<div
 					class="l-conversation__emoji-holder"
+					:class="{
+						'l-conversation__emoji-holder--is-null': data.events.length && data.events[data.events.length - 2].mood === null
+					}"
 				>
 					<img
 						class="l-conversation__emoji"
 						:src="getSlecetedMoodImage"
-						v-if="data.events.length && data.events[data.events.length - 2].mood"
 					/>
 				</div>
 				<div class="l-conversation__content">
@@ -188,6 +190,11 @@ export default {
 		margin-left: $ant-gutter;
 		align-self: flex-start;
 		flex-shrink: 0;
+
+		&--is-null {
+			filter: grayscale(1);
+			opacity: 0.5;
+		}
 	}
 
 	&__emoji {
