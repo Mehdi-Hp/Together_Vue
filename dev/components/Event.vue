@@ -5,6 +5,7 @@
 			'm-event--for-me': data.isCreatedByMyOwn && data.type.toLowerCase() === 'message',
 			'm-event--has-error': data.error
 		}"
+		v-if="data.type.toLowerCase() === 'message' || data.type.toLowerCase() === 'created'"
 	>
 		<div
 			class="m-event__content"
@@ -15,10 +16,14 @@
 			v-if="data.type.toLowerCase() === 'message'"
 		>
 			<div class="m-event__information">
-				<div class="m-event__emoji-holder">
-					<div class="m-event__emoji">
-
-					</div>
+				<div
+					class="m-event__emoji-holder"
+					v-if="data.mood"
+				>
+					<img
+						class="m-event__emoji"
+						:src="getSlecetedMoodImage"
+					/>
 				</div>
 				<span
 					class="m-event__writer"
@@ -94,7 +99,7 @@
 		</div>
 		<span
 			class="m-event__content | m-event__content--plain"
-			v-if="data.type.toLowerCase() !== 'message' && data.type.toLowerCase() === 'created'"
+			v-if="data.type.toLowerCase() !== 'message'"
 		>
 			{{ persianType(data.type) }} در {{ persianDate(data.time) }}
 		</span>
@@ -102,6 +107,7 @@
 </template>
 
 <script>
+import getImageFromMood from '../services/getImageFromMood';
 import IconSeen from './icons/Seen.vue';
 import IconCheckmark from './icons/Checkmark.vue';
 import IconAlert from './icons/Alert.vue';
@@ -137,6 +143,9 @@ export default {
 				return new PersianDate(new Date(this.data.time).getTime()).format('HH:mm');
 			}
 			return this.persianDate(new Date(this.data.time).getTime());
+		},
+		getSlecetedMoodImage() {
+			return getImageFromMood(this.data.mood);
 		}
 	},
 	methods: {

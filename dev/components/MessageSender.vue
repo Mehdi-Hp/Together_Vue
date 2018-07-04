@@ -71,11 +71,17 @@
 					autocomplete="off"
 				/>
 			</div>
-			<div class="o-message-sender__row">
+			<div
+				class="o-message-sender__row"
+				:class="{
+					'o-message-sender__row--mini-emoji': mode === 'mini'
+				}"
+			>
 				<emojies
 					class="o-message-sender__emojies"
 					:class="{
-						'o-message-sender__emojies--is-visible': emoji.selector
+						'o-message-sender__emojies--is-visible': emoji.selector,
+						'o-message-sender__emojies--mini-mode': mode === 'mini'
 					}"
 					:value="message.mood"
 					@change="selectMood"
@@ -84,11 +90,15 @@
 			<div class="o-message-sender__row">
 				<div
 					class="o-message-sender__emoji-toggler"
+					:class="{
+						'o-message-sender__emoji-toggler--is-active': emoji.selector,
+						'o-message-sender__emoji-toggler--is-selected': message.mood
+					}"
 					v-if="mode === 'mini'"
 				>
 					<img
 						class="o-message-sender__emoji-toggler-image"
-						src="../assets/images/emoji.png"
+						:src="getSlecetedMoodImage"
 						@click="emoji.selector = !emoji.selector"
 					/>
 				</div>
@@ -192,6 +202,8 @@
 </template>
 
 <script>
+import { directive as onClickaway } from 'vue-clickaway';
+import getImageFromMood from '../services/getImageFromMood';
 import Emojies from './Emojies.vue';
 import VButton from './Button.vue';
 import Dropdown from './Dropdown.vue';
@@ -199,6 +211,9 @@ import IconPerson from './icons/Person.vue';
 
 export default {
 	name: 'MessageSender',
+	directives: {
+		onClickaway
+	},
 	components: {
 		Emojies,
 		VButton,
@@ -239,17 +254,7 @@ export default {
 			return !!this.validation.touchedRecords.length;
 		},
 		getSlecetedMoodImage() {
-			const sources = {
-				1: '/images/emoji--happy.png',
-				2: '/images/emoji--gratefull.png',
-				3: '/images/emoji--cry.png',
-				4: '/images/emoji--frustrated.png',
-				5: '/images/emoji--angry.png'
-			};
-			if (this.message.mood) {
-				return sources[this.message.mood];
-			}
-			return '/images/emoji.png';
+			return getImageFromMood(this.message.mood);
 		}
 	},
 	mounted() {
@@ -294,14 +299,16 @@ export default {
 			this.$validate();
 			if (this.mode === 'mini' && this.validation.isPassed('message.text')) {
 				this.$emit('send', {
-					text: this.message.text
+					text: this.message.text,
+					mood: this.message.mood
 				});
 			} else if (!this.hasError) {
 				this.$emit('send', {
 					title: this.message.title,
 					description: this.message.text,
 					typeId: this.message.category,
-					assigneeId: this.message.assignee
+					assigneeId: this.message.assignee,
+					mood: this.message.mood
 				});
 			}
 			if (this.mode === 'mini') {
@@ -357,6 +364,10 @@ export default {
 		&:last-of-type {
 			border-bottom: none;
 		}
+
+		&--mini-emoji {
+			order: 1;
+		}
 	}
 
 	&__textfield {
@@ -371,6 +382,10 @@ export default {
 	}
 
 	&__emoji-toggler {
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		flex-shrink: 0;
 		padding: $gutter--thin;
 		padding-left: 0;
 		width: $ant-column;
@@ -397,8 +412,6 @@ export default {
 	}
 
 	&__emoji-toggler-image {
-		background: $white-1;
-		border-radius: 50%;
 		size: 2em;
 	}
 
@@ -411,23 +424,31 @@ export default {
 		background-color: mix($white-1, white, 50%);
 		box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.08), inset 0 -10px 15px -10px rgba(0, 0, 0, 0.08);
 		will-change: max-height, padding;
-
-		&--is-visible {
-			max-height: 5em;
-			padding: $gutter--thin;
-			opacity: 1;
-		}
+		pointer-events: none;
 
 		&:before {
 			content: '';
 			position: absolute;
 			bottom: calc(100% - 0.6em);
-			right: 1.4em;
-			size: 1.2em;
+			right: 1.75em;
+			width: 1em;
+			height: 1em;
+			size: 1em;
 			transform: rotateZ(45deg);
 			background-color: mix($white-1, white, 50%);
 			box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.08), inset 10px 0 15px -10px rgba(0, 0, 0, 0.08);
 			z-index: g-index('cloud');
+		}
+
+		&--is-visible {
+			max-height: 5em;
+			padding: $gutter--thin;
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		&--mini-mode {
+			box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.08);
 		}
 	}
 
@@ -454,6 +475,7 @@ export default {
 
 		&--to-center {
 			padding-top: 1.25em;
+			padding-right: 0;
 		}
 	}
 

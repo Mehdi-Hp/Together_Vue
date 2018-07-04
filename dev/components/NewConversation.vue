@@ -48,7 +48,7 @@ export default {
 	mounted() {
 		if (this.$store.getters.isEmployee) {
 			this.$bus.$emit('error', {
-				status: 401,
+				status: 403,
 				message: 'شما نمی‌توانید گفت‌وگویی را ایجاد کنید.'
 			});
 		}

@@ -122,7 +122,7 @@ export default {
 					.post('/conversations/messages', {
 						text,
 						replyToMessageId,
-						mood: null,
+						mood,
 						conversationId
 					})
 					.then((response) => {

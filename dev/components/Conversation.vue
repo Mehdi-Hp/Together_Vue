@@ -15,9 +15,11 @@
 			</div>
 			<div class="l-conversation__content-holder">
 				<div class="l-conversation__emoji-holder">
-					<div class="l-conversation__emoji">
-
-					</div>
+					<img
+						class="l-conversation__emoji"
+						:src="getSlecetedMoodImage"
+						v-if="data.events[data.events.length - 2].mood"
+					/>
 				</div>
 				<div class="l-conversation__content">
 					<keynote class="l-conversation__keynote">
@@ -70,6 +72,7 @@
 </template>
 
 <script>
+import getImageFromMood from '../services/getImageFromMood';
 import Messages from './Messages.vue';
 import Tags from './Tags.vue';
 
@@ -86,6 +89,11 @@ export default {
 			data: {},
 			notFound: false
 		};
+	},
+	computed: {
+		getSlecetedMoodImage() {
+			return getImageFromMood(this.data.events[this.data.events.length - 2].mood);
+		}
 	},
 	created() {
 		this.$store
@@ -179,8 +187,6 @@ export default {
 
 	&__emoji {
 		size: ms(5);
-		border-radius: 50%;
-		background-color: $white-6;
 	}
 
 	&__content {
@@ -191,15 +197,19 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: $gutter--fat;
-		font-size: ms(-1);
+		margin-right: calc(#{$ant-column} + #{$ant-gutter});
+		justify-content: flex-start;
 	}
 
 	&__current-state {
 		display: flex;
 		align-items: center;
 		border-radius: 5px;
-		font-weight: 500;
-		color: $black-4;
+		font-weight: 400;
+		color: $black-3;
+		font-size: ms(-1);
+		background-color: $white-5;
+		padding: $gutter--thin / 2 $gutter--thin;
 	}
 
 	&__message-card {
