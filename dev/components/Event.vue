@@ -67,14 +67,14 @@
 						:class="{
 							'm-event__status-icon--for-me': data.isCreatedByMyOwn && data.type.toLowerCase() === 'message'
 						}"
-						v-else-if="!seen"
+						v-else-if="!data.isSeen"
 					/>
 					<icon-seen
 						class="m-event__status-icon"
 						:class="{
 							'm-event__status-icon--for-me': data.isCreatedByMyOwn && data.type.toLowerCase() === 'message'
 						}"
-						v-else-if="seen"
+						v-else-if="data.isSeen"
 					/>
 				</div>
 			</div>
@@ -131,9 +131,7 @@ export default {
 	},
 	props: ['data', 'index'],
 	data() {
-		return {
-			seen: true
-		};
+		return {};
 	},
 	computed: {
 		messageTime() {
