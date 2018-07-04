@@ -49,7 +49,7 @@
 			>
 				<span
 					class="l-conversations__text | l-conversations__text--badge"
-					v-visible="conversation.newMessagesCount"
+					v-if="conversation.newMessagesCount"
 				>
 					{{ getMessageCount(conversation.newMessagesCount) }}
 				</span>

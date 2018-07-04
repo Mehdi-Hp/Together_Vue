@@ -17,7 +17,7 @@
 				<div
 					class="l-conversation__emoji-holder"
 					:class="{
-						'l-conversation__emoji-holder--is-null': data.events.length && data.events[data.events.length - 2].mood === null
+						'l-conversation__emoji-holder--is-null': data.events.length && !data.events[data.events.length - 2].mood
 					}"
 				>
 					<img

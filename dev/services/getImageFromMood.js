@@ -1,5 +1,6 @@
 export default (moodId) => {
 	const imageSource = {
+		0: '/images/emoji.png',
 		1: '/images/emoji--happy.png',
 		2: '/images/emoji--gratefull.png',
 		3: '/images/emoji--cry.png',
