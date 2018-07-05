@@ -27,35 +27,40 @@ export default [
 	{
 		path: '/',
 		alias: '/index',
-		component: Start
+		component: Start,
+		name: 'start'
 	},
 	{
 		path: '/new',
-		component: NewConversation
+		component: NewConversation,
+		name: 'new'
 	},
 	{
 		path: '/created',
-		name: 'created',
 		component: CreatedConversation,
-		props: true
+		props: true,
+		name: 'created'
 	},
 	{
 		path: '/conversations',
-		component: Conversations
+		component: Conversations,
+		name: 'conversations'
 	},
 	{
 		path: '/conversations/:id',
-		component: Conversation
+		component: Conversation,
+		name: 'conversation'
 	},
 	{
 		path: '/search',
-		component: Search
+		component: Search,
+		name: 'search'
 	},
 	{
 		path: '/login',
 		component: Login,
-		name: 'login',
-		props: true
+		props: true,
+		name: 'login'
 	},
 	{
 		path: '*',

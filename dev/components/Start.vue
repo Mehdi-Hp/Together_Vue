@@ -59,7 +59,7 @@ export default {
 	},
 	mounted() {
 		if (this.isAdmin) {
-			this.$router.push('/conversations');
+			this.$router.replace('/conversations');
 		}
 	}
 };

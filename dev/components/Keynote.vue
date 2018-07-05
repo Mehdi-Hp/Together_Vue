@@ -27,14 +27,18 @@ export default {
 	margin-bottom: $gutter--fat;
 
 	&__title {
-		margin-bottom: $gutter;
 		color: $main-color;
 	}
 
 	&__desc {
+		margin-top: $gutter;
 		display: flex;
 		flex-direction: column;
 		line-height: 1.5;
+
+		&:empty {
+			display: none;
+		}
 	}
 }
 </style>

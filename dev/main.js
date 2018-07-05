@@ -41,6 +41,11 @@ const router = new VueRouter({
 		};
 	}
 });
+router.beforeEach((to, from, next) => {
+	router.lastRoute = from.fullPath;
+	console.log({ to, from });
+	next();
+});
 
 Vue.component('Keynote', Keynote);
 

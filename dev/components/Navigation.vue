@@ -1,12 +1,12 @@
 <template>
 	<div class="o-navigation">
 		<nav class="o-navigation__inner">
-			<button
+			<router-link
+				:to="$router.lastRoute"
 				class="o-navigation__back"
-				@click="goBack"
 			>
 				<icon-back class="o-navigation__back-icon" />
-			</button>
+			</router-link>
 			<div class="o-navigation__links | o-navigation__links--first">
 				<router-link
 					to="/new"
@@ -38,7 +38,19 @@ export default {
 	},
 	props: [],
 	data() {
-		return {};
+		return {
+			backIsTogether: false
+		};
+	},
+	watch: {
+		$route() {
+			console.log(this.$router);
+			if (this.$router.lastRoute !== '/') {
+				this.showBackButton = true;
+			} else {
+				this.showBackButton = false;
+			}
+		}
 	},
 	methods: {
 		goBack() {
