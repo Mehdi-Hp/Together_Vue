@@ -5,6 +5,7 @@ const postcssPlugins = require('./postcss.dev.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const smp = new SpeedMeasurePlugin();
 
@@ -118,6 +119,13 @@ module.exports = smp.wrap({
 			template: 'index.dev.html',
 			filename: 'index.html'
 		}),
+		new CopyWebpackPlugin([
+			{
+				from: 'favicons/',
+				to: 'build/favicons/',
+				toType: 'dir'
+			}
+		]),
 		new webpack.HotModuleReplacementPlugin(),
 		new DashboardPlugin()
 	],

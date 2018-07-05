@@ -6,6 +6,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const postcssPlugins = require('./postcss.prod.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 require('pretty-error').start();
 
@@ -132,6 +133,13 @@ module.exports = {
 			minimize: true,
 			quiet: true
 		}),
+		new CopyWebpackPlugin([
+			{
+				from: 'favicons/',
+				to: 'favicons/',
+				toType: 'dir'
+			}
+		]),
 		new BundleAnalyzerPlugin()
 	],
 	resolve: {
