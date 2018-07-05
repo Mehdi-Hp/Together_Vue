@@ -42,7 +42,7 @@ export default {
 	},
 	methods: {
 		goBack() {
-			this.$route.go(-1);
+			this.$router.go(-1);
 		}
 	}
 };

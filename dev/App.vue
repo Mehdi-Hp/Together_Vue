@@ -22,6 +22,7 @@
 <script>
 import jwtDecode from 'jwt-decode';
 import './assets/notcss/00_base/base.scss';
+import './assets/images/emoji--pure.png';
 import Error from './components/Error.vue';
 import Navigation from './components/Navigation.vue';
 import VHeader from './components/Header.vue';
