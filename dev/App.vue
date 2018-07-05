@@ -1,6 +1,7 @@
 <template>
 	<main class="p-app">
 		<v-header class="p-app__header"></v-header>
+		<navigation class="p-app__navigation" />
 		<router-view
 			v-if="!error.hasError"
 			class="p-app__content"
@@ -22,6 +23,7 @@
 import jwtDecode from 'jwt-decode';
 import './assets/notcss/00_base/base.scss';
 import Error from './components/Error.vue';
+import Navigation from './components/Navigation.vue';
 import VHeader from './components/Header.vue';
 import VFooter from './components/Footer.vue';
 
@@ -30,6 +32,7 @@ const PersianDate = require('persian-date');
 export default {
 	name: 'App',
 	components: {
+		Navigation,
 		VHeader,
 		VFooter,
 		Error
@@ -119,13 +122,18 @@ export default {
 	&__header {
 	}
 
+	&__navigation {
+		margin-top: $gutter;
+		margin-bottom: $gutter;
+	}
+
 	&__content {
 		display: flex;
 		flex-direction: column;
 		min-height: calc(100vh - 30rem);
 		width: 100%;
 		max-width: $general-width;
-		padding: $gutter--fat;
+		padding: $gutter;
 		color: $black-4;
 	}
 

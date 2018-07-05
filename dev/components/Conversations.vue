@@ -133,7 +133,8 @@ export default {
 <style scoped lang="scss">
 .l-conversations {
 	width: $general-width;
-	padding: $gutter--fat 0;
+	padding-right: 0;
+	padding-left: 0;
 
 	&__content {
 		display: flex;
