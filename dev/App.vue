@@ -66,6 +66,10 @@ export default {
 					this.$ls.remove('token');
 					this.$store.dispatch('getToken');
 				}
+				this.$bus.$emit('error', {
+					status: response.status,
+					message: response.message
+				});
 				return Promise.reject(response);
 			}
 		);
