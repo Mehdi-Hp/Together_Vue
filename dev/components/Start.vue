@@ -71,6 +71,7 @@ export default {
 	flex-direction: column;
 
 	&__keynote {
+		margin-top: $gutter--fat;
 	}
 
 	&__content {

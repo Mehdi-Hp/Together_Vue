@@ -21,6 +21,7 @@
     "axios": "^0.18.0",
     "cross-env": "^5.1.6",
     "fast-sort": "^1.5.1",
+    "jsdom-quokka-plugin": "^1.0.13",
     "jwt-decode": "^2.2.0",
     "passport-local": "^1.0.0",
     "persian-date": "^1.0.5",

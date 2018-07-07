@@ -1,9 +1,13 @@
 <template>
-	<div class="o-navigation">
+	<div
+		class="o-navigation"
+		v-if="$route.path !== '/'"
+	>
 		<nav class="o-navigation__inner">
 			<router-link
 				:to="$router.lastRoute"
 				class="o-navigation__back"
+				v-if="false"
 			>
 				<icon-back class="o-navigation__back-icon" />
 			</router-link>
@@ -11,8 +15,16 @@
 				<router-link
 					to="/new"
 					class="o-navigation__link | o-navigation__link--first"
+					v-if="!$store.getters.isAdmin && $route.path !== '/new'"
 				>
 					ایجاد گفت‌و‌گو
+				</router-link>
+				<router-link
+					to="/conversations"
+					class="o-navigation__link | o-navigation__link--first"
+					v-if="$store.getters.isAdmin && $route.path !== '/conversations'"
+				>
+					لیست گفت‌وگوها
 				</router-link>
 			</div>
 			<div class="o-navigation__links | o-navigation__links--last">
@@ -106,20 +118,26 @@ export default {
 	}
 
 	&__link {
-		padding: 0.5em;
 		font-size: ms(-1);
-		border-radius: 5px;
+		border-radius: 20em;
+		background-color: $white-2;
 
 		&:hocus {
-			background-color: $white-2;
+			background-color: $white-3;
 		}
 
 		&--first {
+			padding: 0.5em 1em;
 			margin-left: $ant-gutter;
+			border-radius: 20em;
+			background-color: $white-2;
 		}
 
 		&--last {
+			padding: 0.5em;
 			margin-right: $ant-gutter;
+			border-radius: 20em;
+			background-color: transparent;
 		}
 	}
 }

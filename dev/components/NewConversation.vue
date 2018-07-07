@@ -80,6 +80,7 @@ export default {
 .l-new-conversation {
 	display: flex;
 	flex-direction: column;
+	margin-bottom: $gutter--fat;
 
 	&__keynote {
 	}
