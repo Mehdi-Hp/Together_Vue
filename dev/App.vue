@@ -132,6 +132,7 @@ export default {
 		display: flex;
 		flex-direction: column;
 		min-height: calc(100vh - 30rem);
+		margin-bottom: $gutter;
 		width: 100%;
 		max-width: $general-width;
 		padding: $gutter;

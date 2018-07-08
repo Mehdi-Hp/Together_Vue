@@ -352,6 +352,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@keyframes selectEmoji {
+	0% {
+		transform: scale(1) rotateZ(0deg);
+	}
+	100% {
+		transform: scale(1.1) rotateZ(20deg);
+	}
+}
+
 .o-message-sender {
 	display: flex;
 	flex-direction: column;
@@ -416,6 +425,7 @@ export default {
 		&--is-selected {
 			filter: grayscale(0);
 			opacity: 1;
+			animation: selectEmoji 0.15s;
 		}
 	}
 
