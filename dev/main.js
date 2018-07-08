@@ -43,7 +43,6 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
 	router.lastRoute = from.fullPath;
-	console.log({ to, from });
 	next();
 });
 
@@ -54,6 +53,8 @@ new Vue({
 	render: (h) => h(App),
 	store,
 	router,
-	performance: true,
-	productionTip: false
+	productionTip: process.env.NODE_ENV !== 'production'
 });
+
+Vue.config.devtools = process.env.NODE_ENV !== 'production';
+Vue.config.performance = process.env.NODE_ENV !== 'production';

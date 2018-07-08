@@ -122,7 +122,7 @@ module.exports = smp.wrap({
 		new CopyWebpackPlugin([
 			{
 				from: 'favicons/',
-				to: 'build/favicons/',
+				to: 'favicons/',
 				toType: 'dir'
 			}
 		]),

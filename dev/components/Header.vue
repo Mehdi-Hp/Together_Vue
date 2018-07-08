@@ -1,16 +1,16 @@
 <template>
 	<header class="o-header">
 		<div class="o-header__content">
-			<a
+			<router-link
 				class="o-header__logo"
-				href="/"
+				to="/"
 			>
 				<img
 					class="o-header__logo-image"
 					src="../assets/images/logo.png"
 					alt="together app logo"
 				/>
-			</a>
+			</router-link>
 		</div>
 	</header>
 </template>
