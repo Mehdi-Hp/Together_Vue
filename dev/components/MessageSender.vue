@@ -11,39 +11,10 @@
 			>
 				<dropdown
 					class="o-message-sender__dropdown"
-					:state="dropdown.category"
-					:show-hide="false"
-					@toggleState="(newState) => { dropdown.category = newState }"
-				>
-					<template slot="text">
-						<div class="o-message-sender__dropdown-texts">
-							<span
-								class="o-message-sender__dropdown-text"
-								v-if="!message.category"
-							>
-								موضوع
-							</span>
-							<span
-								class="o-message-sender__dropdown-selected"
-								v-if="message.category"
-							>
-								{{ categoryFromId(message.category) }}
-							</span>
-						</div>
-					</template>
-					<template slot="content">
-						<ul class="o-message-sender__dropdown-items">
-							<li
-								class="o-message-sender__dropdown-item"
-								v-for="category in categories"
-								:key="category.id"
-								@click="setCategory(category.id)"
-							>
-								{{ category.title }}
-							</li>
-						</ul>
-					</template>
-				</dropdown>
+					name="موضوع"
+					:list="categories"
+					@select="setCategory"
+				/>
 			</div>
 			<div
 				class="o-message-sender__row"
@@ -139,47 +110,10 @@
 			>
 				<dropdown
 					class="o-message-sender__dropdown"
-					:state="dropdown.assignee"
-					:show-hide="false"
-					@toggleState="(newState) => { dropdown.assignee = newState }"
-				>
-					<template slot="icon">
-						<icon-person
-							class="o-message-sender__dropdown-icon"
-							:class="{
-								'o-message-sender__dropdown-icon--is-selected': message.assignee
-							}"
-						/>
-					</template>
-					<template slot="text">
-						<div class="o-message-sender__dropdown-texts">
-							<span
-								class="o-message-sender__dropdown-text"
-								v-if="!message.assignee"
-							>
-								بررسی کننده
-							</span>
-							<span
-								class="o-message-sender__dropdown-selected"
-								v-if="message.assignee"
-							>
-								{{ assigneeFromId(message.assignee) }}
-							</span>
-						</div>
-					</template>
-					<template slot="content">
-						<ul class="o-message-sender__dropdown-items">
-							<li
-								class="o-message-sender__dropdown-item"
-								v-for="assignee in assignees"
-								:key="assignee.id"
-								@click="setAssignee(assignee.id)"
-							>
-								{{ assignee.title }}
-							</li>
-						</ul>
-					</template>
-				</dropdown>
+					name="بررسی کننده"
+					:list="assignees"
+					@select="setAssignee"
+				/>
 				<div
 					class="o-message-sender__controls"
 					v-if="mode === 'expand'"
@@ -354,10 +288,13 @@ export default {
 <style scoped lang="scss">
 @keyframes selectEmoji {
 	0% {
-		transform: scale(1) rotateZ(0deg);
+		transform: rotateZ(0deg);
+	}
+	50% {
+		transform: rotateZ(-15deg);
 	}
 	100% {
-		transform: scale(1.1) rotateZ(20deg);
+		transform: rotateZ(15deg);
 	}
 }
 
@@ -411,6 +348,7 @@ export default {
 		filter: grayscale(1);
 		opacity: 0.5;
 		cursor: pointer;
+		transform-origin: 1.5em center;
 
 		&:hocus {
 			filter: grayscale(0);
@@ -503,66 +441,8 @@ export default {
 	}
 
 	&__dropdown {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: $white-1;
-		border-radius: 10em;
-		padding: 0.5em 1em;
-		height: 2em;
 		margin-left: $ant-gutter;
 		margin: $gutter--thin;
-	}
-
-	&__dropdown-texts {
-		display: flex;
-		flex-direction: column;
-		font-size: ms(-1);
-		position: relative;
-	}
-	&__dropdown-text {
-	}
-
-	&__dropdown-selected {
-		color: $green;
-		font-weight: 500;
-	}
-
-	&__dropdown-icon {
-		padding: 0;
-		margin-left: 0.5em;
-
-		&--is-selected {
-			color: $green;
-		}
-	}
-
-	&__dropdown-items {
-		display: flex;
-		flex-direction: column;
-		font-size: ms(-1);
-		color: $black-3;
-		background-color: $white-1;
-		border-top: 1px solid $white-2;
-		padding: 1em 0;
-		box-sizing: border-box;
-		position: absolute;
-		top: 3em;
-		width: 10em;
-		border-radius: 0 0 5px 5px;
-		z-index: g-index('mountain');
-	}
-
-	&__dropdown-item {
-		display: flex;
-		align-items: center;
-		white-space: nowrap;
-		padding: 0.75em 1.5em 0.75em 1.5em;
-		cursor: pointer;
-
-		&:hocus {
-			background-color: $white-2;
-		}
 	}
 
 	&__controls {

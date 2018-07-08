@@ -12,7 +12,7 @@
 				:class="{
 					'o-tags__item--is-visible': tag.isSelected,
 				}"
-				v-for="tag in tags"
+				v-for="tag in selectedTags"
 				:key="tag.id"
 				:data="tag"
 			>
@@ -20,37 +20,14 @@
 			<dropdown
 				class="o-tags__new"
 				:class="{
-					'o-tags__new--is-disabled': allSelected
+					'o-tags__new--disabled': allSelected
 				}"
-				:state="dropdownState"
-				:show-hide="true"
-				@toggleState="(newState) => { dropdownState = newState }"
-				:disabled="allSelected"
-			>
-				<template slot="icon">
-					<icon-plus
-						class="o-tags__new-icon"
-						:class="{
-							'o-tags__new-icon--is-disabled': allSelected
-						}"
-					/>
-				</template>
-				<template slot="content">
-					<ul class="o-tags__new-items">
-						<li
-							class="o-tags__new-item"
-							:class="{
-								'o-tags__new-item--is-visible': !tag.isSelected
-							}"
-							v-for="tag in tags"
-							:key="tag.id"
-							@click="addTag(tag.id)"
-						>
-							{{ tag.title }}
-						</li>
-					</ul>
-				</template>
-			</dropdown>
+				:name="null"
+				icon="icon-plus"
+				mode="icon-only"
+				:list="unSelectedTags"
+				@select="addTag"
+			/>
 		</ul>
 	</div>
 </template>
@@ -69,11 +46,19 @@ export default {
 	},
 	props: ['tags'],
 	data() {
-		return {
-			dropdownState: false
-		};
+		return {};
 	},
 	computed: {
+		selectedTags() {
+			return this.tags.filter((tag) => {
+				return tag.isSelected;
+			});
+		},
+		unSelectedTags() {
+			return this.tags.filter((tag) => {
+				return !tag.isSelected;
+			});
+		},
 		allSelected() {
 			return this.tags.every((tag) => {
 				return tag.isSelected;
@@ -82,9 +67,6 @@ export default {
 	},
 	methods: {
 		addTag(tagId) {
-			this.$nextTick(() => {
-				this.dropdownState = false;
-			});
 			this.$bus.$emit('addTag', tagId);
 		}
 	}
@@ -127,13 +109,13 @@ export default {
 		background-color: $main-color;
 		border-radius: 50%;
 		size: 1.7em;
-		padding: 0.3em;
+		color: $white;
 
 		&:hocus {
 			background-color: shade($main-color, 10%);
 		}
 
-		&--is-disabled {
+		&--disabled {
 			pointer-events: none;
 			opacity: 0.2;
 
@@ -141,66 +123,9 @@ export default {
 				background-color: $white-3;
 			}
 		}
-	}
 
-	&__new-icon {
-		stroke-width: 0.3em;
-		color: white;
-		position: relative;
-		top: 0;
-		right: 1px;
-
-		&--is-disabled {
-			color: $white-5;
-		}
-	}
-
-	&__new-items {
-		display: flex;
-		flex-direction: column;
-		font-size: ms(-1);
-		color: $black-3;
-		background-color: $white;
-		border-top: 1px solid $white-2;
-		padding: 1em 0;
-		box-sizing: border-box;
-		position: absolute;
-		width: 10em;
-		border-radius: 0 0 5px 5px;
-		z-index: g-index('mountain');
-	}
-
-	&__new-item {
-		max-height: 0;
-		max-width: 0;
-		opacity: 0;
-		margin-bottom: 0;
-		transition-duration: 0.1s;
-		transition-property: max-width, max-height, padding, margin;
-		align-items: center;
-		white-space: nowrap;
-		cursor: pointer;
-		display: none;
-
-		&:hocus {
-			background-color: $white-1;
-			will-change: max-width, max-height, padding, margin;
-		}
-
-		&:active {
-			background-color: $white-3;
-		}
-
-		&:last-of-type {
-			margin-bottom: 0;
-		}
-
-		&--is-visible {
-			padding: 0.5rem 1rem 0.5rem 1.5rem;
-			max-height: 100vh;
-			max-width: 100vw;
-			opacity: 1;
-			display: flex;
+		& .m-dropdown__icon {
+			stroke-width: 13px;
 		}
 	}
 }
