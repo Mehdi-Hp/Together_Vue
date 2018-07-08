@@ -49,7 +49,7 @@ export default [
 		component: Conversations,
 		name: 'conversations',
 		meta: {
-			navbar: ['conversations']
+			navbar: ['logout']
 		}
 	},
 	{
@@ -57,7 +57,7 @@ export default [
 		component: Conversation,
 		name: 'conversation',
 		meta: {
-			navbar: ['new', 'conversations']
+			navbar: ['new', 'conversations', 'logout']
 		}
 	},
 	{

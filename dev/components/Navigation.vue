@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="o-navigation"
-		v-if="$route.path !== '/'"
+		v-if="$route.meta.navbar"
 	>
 		<nav class="o-navigation__inner">
 			<router-link
@@ -31,7 +31,7 @@
 				<router-link
 					to="/logout"
 					class="o-navigation__link | o-navigation__link--last"
-					v-if="$store.getters.isAdmin"
+					v-if="$route.meta.navbar.includes('logout')"
 				>
 					خروج
 				</router-link>
