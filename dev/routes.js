@@ -39,17 +39,26 @@ export default [
 		path: '/created',
 		component: CreatedConversation,
 		props: true,
-		name: 'created'
+		name: 'created',
+		meta: {
+			navbar: ['new']
+		}
 	},
 	{
 		path: '/conversations',
 		component: Conversations,
-		name: 'conversations'
+		name: 'conversations',
+		meta: {
+			navbar: ['conversations']
+		}
 	},
 	{
 		path: '/conversations/:id',
 		component: Conversation,
-		name: 'conversation'
+		name: 'conversation',
+		meta: {
+			navbar: ['new', 'conversations']
+		}
 	},
 	{
 		path: '/search',

@@ -15,14 +15,14 @@
 				<router-link
 					to="/new"
 					class="o-navigation__link | o-navigation__link--first"
-					v-if="!$store.getters.isAdmin && $route.path !== '/new'"
+					v-if="!$store.getters.isAdmin && $route.meta.navbar.includes('new')"
 				>
 					ایجاد گفت‌و‌گو
 				</router-link>
 				<router-link
 					to="/conversations"
 					class="o-navigation__link | o-navigation__link--first"
-					v-if="$store.getters.isAdmin && $route.path !== '/conversations'"
+					v-if="$store.getters.isAdmin && $route.meta.navbar.includes('conversations')"
 				>
 					لیست گفت‌وگوها
 				</router-link>
@@ -56,7 +56,6 @@ export default {
 	},
 	watch: {
 		$route() {
-			console.log(this.$router);
 			if (this.$router.lastRoute !== '/') {
 				this.showBackButton = true;
 			} else {
