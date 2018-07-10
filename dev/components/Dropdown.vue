@@ -183,8 +183,8 @@ export default {
 		border-radius: 5px;
 		opacity: 0;
 		transform: translateY(-1em);
-		transition: opacity 0.15s, transform 0.15s;
-		transition-delay: 0.2s;
+		transition: opacity 0.15s, transform 0.15s, width 0.15s;
+		transition-delay: 0.1s;
 		box-shadow: 0px 6px 100px -5px rgba(0, 0, 0, 0.1);
 		color: $black-3;
 
@@ -192,6 +192,7 @@ export default {
 			opacity: 1;
 			pointer-events: all;
 			transform: translateY(0);
+			transition-delay: 0.2s;
 		}
 
 		&--icon-only {
@@ -206,6 +207,11 @@ export default {
 		&:hocus {
 			background-color: $white-1;
 			cursor: pointer;
+		}
+
+		&:active {
+			background-color: $white-2;
+			box-shadow: 0px 2px 20px -1px rgba(0, 0, 0, 0.1);
 		}
 	}
 }

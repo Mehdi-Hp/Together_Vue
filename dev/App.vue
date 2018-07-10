@@ -69,15 +69,17 @@ export default {
 					console.log('Unauthorized!');
 					this.$ls.remove('token');
 					this.$store.dispatch('getToken');
+				} else {
+					this.$bus.$emit('error', {
+						status: response.status,
+						message: response.message
+					});
 				}
-				this.$bus.$emit('error', {
-					status: response.status,
-					message: response.message
-				});
 				return Promise.reject(response);
 			}
 		);
 
+		this.$ls.remove('token');
 		if (this.$ls.get('token')) {
 			const decodedUser = jwtDecode(this.$ls.get('token').split(' ')[1]);
 			this.$store.commit('setUser', {
@@ -86,8 +88,19 @@ export default {
 				employeeId: decodedUser.EmployeeId,
 				role: decodedUser.Title
 			});
+			this.getNessecaryData();
 		} else {
-			this.$store.dispatch('getToken');
+			this.$store
+				.dispatch('getToken')
+				.then(() => {
+					this.getNessecaryData();
+				})
+				.catch((error) => {
+					this.$bus.$emit('error', {
+						status: 500,
+						message: error
+					});
+				});
 		}
 
 		this.$bus.$on('error', ({ status, message }) => {
@@ -98,13 +111,14 @@ export default {
 				message
 			};
 		});
-
-		this.$store.dispatch('getAllTypes');
-		this.$store.dispatch('getAllAssignees');
 	},
 	methods: {
 		initCalendar() {
 			PersianDate.toLocale('fa');
+		},
+		getNessecaryData() {
+			this.$store.dispatch('getAllTypes');
+			this.$store.dispatch('getAllAssignees');
 		}
 	}
 };

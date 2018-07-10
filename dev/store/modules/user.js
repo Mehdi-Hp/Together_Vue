@@ -35,15 +35,17 @@ export default {
 					.then(({ data: { token, employeeId, fullName, role } }) => {
 						console.table({ token, employeeId, fullName, role });
 						Vue.ls.set('token', `Bearer ${token}`);
-						commit('setUser', {
+						Vue.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+						const user = {
 							employeeId,
 							name: fullName,
 							role
-						});
-						Vue.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+						};
+						commit('setUser', user);
+						resolve(user);
 					})
 					.catch((error) => {
-						console.error(error);
+						reject(error);
 					});
 			});
 		}

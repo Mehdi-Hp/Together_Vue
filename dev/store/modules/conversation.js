@@ -44,14 +44,15 @@ export default {
 		}
 	},
 	actions: {
-		createConversation({ state, commit }, { title, description, typeId, assigneeId }) {
+		createConversation({ state, commit }, { title, description, typeId, assigneeId, recaptcha }) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
 					.post('/conversations', {
 						title,
 						description,
 						categoryId: typeId,
-						assigneeId
+						assigneeId,
+						'g-recaptcha-response': recaptcha
 					})
 					.then(({ data: { id: conversationId } }) => {
 						commit('addConversation', {

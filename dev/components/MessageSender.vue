@@ -98,7 +98,7 @@
 						:class="{
 							'o-message-sender__send--is-showing': validation.isPassed('message.text')
 						}"
-						:is-loading="isBusy"
+						:is-loading="isLoading"
 					>
 						ارسال
 					</v-button>
@@ -118,17 +118,25 @@
 					class="o-message-sender__controls"
 					v-if="mode === 'expand'"
 				>
-					<v-button
-						mode="normal"
-						@click="send"
-						class="o-message-sender__send"
-						:class="{
-							'o-message-sender__send--is-showing': !hasError && isTouched
-						}"
-						:is-loading="isBusy"
+					<vue-recaptcha
+						ref="invisibleRecaptcha"
+						@verify="onCaptchaVerify"
+						@expired="onExpired"
+						size="invisible"
+						:sitekey="siteKey"
 					>
-						ایجاد گفت‌وگو
-					</v-button>
+						<v-button
+							mode="normal"
+							@click="send"
+							class="o-message-sender__send"
+							:class="{
+								'o-message-sender__send--is-showing': !hasError && isTouched
+							}"
+							:is-loading="isLoading"
+						>
+							ایجاد گفت‌وگو
+						</v-button>
+					</vue-recaptcha>
 				</div>
 			</div>
 		</div>
@@ -136,6 +144,7 @@
 </template>
 
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 import { directive as onClickaway } from 'vue-clickaway';
 import getImageFromMood from '../services/getImageFromMood';
 import Emojies from './Emojies.vue';
@@ -149,6 +158,7 @@ export default {
 		onClickaway
 	},
 	components: {
+		VueRecaptcha,
 		Emojies,
 		VButton,
 		Dropdown,
@@ -157,12 +167,14 @@ export default {
 	props: ['mode', 'isBusy'],
 	data() {
 		return {
+			siteKey: '6LcK8GIUAAAAAAk6GIHWDZKLNYVaDsCBMT3zG7kR',
 			message: {
 				title: null,
 				text: null,
 				mood: null,
 				assignee: null,
-				category: null
+				category: null,
+				'g-recaptcha-response': null
 			},
 			dropdown: {
 				assignee: false,
@@ -171,7 +183,8 @@ export default {
 			emoji: {
 				selector: false,
 				isSelected: false
-			}
+			},
+			isLoading: this.isBusy
 		};
 	},
 	computed: {
@@ -192,6 +205,9 @@ export default {
 		}
 	},
 	watch: {
+		isBusy() {
+			this.isLoading = this.isBusy();
+		},
 		assignees() {
 			this.$bus.$emit('dropdownDataUpdate');
 		},
@@ -237,8 +253,18 @@ export default {
 			this.message.mood = value;
 			this.emoji.selector = false;
 		},
+		onExpired() {
+			console.warn('reCaptcha got expired!');
+		},
+		resetRecaptcha() {
+			this.$refs.recaptcha.reset();
+		},
 		send() {
-			this.$validate();
+			this.$refs.invisibleRecaptcha.execute();
+			this.isLoading = true;
+		},
+		onCaptchaVerify(response) {
+			this.message['g-recaptcha-response'] = response;
 			if (this.mode === 'mini' && this.validation.isPassed('message.text')) {
 				this.$emit('send', {
 					text: this.message.text,
@@ -250,13 +276,13 @@ export default {
 					description: this.message.text,
 					typeId: this.message.category,
 					assigneeId: this.message.assignee,
-					mood: this.message.mood
+					mood: this.message.mood,
+					'g-recaptcha-response': this.message['g-recaptcha-response']
 				});
 			}
 			if (this.mode === 'mini') {
 				this.message.text = null;
 			}
-			this.$validate();
 			this.calcHeight();
 		}
 	},
@@ -331,7 +357,6 @@ export default {
 		background: white;
 		&::-webkit-input-placeholder {
 			color: $black-6;
-			font-weight: 500;
 		}
 	}
 
