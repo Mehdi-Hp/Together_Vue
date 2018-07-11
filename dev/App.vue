@@ -4,6 +4,7 @@
 		<navigation class="p-app__navigation" />
 		<router-view
 			v-if="!error.hasError"
+			v-visible="hasNeseccaryData"
 			class="p-app__content"
 		>
 		</router-view>
@@ -44,6 +45,11 @@ export default {
 				hasError: true
 			}
 		};
+	},
+	computed: {
+		hasNeseccaryData() {
+			return !!this.$store.state.user.name && !!this.$store.state.assignee.data.length && !!this.$store.state.type.data.length;
+		}
 	},
 	watch: {
 		$route(from, to) {

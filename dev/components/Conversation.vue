@@ -1,5 +1,8 @@
 <template>
-	<section class="l-conversation">
+	<section
+		class="l-conversation"
+		v-show="$store.state.conversation.data.id"
+	>
 		<aside
 			class="l-conversation__summary"
 			v-if="!notFound"
