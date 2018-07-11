@@ -44,13 +44,14 @@ export default {
 		}
 	},
 	actions: {
-		createConversation({ state, commit }, { title, description, typeId, assigneeId, captcha }) {
+		createConversation({ state, commit }, { title, description, typeId, assigneeId, mood, captcha }) {
 			return new Promise((resolve, reject) => {
 				console.table({
 					title,
 					description,
 					categoryId: typeId,
 					assigneeId,
+					mood,
 					captcha
 				});
 				Vue.$axios
@@ -59,6 +60,7 @@ export default {
 						description,
 						categoryId: typeId,
 						assigneeId,
+						mood,
 						captcha
 					})
 					.then(({ data: { id: conversationId } }) => {
@@ -67,6 +69,7 @@ export default {
 							description,
 							typeId,
 							assigneeId,
+							mood,
 							conversationId
 						});
 						resolve(conversationId);
