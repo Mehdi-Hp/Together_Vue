@@ -32,17 +32,19 @@
 					{{ conversationId }}
 				</router-link>
 			</div>
-			<v-button
+			<a
 				class="l-sent__bookmark"
-				mode="nonsignificant"
+				:href="`data:text/html;charset=utf-8;base64,${jsToRedirect}`"
+				:download="`Together Conversation - ${conversationId}`"
 			>
-				بوکـمارک لینک
-			</v-button>
+				دانلود فایل رسیدن به گفت‌وگو
+			</a>
 		</div>
 	</section>
 </template>
 
 <script>
+import { Base64 } from 'js-base64';
 import Keynote from './Keynote.vue';
 import IconAlert from './icons/Alert.vue';
 import VButton from './Button.vue';
@@ -57,6 +59,14 @@ export default {
 	props: ['conversationId'],
 	data() {
 		return {};
+	},
+	computed: {
+		jsToRedirect() {
+			let redirectScript = '<script>window.location.href = "http://together:8080/conversations/';
+			redirectScript = `${redirectScript}${this.conversationId}"</scrip`;
+			redirectScript = `${redirectScript}t>`;
+			return Base64.encode(redirectScript);
+		}
 	},
 	mounted() {
 		if (!this.conversationId) {
@@ -132,7 +142,19 @@ export default {
 	}
 
 	&__bookmark {
+		border-radius: 20em;
+		padding: 0.5em 2em;
+		transition-property: box-shadow, transform, background;
+		transition-duration: 0.15s;
+		transition-timing-function: ease-in-out;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		font-weight: 500;
 		margin: $gutter 0;
+		background: $white-2;
+		color: $black-3;
 		box-shadow: none;
 	}
 }

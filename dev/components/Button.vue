@@ -76,9 +76,11 @@ export default {
 	&--nonsignificant {
 		background: $white-2;
 		color: $black-3;
+		box-shadow: none;
 
 		&:hocus {
 			background: $white-3;
+			box-shadow: none;
 		}
 	}
 
