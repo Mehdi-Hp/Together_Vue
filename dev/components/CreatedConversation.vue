@@ -8,7 +8,7 @@
 				گفت‌وگو ساخه شد
 			</template>
 			<template slot="desc">
-				پیام شما به صورت ناشناس ارسال، و یک لینک منحصر به‌فرد به این منظور شاخته شد.
+				پیام شما در اسرع وقت بررسی خواهد شد و می‌توانید از طریق فایل دانلود شده و کد رهگیری نسبت به وضعیت پاسخ‌دهی مطلع شوید.
 			</template>
 		</keynote>
 
@@ -56,9 +56,11 @@ export default {
 		IconAlert,
 		VButton
 	},
-	props: ['conversationId'],
+	// props: ['conversationId'],
 	data() {
-		return {};
+		return {
+			conversationId: 'bc5ef7ce-70a5-4c43-8ca1-19a04696e8f5'
+		};
 	},
 	computed: {
 		jsToRedirect() {
