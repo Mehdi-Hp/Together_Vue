@@ -121,9 +121,9 @@
 					<vue-recaptcha
 						ref="invisibleRecaptcha"
 						@verify="onCaptchaVerify"
-						@expired="onExpired"
+						@expired="onCaptchaExpired"
 						size="invisible"
-						:sitekey="siteKey"
+						:sitekey="sitekey"
 					>
 						<v-button
 							mode="normal"
@@ -167,14 +167,14 @@ export default {
 	props: ['mode', 'isBusy'],
 	data() {
 		return {
-			siteKey: '6LcK8GIUAAAAAAk6GIHWDZKLNYVaDsCBMT3zG7kR',
+			sitekey: '6LekjGMUAAAAAM9_Uk4Un_ujwvs9TNUJyNJTshwV',
 			message: {
 				title: null,
 				text: null,
 				mood: null,
 				assignee: null,
 				category: null,
-				'g-recaptcha-response': null
+				captcha: null
 			},
 			dropdown: {
 				assignee: false,
@@ -206,7 +206,7 @@ export default {
 	},
 	watch: {
 		isBusy() {
-			this.isLoading = this.isBusy();
+			this.isLoading = this.isBusy;
 		},
 		assignees() {
 			this.$bus.$emit('dropdownDataUpdate');
@@ -253,7 +253,7 @@ export default {
 			this.message.mood = value;
 			this.emoji.selector = false;
 		},
-		onExpired() {
+		onCaptchaExpired() {
 			console.warn('reCaptcha got expired!');
 		},
 		resetRecaptcha() {
@@ -264,7 +264,8 @@ export default {
 			this.isLoading = true;
 		},
 		onCaptchaVerify(response) {
-			this.message['g-recaptcha-response'] = response;
+			console.log('reCaptcha verified', response);
+			this.message.captcha = response;
 			if (this.mode === 'mini' && this.validation.isPassed('message.text')) {
 				this.$emit('send', {
 					text: this.message.text,
@@ -277,7 +278,7 @@ export default {
 					typeId: this.message.category,
 					assigneeId: this.message.assignee,
 					mood: this.message.mood,
-					'g-recaptcha-response': this.message['g-recaptcha-response']
+					captcha: this.message.captcha
 				});
 			}
 			if (this.mode === 'mini') {

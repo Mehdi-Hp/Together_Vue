@@ -55,7 +55,10 @@ export default {
 			return this.status || 404;
 		},
 		getMessage() {
-			return this.message || 'صفحه درخواستی شما پیدا نشد.';
+			if (this.getStatus === 404) {
+				return 'صفحه‌ی درخواستی شما پیدا نشد.';
+			}
+			return this.message || 'در حین اجرای درخواست شما مشکلی پیش آمده.';
 		}
 	}
 };
@@ -73,9 +76,14 @@ export default {
 
 	&__status-number {
 		font-size: ms(5);
-		text-decoration: underline;
 		color: shade($red, 30%);
 		font-weight: 100;
+		padding: 1rem;
+		background-color: tint($red, 90%);
+		margin-bottom: 1rem;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
 	}
 
 	&__status-message {
