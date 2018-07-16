@@ -56,10 +56,10 @@ export default {
 		IconAlert,
 		VButton
 	},
-	// props: ['conversationId'],
+	props: ['conversationId'],
 	data() {
 		return {
-			conversationId: 'bc5ef7ce-70a5-4c43-8ca1-19a04696e8f5'
+			// conversationId: 'bc5ef7ce-70a5-4c43-8ca1-19a04696e8f5'
 		};
 	},
 	computed: {

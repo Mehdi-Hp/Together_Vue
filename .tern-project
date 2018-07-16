@@ -1,30 +1,36 @@
 {
-	"ecmaVersion": 6,
-	"libs": [
-		"browser"
-	],
-	"loadEagerly": [],
-	"dontLoad": [
-		"node_modules/**"
-	],
-	"plugins": {
-		"doc_comment": true,
-		"complete_strings": {
-			"maxLength": 15
-		},
-		"node": {
-			"dontLoad": "",
-			"load": "",
-			"modules": ""
-		},
-		"node-express": {},
-		"node_resolve": {},
-		"modules": {
-			"dontLoad": "",
-			"load": "",
-			"modules": ""
-		},
-		"es_modules": {},
-		"commonjs": {}
-	}
+  "ecmaVersion": "7",
+  "libs": [
+    "browser",
+    "underscore"
+  ],
+  "loadEagerly": [],
+  "dontLoad": [
+    "node_modules/**"
+  ],
+  "plugins": {
+    "doc_comment": true,
+    "complete_strings": {
+      "maxLength": 15
+    },
+    "node": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "node-express": {},
+    "node_resolve": {},
+    "modules": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "es_modules": {},
+    "commonjs": {},
+    "requirejs": {
+      "baseURL": "",
+      "paths": "",
+      "override": ""
+    }
+  }
 }

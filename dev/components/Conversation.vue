@@ -210,7 +210,6 @@ export default {
 
 	&__state-management {
 		display: flex;
-		justify-content: space-between;
 		margin-bottom: $gutter--fat;
 		margin-right: calc(#{$ant-column} + #{$ant-gutter});
 		justify-content: flex-start;

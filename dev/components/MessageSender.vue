@@ -98,7 +98,6 @@
 						:class="{
 							'o-message-sender__send--is-showing': validation.isPassed('message.text')
 						}"
-						:is-loading="isLoading"
 					>
 						ارسال
 					</v-button>
@@ -127,7 +126,7 @@
 					>
 						<v-button
 							mode="normal"
-							@click="send"
+							@click="checkIfIsHuman"
 							class="o-message-sender__send"
 							:class="{
 								'o-message-sender__send--is-showing': !hasError && isTouched
@@ -259,13 +258,21 @@ export default {
 		resetRecaptcha() {
 			this.$refs.recaptcha.reset();
 		},
-		send() {
-			this.$refs.invisibleRecaptcha.execute();
-			this.isLoading = true;
+		checkIfIsHuman(bypass) {
+			if (!bypass) {
+				this.isLoading = true;
+				this.$refs.invisibleRecaptcha.execute();
+			} else {
+				this.send();
+			}
 		},
 		onCaptchaVerify(response) {
 			console.log('reCaptcha verified', response);
 			this.message.captcha = response;
+			this.send();
+		},
+		send() {
+			this.isLoading = true;
 			if (this.mode === 'mini' && this.validation.isPassed('message.text')) {
 				this.$emit('send', {
 					text: this.message.text,

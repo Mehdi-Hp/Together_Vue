@@ -35,7 +35,6 @@ export default {
 		display: flex;
 		flex-direction: column;
 		line-height: 1.5;
-		text-align: justify;
 
 		&:empty {
 			display: none;
