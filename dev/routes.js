@@ -10,6 +10,9 @@ const CreatedConversation = () => {
 const Conversation = () => {
 	return import('./components/Conversation.vue');
 };
+const GoToConversation = () => {
+	return import('./components/GoToConversation.vue');
+};
 const Conversations = () => {
 	return import('./components/Conversations.vue');
 };
@@ -45,11 +48,20 @@ export default [
 		}
 	},
 	{
+		path: '/go',
+		component: GoToConversation,
+		props: true,
+		name: 'go',
+		meta: {
+			navbar: ['new']
+		}
+	},
+	{
 		path: '/conversations',
 		component: Conversations,
 		name: 'conversations',
 		meta: {
-			navbar: ['logout']
+			navbar: []
 		}
 	},
 	{
@@ -57,7 +69,7 @@ export default [
 		component: Conversation,
 		name: 'conversation',
 		meta: {
-			navbar: ['new', 'conversations', 'logout']
+			navbar: ['new', 'conversations']
 		}
 	},
 	{

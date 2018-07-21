@@ -23,10 +23,7 @@
 					گفت‌و‌گوی جدید
 				</v-button>
 			</router-link>
-			<router-link
-				to="/login"
-				v-if="!hasToken"
-			>
+			<router-link to="/login">
 				<v-button
 					class="l-start__login"
 					mode="nonsignificant"

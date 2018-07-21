@@ -9,7 +9,7 @@ export default {
 	},
 	getters: {
 		isAdmin(state) {
-			return state.role === 'agent';
+			return state.role === 'agent' || state.role === 'Agent';
 		},
 		isEmployee(state) {
 			return !!state.employeeId;
