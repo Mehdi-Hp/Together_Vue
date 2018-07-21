@@ -2,12 +2,18 @@
 	<main class="p-app">
 		<v-header class="p-app__header"></v-header>
 		<navigation class="p-app__navigation" />
-		<router-view
-			v-if="!error.hasError"
-			v-visible="hasNeseccaryData"
-			class="p-app__content"
-		>
-		</router-view>
+		<div class="p-app__content-holder">
+			<router-view
+				class="p-app__content"
+				v-visible="hasNeseccaryData && !error.hasError"
+			>
+			</router-view>
+		</div>
+		<icon-loader
+			class="p-app__load"
+			v-if="!hasNeseccaryData"
+			:animate="!hasNeseccaryData"
+		/>
 		<error
 			class="p-app__error"
 			v-if="error.hasError"
@@ -28,6 +34,7 @@ import Error from './components/Error.vue';
 import Navigation from './components/Navigation.vue';
 import VHeader from './components/Header.vue';
 import VFooter from './components/Footer.vue';
+import IconLoader from './components/icons/MaterialLoadSpinner.vue';
 
 const PersianDate = require('persian-date');
 
@@ -37,6 +44,7 @@ export default {
 		Navigation,
 		VHeader,
 		VFooter,
+		IconLoader,
 		Error
 	},
 	data() {
@@ -148,6 +156,14 @@ export default {
 		margin-bottom: $gutter;
 	}
 
+	&__content-holder {
+		display: flex;
+		size: 100%;
+		flex-grow: 1;
+		align-items: center;
+		justify-content: center;
+	}
+
 	&__content {
 		display: flex;
 		flex-direction: column;
@@ -157,6 +173,13 @@ export default {
 		padding: $gutter;
 		padding-bottom: $gutter--fat;
 		color: $black-4;
+		position: relative;
+	}
+
+	&__load {
+		color: $green;
+		position: absolute 0 0 0 0;
+		margin: auto;
 	}
 
 	&__error {
