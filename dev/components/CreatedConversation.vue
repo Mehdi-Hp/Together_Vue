@@ -16,7 +16,6 @@
 			<div class="l-sent__message | l-sent__message--warning">
 				<div class="l-sent__message-icon-holder">
 					<icon-alert class="l-sent__message-icon" />
-
 				</div>
 				<p class="l-sent__message-text">
 					قبل از بستن این تب، مطمئن شوید لینک گفت‌و‌گو را جایی ذخیره کرده‌اید.
@@ -25,6 +24,7 @@
 				</p>
 			</div>
 			<div class="l-sent__link-holder">
+				<icon-link class="l-sent__link-icon" />
 				<router-link
 					:to="`/conversations/${conversationId}`"
 					class="l-sent__link"
@@ -33,7 +33,7 @@
 				</router-link>
 			</div>
 			<a
-				class="l-sent__bookmark"
+				class="l-sent__cta"
 				:href="`data:text/html;charset=utf-8;base64,${jsToRedirect}`"
 				:download="`Together Conversation - ${conversationId}`"
 			>
@@ -47,6 +47,7 @@
 import { Base64 } from 'js-base64';
 import Keynote from './Keynote.vue';
 import IconAlert from './icons/Alert.vue';
+import IconLink from './icons/Link.vue';
 import VButton from './Button.vue';
 
 export default {
@@ -54,6 +55,7 @@ export default {
 	components: {
 		Keynote,
 		IconAlert,
+		IconLink,
 		VButton
 	},
 	props: ['conversationId'],
@@ -97,11 +99,10 @@ export default {
 		display: flex;
 		font-size: ms(-1);
 		font-weight: 500;
-		box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
 
 		&--warning {
-			color: white;
-			background-color: $red;
+			color: $red;
+			background-color: $white-2;
 			border-radius: 10px;
 			overflow: hidden;
 			line-height: 2;
@@ -111,14 +112,15 @@ export default {
 	&__message-icon-holder {
 		margin-left: 0.5em;
 		padding: $gutter--thin $gutter;
-		background-color: tint($red, 10%);
+		background-color: $white-3;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
 	&__message-icon {
-		size: 3em;
+		size: 2.5em;
+		color: tint($red, 30%);
 	}
 
 	&__message-text {
@@ -132,10 +134,9 @@ export default {
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		background-color: $green-lighter;
+		background-color: $white-2;
 		padding: $gutter--thin;
-		color: $white;
-		box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+		color: $green;
 		border-radius: 10px;
 		overflow: hidden;
 	}
@@ -143,9 +144,13 @@ export default {
 	&__link {
 	}
 
-	&__bookmark {
+	&__link-icon {
+		margin-left: 0.5em;
+	}
+
+	&__cta {
 		border-radius: 20em;
-		padding: 0.5em 2em;
+		padding: 0.75em 2em;
 		transition-property: box-shadow, transform, background;
 		transition-duration: 0.15s;
 		transition-timing-function: ease-in-out;
@@ -154,6 +159,7 @@ export default {
 		justify-content: center;
 		position: relative;
 		font-weight: 500;
+		font-size: ms(-1);
 		margin: $gutter 0;
 		background: $white-2;
 		color: $black-3;

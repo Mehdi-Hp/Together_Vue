@@ -5,7 +5,7 @@
 	>
 		<keynote class="l-start__keynote">
 			<template slot="title">
-				با هم / Together
+				با هم — Together
 			</template>
 			<template slot="desc">
 				هدف از ایجاد سامانه پیشنهادات و انتقادات این است که تمامی کارکنان شرکت ارکید فارمد بتوانند در محیطی امن و به دور از ملاحظات یا نگرانی ها پیام خود را به مدیرعامل سازمان برسانند.
