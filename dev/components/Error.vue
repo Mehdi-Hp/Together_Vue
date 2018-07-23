@@ -11,7 +11,7 @@
 		<div class="l-error__ctas">
 			<router-link
 				to="/conversations"
-				v-if="$store.state.user.employeeId"
+				v-if="$store.getters.isEmployee"
 			>
 				<v-button
 					mode="normal"
@@ -23,7 +23,7 @@
 			</router-link>
 			<router-link
 				to="/new"
-				v-if="!$store.state.user.employeeId"
+				v-if="!$store.getters.isEmployee"
 			>
 				<v-button
 					mode="normal"

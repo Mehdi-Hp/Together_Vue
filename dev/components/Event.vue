@@ -28,7 +28,7 @@
 				<span
 					class="m-event__writer"
 					:class="{
-						'm-event__writer--is-admin': $store.state.user.role === 'agent'
+						'm-event__writer--is-admin': $store.getters.isEmployee
 					}"
 				>
 					{{ data.user }}

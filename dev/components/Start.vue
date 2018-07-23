@@ -53,7 +53,7 @@ export default {
 			return !!this.$ls.get('token');
 		},
 		isAdmin() {
-			return !!this.$store.state.user.employeeId;
+			return !!this.$store.getters.isAdmin;
 		}
 	},
 	mounted() {

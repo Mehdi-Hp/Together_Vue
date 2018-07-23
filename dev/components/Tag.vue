@@ -2,17 +2,17 @@
 	<li
 		class="m-tag"
 		:class="{
-			'm-tag--is-hovered': isHovered && $store.state.user.role === 'agent',
+			'm-tag--is-hovered': isHovered && $store.getters.isEmployee,
 			'm-tag--is-removing': data.isRemoving,
 			'm-tag--is-visible': data.isSelected,
-			'm-tag--is-anonym': $store.state.user.role !== 'agent'
+			'm-tag--is-anonym': !$store.getters.isEmployee
 		}"
 	>
 		<span
 			class="m-tag__text"
 			:class="{
 				'm-tag__text--is-removing': data.isRemoving,
-				'm-tag__text--is-anonym': $store.state.user.role !== 'agent'
+				'm-tag__text--is-anonym': !$store.getters.isEmployee
 			}"
 		>
 			{{ data.title }}
@@ -23,7 +23,7 @@
 				'm-tag__remove--is-hovered': isHovered,
 				'm-tag__remove--is-removing': data.isRemoving
 			}"
-			v-if="$store.state.user.role === 'agent'"
+			v-if="$store.getters.isEmployee"
 			@click="remove"
 			@mouseover="isHovered = true"
 			@mouseleave="isHovered = false"
