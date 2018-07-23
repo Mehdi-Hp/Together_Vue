@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import jwtDecode from 'jwt-decode';
 
 export default {
 	state: {
@@ -9,17 +10,22 @@ export default {
 	},
 	getters: {
 		isAdmin(state) {
-			return state.role === 'agent' || state.role === 'Agent';
+			return state.role.toLowerCase() === 'agent';
 		},
 		isEmployee(state) {
 			return !!state.employeeId;
 		}
 	},
 	mutations: {
-		setUser(state, { role, employeeId, name }) {
-			state.role = role.toLowerCase();
-			state.employeeId = employeeId;
-			state.name = name;
+		setUser(state) {
+			const token = Vue.ls.get('token');
+			const decodedUser = jwtDecode(token.split(' ')[1]);
+			Vue.$axios.defaults.headers.common.Authorization = token;
+			state.role = decodedUser.Title;
+			state.employeeId = decodedUser.EmployeeId;
+			state.name = decodedUser.FullName;
+			state.email = decodedUser.Email;
+			return state;
 		}
 	},
 	actions: {
@@ -35,14 +41,8 @@ export default {
 					.then(({ data: { token, employeeId, fullName, role } }) => {
 						console.table({ token, employeeId, fullName, role });
 						Vue.ls.set('token', `Bearer ${token}`);
-						Vue.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-						const user = {
-							employeeId,
-							name: fullName,
-							role
-						};
-						commit('setUser', user);
-						resolve(user);
+						commit('setUser');
+						resolve(state);
 					})
 					.catch((error) => {
 						reject(error);
