@@ -12,14 +12,17 @@ export default {
 	},
 	actions: {
 		getAllAssignees({ state, commit }) {
-			Vue.$axios
-				.get('/conversationassignees')
-				.then((response) => {
-					commit('setAssignees', response.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			return new Promise((resolve, reject) => {
+				Vue.$axios
+					.get('/conversationassignees')
+					.then((response) => {
+						commit('setAssignees', response.data);
+						resolve(response.data);
+					})
+					.catch((error) => {
+						reject(error);
+					});
+			});
 		}
 	}
 };

@@ -1,114 +1,115 @@
 <template>
-	<section class="l-error">
-		<div class="l-error__status">
-			<h2 class="l-error__status-number">
-				{{ getStatus }}
-			</h2>
-			<span class="l-error__status-message">
-				{{ getMessage }}
+	<div
+		class="a-error"
+		:class="{
+			'a-error--is-showing': hasError
+		}"
+	>
+		<div class="a-error__inner">
+			<span
+				class="a-error__status"
+				:class="{
+					'a-error__status--is-showing': hasError
+				}"
+				v-if="error.status"
+			>
+				{{ error.status }}
+			</span>
+			<span
+				class="a-error__message"
+				:class="{
+					'a-error__message--is-showing': hasError
+				}"
+			>
+				{{ error.message || 'متاسفیم. مشکلی در سمت سرور پیش آمده.' }}
 			</span>
 		</div>
-		<div class="l-error__ctas">
-			<router-link
-				to="/conversations"
-				v-if="$store.getters.isEmployee"
-			>
-				<v-button
-					mode="normal"
-					class="l-error__cta"
-				>
-					<icon-list class="l-error__cta-icon | l-error__cta-icon--list"></icon-list>
-					لیست گفت‌وگوها
-				</v-button>
-			</router-link>
-			<router-link
-				to="/new"
-				v-if="!$store.getters.isEmployee"
-			>
-				<v-button
-					mode="normal"
-					class="l-error__cta"
-				>
-					گفت‌وگوی جدید
-				</v-button>
-			</router-link>
-		</div>
-	</section>
+	</div>
 </template>
 
 <script>
-import IconList from './icons/List.vue';
-import VButton from './Button.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	name: 'Error',
-	components: {
-		VButton,
-		IconList
-	},
-	props: ['status', 'message'],
+	props: [],
 	data() {
-		return {};
+		return {
+			// hasError: true
+		};
 	},
 	computed: {
-		getStatus() {
-			return this.status || 404;
-		},
-		getMessage() {
-			if (this.getStatus === 404) {
-				return 'صفحه‌ی درخواستی شما پیدا نشد.';
-			}
-			return this.message || 'در حین اجرای درخواست شما مشکلی پیش آمده.';
-		}
+		...mapGetters(['error', 'hasError'])
 	}
 };
 </script>
 
 <style scoped lang="scss">
-.l-error {
+.a-error {
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
+	width: 100%;
+	background-color: $red;
+	color: $white-1;
+	transition-property: transform, opacity;
+	transition-duration: 0.15s;
+	opacity: 0;
+	transform-origin: top;
+	transform: scaleY(0);
+	transition-timing-function: cubic-bezier(0.77, 0.4, 0.54, 1.61);
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	z-index: g-index('mountain');
+	box-shadow: 0px 6px 25px 1px rgba(0, 0, 0, 0.15);
+
+	&--is-showing {
+		opacity: 1;
+		transform: scaleY(1);
+	}
+
+	&__inner {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: $general-width;
+		margin: 0 auto;
+		padding: 0.75em;
+		perspective: 200px;
+	}
 
 	&__status {
-		display: flex;
-		flex-direction: column;
-	}
+		margin-left: 1em;
+		padding: 0.5em;
+		background-color: transparentize(black, 0.9);
+		border-radius: 5px;
+		transition-property: transform, opacity;
+		transition-duration: 0.15s;
+		transition-delay: 0.075s;
+		opacity: 0;
+		transform: scale(0);
+		transition-timing-function: cubic-bezier(0.77, 0.4, 0.54, 1.61);
+		position: relative;
+		font-weight: bold;
 
-	&__status-number {
-		font-size: ms(5);
-		color: shade($red, 30%);
-		font-weight: 100;
-		padding: 1rem;
-		background-color: tint($red, 90%);
-		margin-bottom: 1rem;
-		border-radius: 10px;
-		display: flex;
-		align-items: center;
-	}
-
-	&__status-message {
-		font-weight: 500;
-		color: $black-6;
-	}
-
-	&__ctas {
-		display: flex;
-		margin-top: $gutter--fat;
-	}
-
-	&__cta {
-	}
-
-	&__cta-icon {
-		margin-left: 0.5em;
-
-		&--list {
-			transform: rotateY(180deg);
-			font-size: ms(-1);
+		&--is-showing {
+			opacity: 1;
+			transform: scale(1);
 		}
 	}
 
-	&__image {
+	&__message {
+		transition-property: transform, opacity;
+		transition-duration: 0.15s;
+		opacity: 0;
+		transform: scale(0.8);
+		transition-delay: 0.17s;
+		transition-timing-function: cubic-bezier(0.77, 0.4, 0.54, 1.61);
+
+		&--is-showing {
+			opacity: 1;
+			transform: scale(1);
+		}
 	}
 }
 </style>

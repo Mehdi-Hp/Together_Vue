@@ -9,6 +9,14 @@ export default {
 		email: null
 	},
 	getters: {
+		user(state) {
+			return {
+				employeeId: state.employeeId,
+				name: state.name,
+				role: state.role,
+				email: state.email
+			};
+		},
 		isAdmin(state) {
 			return state.role.toLowerCase() === 'agent';
 		},
@@ -45,6 +53,9 @@ export default {
 						resolve(state);
 					})
 					.catch((error) => {
+						this.$store.commit('error', {
+							message: 'در تولید کلید ارتباط با سرور مشکلی پیش آمده'
+						});
 						reject(error);
 					});
 			});

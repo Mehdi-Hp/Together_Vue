@@ -45,6 +45,10 @@ router.beforeEach((to, from, next) => {
 	router.lastRoute = from.fullPath;
 	next();
 });
+router.beforeEach((to, from, next) => {
+	store.commit('clearError');
+	next();
+});
 
 Vue.component('Keynote', Keynote);
 

@@ -73,13 +73,18 @@ export default {
 		IconArrow,
 		IconPlus
 	},
-	props: ['isOpen', 'name', 'icon', 'list', 'mode'],
+	props: ['isOpen', 'name', 'icon', 'list', 'mode', 'selectedValue'],
 	data() {
 		return {
 			selected: null,
 			state: !!this.isOpen,
 			clicked: false
 		};
+	},
+	watch: {
+		selectedValue() {
+			this.selected = this.selectedValue;
+		}
 	},
 	methods: {
 		selectItem(id, title) {

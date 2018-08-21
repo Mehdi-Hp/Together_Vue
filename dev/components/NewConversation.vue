@@ -20,6 +20,8 @@
 			mode="expand"
 			@send="createConversation"
 			:is-busy="isBusy"
+			:error="hasError"
+			:is-done="isDone"
 		/>
 	</section>
 </template>
@@ -40,7 +42,9 @@ export default {
 	},
 	data() {
 		return {
-			isBusy: false
+			isBusy: false,
+			isDone: false,
+			hasError: false
 		};
 	},
 	computed: {
@@ -62,11 +66,13 @@ export default {
 	methods: {
 		createConversation(message) {
 			this.isBusy = true;
-			this.$store
+			return this.$store
 				.dispatch('createConversation', message)
 				.then((conversationId) => {
-					this.isBusy = true;
-					console.log(conversationId);
+					this.isBusy = false;
+					this.hasError = false;
+					this.isDone = true;
+					this.$ls.remove('message_sender_data');
 					this.$router.push({
 						name: 'created',
 						params: {
@@ -75,6 +81,8 @@ export default {
 					});
 				})
 				.catch((error) => {
+					this.isBusy = false;
+					this.isDone = false;
 					console.error(error);
 				});
 		}

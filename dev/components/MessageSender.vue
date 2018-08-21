@@ -14,6 +14,7 @@
 					name="موضوع"
 					:list="categories"
 					@select="setCategory"
+					:selected-value="getCategoryValue"
 				/>
 			</div>
 			<div
@@ -112,6 +113,7 @@
 					name="بررسی کننده"
 					:list="assignees"
 					@select="setAssignee"
+					:selected-value="getAssigneeValue"
 				/>
 				<div
 					class="o-message-sender__controls"
@@ -124,18 +126,18 @@
 						size="invisible"
 						:sitekey="sitekey"
 					>
-						<v-button
-							mode="normal"
-							@click="checkIfIsHuman"
-							class="o-message-sender__send"
-							:class="{
-								'o-message-sender__send--is-showing': !hasError && isTouched
-							}"
-							:is-loading="isLoading"
-						>
-							ایجاد گفت‌وگو
-						</v-button>
 					</vue-recaptcha>
+					<v-button
+						mode="normal"
+						@click="checkIfIsHumanAndSend"
+						class="o-message-sender__send"
+						:class="{
+							'o-message-sender__send--is-showing': !hasError && isTouched
+						}"
+						:is-loading="isLoading"
+					>
+						ایجاد گفت‌وگو
+					</v-button>
 				</div>
 			</div>
 		</div>
@@ -163,7 +165,7 @@ export default {
 		Dropdown,
 		IconPerson
 	},
-	props: ['mode', 'isBusy'],
+	props: ['mode', 'isBusy', 'error', 'isDone'],
 	data() {
 		return {
 			sitekey: '6LekjGMUAAAAAM9_Uk4Un_ujwvs9TNUJyNJTshwV',
@@ -201,6 +203,16 @@ export default {
 		},
 		getSlecetedMoodImage() {
 			return getImageFromMood(this.message.mood);
+		},
+		getCategoryValue() {
+			if (this.message.category) {
+				return this.categoryFromId(this.message.category);
+			}
+		},
+		getAssigneeValue() {
+			if (this.message.assignee) {
+				return this.assigneeFromId(this.message.assignee);
+			}
 		}
 	},
 	watch: {
@@ -212,12 +224,32 @@ export default {
 		},
 		categories() {
 			this.$bus.$emit('dropdownDataUpdate');
+		},
+		isDone(oldState, newState) {
+			if (newState) {
+				this.$ls.remove('message_sender_data');
+			}
+		},
+		error(oldValue, newValue) {
+			this.refillForm();
 		}
 	},
 	mounted() {
 		this.$validate();
+		if (this.$ls.get('message_sender_data')) {
+			this.refillForm();
+		}
 	},
 	methods: {
+		refillForm() {
+			const { title, description, typeId, assigneeId, mood } = JSON.parse(this.$ls.get('message_sender_data'));
+			this.message.title = title;
+			this.message.text = description;
+			this.selectMood(mood);
+			this.setCategory(typeId);
+			this.setAssignee(assigneeId);
+			this.calcHeight();
+		},
 		setAssignee(id) {
 			this.message.assignee = id;
 			this.$nextTick(() => {
@@ -237,10 +269,12 @@ export default {
 			});
 		},
 		assigneeFromId(id) {
-			const assigneeName = this.assignees.find((assignee) => {
-				return assignee.id === id;
-			});
-			return assigneeName.title;
+			if (id) {
+				const assigneeName = this.assignees.find((assignee) => {
+					return assignee.id === id;
+				});
+				return assigneeName.title;
+			}
 		},
 		categoryFromId(id) {
 			const categoryName = this.categories.find((category) => {
@@ -254,11 +288,9 @@ export default {
 		},
 		onCaptchaExpired() {
 			console.warn('reCaptcha got expired!');
+			this.$refs.invisibleRecaptcha.reset();
 		},
-		resetRecaptcha() {
-			this.$refs.recaptcha.reset();
-		},
-		checkIfIsHuman(bypass) {
+		checkIfIsHumanAndSend(bypass) {
 			if (!bypass) {
 				this.isLoading = true;
 				this.$refs.invisibleRecaptcha.execute();
@@ -272,21 +304,24 @@ export default {
 			this.send();
 		},
 		send() {
+			this.$refs.invisibleRecaptcha.reset();
 			this.isLoading = true;
+			const messageSenderData = {
+				title: this.message.title,
+				description: this.message.text,
+				typeId: this.message.category,
+				assigneeId: this.message.assignee,
+				mood: this.message.mood,
+				captcha: this.message.captcha
+			};
 			if (this.mode === 'mini' && this.validation.isPassed('message.text')) {
 				this.$emit('send', {
 					text: this.message.text,
 					mood: this.message.mood
 				});
 			} else if (!this.hasError) {
-				this.$emit('send', {
-					title: this.message.title,
-					description: this.message.text,
-					typeId: this.message.category,
-					assigneeId: this.message.assignee,
-					mood: this.message.mood,
-					captcha: this.message.captcha
-				});
+				this.$ls.set('message_sender_data', JSON.stringify(messageSenderData));
+				this.$emit('send', messageSenderData);
 			}
 			if (this.mode === 'mini') {
 				this.message.text = null;

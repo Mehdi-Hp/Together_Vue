@@ -82,7 +82,7 @@ export default {
 		min-width: 300px;
 		min-height: 2rem;
 		padding: 0.25rem;
-		border: 1px solid mix(white, black, 60%);
+		border: 1px solid mix(white, black, 70%);
 		transition: border-color;
 		transition-duration: 0.15s;
 		transition-timing-function: ease-in-out;

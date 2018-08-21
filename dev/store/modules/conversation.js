@@ -46,6 +46,7 @@ export default {
 	actions: {
 		createConversation({ state, commit }, { title, description, typeId, assigneeId, mood, captcha }) {
 			return new Promise((resolve, reject) => {
+				commit('clearError');
 				console.table({
 					title,
 					description,
@@ -74,9 +75,12 @@ export default {
 						});
 						resolve(conversationId);
 					})
-					.catch(({ response }) => {
-						console.error(response);
-						reject(response);
+					.catch((error) => {
+						commit('error', {
+							status: '۵۰۰',
+							message: 'متاسفانه مشکلی برای ساختن گفت وگو پیش آمده.'
+						});
+						reject(error);
 					});
 			});
 		},
@@ -117,11 +121,16 @@ export default {
 						resolve(newConversation);
 					})
 					.catch((response) => {
+						commit('error', {
+							status: '۵۰۰',
+							message: 'متاسفانه پیام شما ارسال نشد.'
+						});
 						reject(response);
 					});
 			});
 		},
 		createMessage({ state, commit, dispatch }, { text, replyToMessageId, mood, conversationId }) {
+			commit('clearError');
 			return new Promise((resolve, reject) => {
 				console.table({
 					text,
@@ -141,13 +150,23 @@ export default {
 						resolve(response.data);
 					})
 					.catch((error) => {
+						commit('error', {
+							status: '۵۰۰',
+							message: 'متاسفانه پیام شما ارسال نشد.'
+						});
 						console.error(error);
 						reject(error.data);
 					});
 			});
 		},
 		addConversationTag({ state, commit }, { tagId, conversationId }) {
+			commit('clearError');
 			return new Promise((resolve, reject) => {
+				const tagIndexToSelect = state.data.tags.findIndex((tag) => {
+					return tag.id === tagId;
+				});
+				commit('addConversationTag', tagId);
+				state.data.tags[tagIndexToSelect].isAdding = true;
 				Vue.$axios
 					.patch(`conversations/${conversationId}`, {
 						op: 'add',
@@ -155,16 +174,27 @@ export default {
 						value: tagId
 					})
 					.then((response) => {
-						console.log(response);
-						commit('addConversationTag', tagId);
-						resolve(conversationId);
+						setTimeout(() => {
+							commit('addConversationTag', tagId);
+							state.data.tags[tagIndexToSelect].isAdding = false;
+							resolve(conversationId);
+						}, 1000);
 					})
-					.catch(({ response }) => {
-						console.error(response);
+					.catch((response) => {
+						setTimeout(() => {
+							commit('error', {
+								status: '۵۰۰',
+								message: 'مشکلی در برچسب زدن بوجود آمده.'
+							});
+							console.error(response);
+							state.data.tags[tagIndexToSelect].isAdding = false;
+							reject(response);
+						}, 1000);
 					});
 			});
 		},
 		removeConversationTag({ state, commit }, { tagId, conversationId }) {
+			commit('clearError');
 			return new Promise((resolve, reject) => {
 				const tagIndexToUnselect = state.data.tags.findIndex((tag) => {
 					return tag.id === tagId;
@@ -177,7 +207,6 @@ export default {
 						value: tagId
 					})
 					.then((response) => {
-						console.log(response);
 						setTimeout(() => {
 							commit('removeConversationTag', tagId);
 							state.data.tags[tagIndexToUnselect].isRemoving = false;
@@ -185,6 +214,11 @@ export default {
 						}, 1000);
 					})
 					.catch(({ response }) => {
+						commit('error', {
+							status: '۵۰۰',
+							message: 'مشکلی در حذف برچسب بوجود آمده'
+						});
+						state.data.tags[tagIndexToUnselect].isRemoving = false;
 						console.error(response);
 					});
 			});
@@ -198,6 +232,9 @@ export default {
 				})
 				.then((response) => {})
 				.catch(({ response }) => {
+					commit('error', {
+						message: 'ارتباط نامطمئن با سرور'
+					});
 					console.error(response);
 				});
 		}

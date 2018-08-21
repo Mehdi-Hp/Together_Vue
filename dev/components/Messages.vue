@@ -40,17 +40,13 @@
 
 <script>
 import MessageSender from './MessageSender.vue';
-import Field from './Field.vue';
 import Event from './Event.vue';
-import VButton from './Button.vue';
 
 export default {
 	name: 'Messages',
 	components: {
 		MessageSender,
-		Field,
-		Event,
-		VButton
+		Event
 	},
 	props: ['events', 'fieldOnly'],
 	data() {

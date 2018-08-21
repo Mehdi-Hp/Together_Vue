@@ -87,8 +87,7 @@ export default {
 	name: 'Conversation',
 	components: {
 		Messages,
-		Tags,
-		Error
+		Tags
 	},
 	props: [],
 	data() {
@@ -122,7 +121,10 @@ export default {
 	},
 	mounted() {
 		this.$bus.$on('addTag', (tagId) => {
-			this.addTag(tagId);
+			this.$store.dispatch('addConversationTag', {
+				tagId,
+				conversationId: this.data.id
+			});
 		});
 		this.$bus.$on('removeTag', (tagId) => {
 			this.removeTag(tagId);

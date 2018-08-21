@@ -12,14 +12,18 @@ export default {
 	},
 	actions: {
 		getAllTypes({ state, commit }) {
-			Vue.$axios
-				.get('/conversationtypes')
-				.then((response) => {
-					commit('setTypes', response.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			return new Promise((resolve, reject) => {
+				Vue.$axios
+					.get('/conversationtypes')
+					.then((response) => {
+						commit('setTypes', response.data);
+						resolve(response.data);
+					})
+					.catch((error) => {
+						console.log(error);
+						reject(error);
+					});
+			});
 		}
 	}
 };

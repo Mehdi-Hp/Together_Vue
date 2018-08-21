@@ -4,6 +4,7 @@
 		:class="{
 			'm-tag--is-hovered': isHovered && $store.getters.isEmployee,
 			'm-tag--is-removing': data.isRemoving,
+			'm-tag--is-adding': data.isAdding,
 			'm-tag--is-visible': data.isSelected,
 			'm-tag--is-anonym': !$store.getters.isEmployee
 		}"
@@ -32,8 +33,16 @@
 				class="m-tag__remove-icon"
 				:class="{
 					'm-tag__remove-icon--is-hovered': isHovered,
+					'm-tag__remove-icon--is-visible': !data.isAdding && !data.isRemoving,
 					'm-tag__remove-icon--is-removing': data.isRemoving
 				}"
+			/>
+			<load-spinner
+				class="m-tag__spinner-icon"
+				:class="{
+					'm-tag__spinner-icon--is-visible': data.isAdding
+				}"
+				:animate="data.isAdding"
 			/>
 		</button>
 		<load-spinner
@@ -96,6 +105,10 @@ $tag-height: 1.8rem;
 		pointer-events: all;
 		transition-duration: 0.15s;
 		transition-property: background-color, color, padding, max-width, opacity, margin;
+	}
+
+	&--is-adding {
+		opacity: 0.6;
 	}
 
 	&--is-hovered {
@@ -164,12 +177,24 @@ $tag-height: 1.8rem;
 	&__remove-icon {
 		size: 100%;
 		stroke-width: 0.75em;
+		display: none;
+
+		&--is-visible {
+			display: inline-block;
+		}
 
 		&--is-hovered {
 			stroke-width: 1.5em;
 		}
+	}
 
-		&--is-removing {
+	&__spinner-icon {
+		size: 100%;
+		stroke-width: 0.75em;
+		display: none;
+
+		&--is-visible {
+			display: inline-block;
 		}
 	}
 

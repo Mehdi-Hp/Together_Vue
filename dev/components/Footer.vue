@@ -29,7 +29,7 @@
 					class="o-footer__link"
 					href="#"
 				>
-					Linkdin
+					Linkedin
 				</a>
 			</li>
 			<li class="o-footer__link-holder">

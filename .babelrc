@@ -1,4 +1,0 @@
-{
-	"presets": [],
-	"plugins": ["@babel/syntax-dynamic-import"]
-}

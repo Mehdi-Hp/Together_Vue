@@ -1,7 +1,8 @@
 module.exports = {
 	root: true,
 	parserOptions: {
-		parser: 'babel-eslint'
+		parser: 'babel-eslint',
+		ecmaVersion: 8
 	},
 	plugins: ['vue', 'xss', 'security', 'promise', 'no-loops'],
 	extends: ['airbnb', 'prettier', 'prettier/standard', 'plugin:security/recommended', 'plugin:promise/recommended', 'plugin:array-func/recommended', 'plugin:vue/recommended'],
@@ -50,10 +51,11 @@ module.exports = {
 		'no-loops/no-loops': 2,
 		'promise/always-return': 'off',
 		'promise/avoid-new': 'off',
+		'promise/no-callback-in-promise': 'off',
 		'promise/no-promise-in-callback': 'off',
 		'security/detect-object-injection': 'off',
 		'import/no-named-as-default': 'off',
 		'import/no-named-as-default-member': 'off',
-		'promise/no-nesting': 'off'
+		'react/jsx-no-bind': 'off'
 	}
 };
