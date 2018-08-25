@@ -94,7 +94,7 @@ export default {
 					.catch((response) => {});
 			});
 		},
-		getConversation({ state, commit }, conversationId) {
+		getConversation({ state, ncommit }, conversationId) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
 					.get(`/conversations/${conversationId}`)

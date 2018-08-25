@@ -30,16 +30,40 @@ export default {
 	width: 100%;
 	height: 15rem;
 	background: $white-1;
+	@include breakpoint(md) {
+		height: 13rem;
+	}
+	@include breakpoint(sm) {
+		height: 10rem;
+	}
+	@include breakpoint(xs) {
+		height: 8rem;
+	}
 
 	&:before {
 		content: '';
 		position: absolute 0 0 0 0;
 		background: url('../assets/images/top_circles.png');
 		background-repeat: no-repeat;
-		background-size: 44%;
-		background-position: 40% 0;
+		background-position: 50% 0;
 		opacity: 0.8;
 		pointer-events: none;
+		background-size: $general-width + 240px;
+		@include breakpoint(lg) {
+			background-size: $general-width--lg + 240px;
+		}
+		@include breakpoint(md) {
+			background-size: $md;
+			background-position: 50% -40px;
+		}
+		@include breakpoint(sm) {
+			background-size: $sm;
+			background-position: 50% -80px;
+		}
+		@include breakpoint(580px) {
+			background-size: 580px;
+			background-position: 50% -80px;
+		}
 	}
 
 	&__content {
@@ -51,6 +75,19 @@ export default {
 		align-items: flex-end;
 		justify-content: flex-end;
 		padding: $gutter 0;
+		@include breakpoint(lg) {
+			max-width: $general-width--lg;
+		}
+		@include breakpoint(md) {
+			max-width: $general-width--md;
+		}
+		@include breakpoint(sm) {
+			max-width: 100%;
+			justify-content: center;
+		}
+		@include breakpoint(xs) {
+			padding-bottom: $gutter--thin;
+		}
 	}
 
 	&__logo {
@@ -58,6 +95,16 @@ export default {
 		z-index: g-index('land');
 		margin-left: -1vw;
 		margin-bottom: 0.5rem;
+		@include breakpoint(lg) {
+			margin-left: 0;
+		}
+		@include breakpoint(sm) {
+			height: 65px;
+			margin-bottom: 0;
+		}
+		@include breakpoint(xs) {
+			height: 50px;
+		}
 	}
 
 	&__logo-image {

@@ -27,6 +27,7 @@
     "jwt-decode": "^2.2.0",
     "passport-local": "^1.0.0",
     "persian-date": "^1.0.5",
+    "prettier": "^1.14.2",
     "regenerator": "^0.13.2",
     "simple-vue-validator": "^0.15.1",
     "style-resources-loader": "^1.2.1",

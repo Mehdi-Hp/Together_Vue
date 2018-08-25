@@ -5,7 +5,7 @@
 	>
 		<keynote class="l-start__keynote">
 			<template slot="title">
-				با هم — Together
+				با هم 🤝 Together
 			</template>
 			<template slot="desc">
 				هدف از ایجاد سامانه پیشنهادات و انتقادات این است که تمامی کارکنان شرکت ارکید فارمد بتوانند در محیطی امن و به دور از ملاحظات یا نگرانی ها پیام خود را به مدیرعامل سازمان برسانند.
@@ -71,6 +71,9 @@ export default {
 
 	&__keynote {
 		margin-top: $gutter--fat;
+		@include breakpoint(sm) {
+			margin-top: $gutter;
+		}
 	}
 
 	&__content {
@@ -78,11 +81,21 @@ export default {
 		align-items: center;
 		margin-top: $gutter;
 		margin-bottom: $gutter--fat;
+		@include breakpoint(sm) {
+			margin-top: 0;
+			margin-bottom: $gutter;
+			flex-direction: column;
+			align-items: flex-start;
+		}
 	}
 
 	&__new-advice {
 		font-weight: 500;
 		margin-left: $gutter;
+		@include breakpoint(sm) {
+			margin-left: 0;
+			margin-bottom: $gutter--thin;
+		}
 	}
 
 	&__login {

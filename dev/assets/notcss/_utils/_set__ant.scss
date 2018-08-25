@@ -5,6 +5,9 @@ $gutter--fat: $gutter * 2;
 $gutter--fater: $gutter * 4;
 
 $general-width: 800px;
+$general-width--lg: 600px;
+$general-width--md: 540px;
+$general-width--sm: 100%;
 $ant-columns-count: 12;
 $ant-gutter: 15px;
 
@@ -12,3 +15,47 @@ $ant-column: (($general-width - ($ant-gutter * ($ant-columns-count - 1))) / $ant
 
 $inner-width: ($ant-column * 10) + ($ant-gutter * 9);
 @ant-gutters 15px;
+
+$xs: 480px;
+$sm: 640px;
+$md: 840px;
+$lg: 1040px;
+
+@mixin breakpoint($max: 0, $min: 0) {
+	$type: type-of($max);
+
+	@if $type == string {
+		$class: $max;
+		@if $class == xs {
+			@media (max-width: $xs) {
+				@content;
+			}
+		} @else if $class == sm {
+			@media (max-width: $sm) {
+				@content;
+			}
+		} @else if $class == md {
+			@media (max-width: $md) {
+				@content;
+			}
+		} @else if $class == lg {
+			@media (max-width: $lg) {
+				@content;
+			}
+		} @else {
+			@warn "Breakpoint mixin supports: xs, sm, md, lg";
+		}
+	} @else if $type == number {
+		$query: 'all' !default;
+		@if $max != 0 and $min != 0 {
+			$query: '(min-width: #{$min}) and (max-width: #{$max})';
+		} @else if $min != 0 and $max == 0 {
+			$query: '(min-width: #{$min})';
+		} @else if $min == 0 and $max != 0 {
+			$query: '(max-width: #{$max})';
+		}
+		@media #{$query} {
+			@content;
+		}
+	}
+}

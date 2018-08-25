@@ -176,6 +176,16 @@ export default {
 		padding-bottom: $gutter--fat;
 		color: $black-4;
 		position: relative;
+		@include breakpoint(lg) {
+			max-width: $general-width--lg;
+		}
+		@include breakpoint(md) {
+			max-width: $general-width--md;
+		}
+		@include breakpoint(sm) {
+			max-width: $general-width--sm;
+			padding: $gutter $gutter--fat;
+		}
 	}
 
 	&__load-icon {

@@ -25,6 +25,9 @@ export default {
 	flex-direction: column;
 	color: $black-4;
 	margin-bottom: $gutter--fat;
+	@include breakpoint(sm) {
+		margin-bottom: $gutter;
+	}
 
 	&__title {
 		color: $main-color;
