@@ -11,6 +11,9 @@
 			>
 				<dropdown
 					class="o-message-sender__dropdown"
+					:class="{
+						'o-message-sender__dropdown--small': $eq.small
+					}"
 					name="موضوع"
 					:list="categories"
 					@select="setCategory"
@@ -18,7 +21,7 @@
 				/>
 			</div>
 			<div
-				class="o-message-sender__row"
+				class="o-message-sender__row | o-message-sender__row--no-wrap"
 				v-if="mode === 'expand'"
 			>
 				<div
@@ -59,7 +62,9 @@
 					@change="selectMood"
 				/>
 			</div>
-			<div class="o-message-sender__row">
+			<div
+				class="o-message-sender__row"
+			>
 				<div
 					class="o-message-sender__emoji-toggler"
 					:class="{
@@ -88,7 +93,8 @@
 				<div
 					class="o-message-sender__controls"
 					:class="{
-						'o-message-sender__controls--dont-grow': mode === 'mini'
+						'o-message-sender__controls--dont-grow': mode === 'mini',
+						'o-message-sender__controls--seperate': $eq.small
 					}"
 					v-if="mode === 'mini'"
 				>
@@ -110,6 +116,9 @@
 			>
 				<dropdown
 					class="o-message-sender__dropdown"
+					:class="{
+						'o-message-sender__dropdown--small': $eq.small
+					}"
 					name="بررسی کننده"
 					:list="assignees"
 					@select="setAssignee"
@@ -117,6 +126,9 @@
 				/>
 				<div
 					class="o-message-sender__controls"
+					:class="{
+						'o-message-sender__controls--seperate': $eq.small
+					}"
 					v-if="mode === 'expand'"
 				>
 					<vue-recaptcha
@@ -155,6 +167,11 @@ import IconPerson from './icons/Person.vue';
 
 export default {
 	name: 'MessageSender',
+	eq: {
+		breakpoints: {
+			small: { maxWidth: 350 }
+		}
+	},
 	directives: {
 		onClickaway
 	},
@@ -383,6 +400,7 @@ export default {
 		width: 100%;
 		display: flex;
 		border-bottom: 1px solid $white-1;
+		flex-wrap: wrap;
 
 		&:last-of-type {
 			border-bottom: none;
@@ -391,13 +409,19 @@ export default {
 		&--mini-emoji {
 			order: 1;
 		}
+
+		&--no-wrap {
+			flex-wrap: nowrap;
+		}
 	}
 
 	&__textfield {
 		padding: 0.75em 0 $gutter--thin $gutter--thin;
-		width: 100%;
+		flex-grow: 1;
 		border: none;
 		background: white;
+		width: inherit;
+
 		&::-webkit-input-placeholder {
 			color: $black-6;
 		}
@@ -437,6 +461,9 @@ export default {
 
 	&__emoji-toggler-image {
 		size: 2em;
+		&.xs {
+			size: 1.7em;
+		}
 	}
 
 	&__emojies {
@@ -511,6 +538,10 @@ export default {
 	&__dropdown {
 		margin-left: $ant-gutter;
 		margin: $gutter--thin;
+
+		&--small {
+			width: 100%;
+		}
 	}
 
 	&__controls {
@@ -523,6 +554,10 @@ export default {
 		&--dont-grow {
 			flex-grow: 0;
 			align-items: flex-start;
+		}
+
+		&--seperate {
+			border-top: 1px solid $white-1;
 		}
 	}
 

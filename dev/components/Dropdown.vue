@@ -110,6 +110,7 @@ export default {
 <style scoped lang="scss">
 .m-dropdown {
 	position: relative;
+	display: flex;
 
 	&__button {
 		display: flex;
@@ -118,6 +119,7 @@ export default {
 		color: $black-3;
 		border-radius: 10em;
 		padding: 0.5em 1.5em;
+		flex-grow: 1;
 
 		&--is-clicked {
 			background-color: $white-2;

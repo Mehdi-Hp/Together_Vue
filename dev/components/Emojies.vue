@@ -3,7 +3,9 @@
 		<div
 			class="m-emojies__item"
 			:class="{
-				'm-emojies__item--is-active': value === 1
+				'm-emojies__item--is-active': value === 1,
+				'm-emojies__item--xsmall': $eq.xsmall,
+				'm-emojies__item--small': $eq.small
 			}"
 		>
 			<img
@@ -15,7 +17,9 @@
 		<div
 			class="m-emojies__item"
 			:class="{
-				'm-emojies__item--is-active': value === 2
+				'm-emojies__item--is-active': value === 2,
+				'm-emojies__item--xsmall': $eq.xsmall,
+				'm-emojies__item--small': $eq.small
 			}"
 		>
 			<img
@@ -27,7 +31,9 @@
 		<div
 			class="m-emojies__item"
 			:class="{
-				'm-emojies__item--is-active': value === 3
+				'm-emojies__item--is-active': value === 3,
+				'm-emojies__item--xsmall': $eq.xsmall,
+				'm-emojies__item--small': $eq.small
 			}"
 		>
 			<img
@@ -39,7 +45,9 @@
 		<div
 			class="m-emojies__item"
 			:class="{
-				'm-emojies__item--is-active': value === 4
+				'm-emojies__item--is-active': value === 4,
+				'm-emojies__item--xsmall': $eq.xsmall,
+				'm-emojies__item--small': $eq.small
 			}"
 		>
 			<img
@@ -51,7 +59,9 @@
 		<div
 			class="m-emojies__item"
 			:class="{
-				'm-emojies__item--is-active': value === 5
+				'm-emojies__item--is-active': value === 5,
+				'm-emojies__item--xsmall': $eq.xsmall,
+				'm-emojies__item--small': $eq.small
 			}"
 		>
 			<img
@@ -66,6 +76,12 @@
 <script>
 export default {
 	name: 'Emojies',
+	eq: {
+		breakpoints: {
+			xsmall: { maxWidth: 280 },
+			small: { maxWidth: 400 }
+		}
+	},
 	props: ['value'],
 	data() {
 		return {};
@@ -75,6 +91,8 @@ export default {
 
 <style scoped lang="scss">
 $emoji-width: 3em;
+$emoji-width--small: 2.4em;
+$emoji-width--xsmall: 2.1em;
 
 .m-emojies {
 	position: relative;
@@ -110,6 +128,14 @@ $emoji-width: 3em;
 		&--is-active {
 			filter: grayscale(0);
 			opacity: 1;
+		}
+
+		&--small {
+			size: $emoji-width--small;
+		}
+		&--xsmall {
+			size: $emoji-width--xsmall;
+			margin-left: $gutter--thin / 2;
 		}
 	}
 
