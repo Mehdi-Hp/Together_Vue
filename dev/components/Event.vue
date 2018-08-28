@@ -170,7 +170,6 @@ export default {
 .m-event {
 	display: flex;
 	width: 100%;
-	margin-bottom: 1em;
 	position: relative;
 
 	&--for-me {
@@ -192,6 +191,7 @@ export default {
 		width: 100%;
 		position: relative;
 		border-radius: 0 25px 25px 25px;
+		margin-bottom: $gutter--thin;
 
 		&--narrow {
 			padding: $gutter--thin;

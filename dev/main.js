@@ -7,7 +7,6 @@ import VueAxios from 'vue-axios';
 import SimpleVueValidation from 'simple-vue-validator';
 import VueLocalStorage from 'vue-ls';
 import VueVisible from 'vue-visible';
-import VueMq from 'vue-mq';
 import VueElementQuery from 'vue-element-query';
 import App from './App.vue';
 import Routes from './routes';
@@ -30,16 +29,6 @@ Vue.prototype.$bus = EventBus;
 Vue.use(VueLocalStorage);
 
 Vue.use(VueElementQuery);
-
-Vue.use(VueMq, {
-	breakpoints: {
-		xs: 480,
-		sm: 640,
-		md: 840,
-		lg: 1040,
-		xlg: Infinity
-	}
-});
 
 Vue.use(VueRouter);
 const router = new VueRouter({
