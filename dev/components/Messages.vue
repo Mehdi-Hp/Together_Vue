@@ -122,6 +122,17 @@ export default {
 		width: $general-width;
 		max-width: 100%;
 		margin: auto;
+		padding: 0 $gutter;
+		@include breakpoint(lg) {
+			max-width: $general-width--lg;
+		}
+		@include breakpoint(md) {
+			max-width: $general-width--md;
+		}
+		@include breakpoint(sm) {
+			max-width: $general-width--sm;
+			padding: $gutter;
+		}
 	}
 
 	&__form-holder {
@@ -134,6 +145,10 @@ export default {
 		box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.07);
 
 		&--has-error {
+		}
+
+		@include breakpoint(sm) {
+			margin-bottom: 0;
 		}
 	}
 
@@ -182,6 +197,18 @@ export default {
 		flex-direction: column;
 		width: $inner-width;
 		margin: 0 auto;
+		padding: 0 $gutter;
+		@include breakpoint(lg) {
+			max-width: $general-width--lg;
+			width: auto;
+		}
+		@include breakpoint(md) {
+			max-width: $general-width--md;
+		}
+		@include breakpoint(sm) {
+			max-width: $general-width--sm;
+			padding: $gutter--thin;
+		}
 	}
 
 	&__event {

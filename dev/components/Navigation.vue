@@ -76,11 +76,23 @@ export default {
 	width: 100%;
 
 	&__inner {
-		width: $general-width;
+		width: 100%;
 		padding: 0 $gutter;
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
+		max-width: $general-width;
+		@include breakpoint(lg) {
+			max-width: $general-width--lg;
+		}
+		@include breakpoint(md) {
+			max-width: $general-width--md;
+			padding: $gutter--thin $gutter;
+		}
+		@include breakpoint(sm) {
+			max-width: $general-width--sm;
+			padding: 0 $gutter;
+		}
 	}
 
 	&__back {

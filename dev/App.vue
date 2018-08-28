@@ -184,7 +184,7 @@ export default {
 		}
 		@include breakpoint(sm) {
 			max-width: $general-width--sm;
-			padding: $gutter $gutter--fat;
+			padding: $gutter;
 		}
 	}
 

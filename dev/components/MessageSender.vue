@@ -64,6 +64,9 @@
 			</div>
 			<div
 				class="o-message-sender__row"
+				:class="{
+					'o-message-sender__row--mini-mode': $eq.small && mode === 'mini'
+				}"
 			>
 				<div
 					class="o-message-sender__emoji-toggler"
@@ -94,7 +97,7 @@
 					class="o-message-sender__controls"
 					:class="{
 						'o-message-sender__controls--dont-grow': mode === 'mini',
-						'o-message-sender__controls--seperate': $eq.small
+						'o-message-sender__controls--seperate': $eq.small && mode !== 'mini'
 					}"
 					v-if="mode === 'mini'"
 				>
@@ -169,7 +172,7 @@ export default {
 	name: 'MessageSender',
 	eq: {
 		breakpoints: {
-			small: { maxWidth: 350 }
+			small: { maxWidth: 420 }
 		}
 	},
 	directives: {
@@ -412,6 +415,10 @@ export default {
 
 		&--no-wrap {
 			flex-wrap: nowrap;
+		}
+
+		&--mini-mode {
+			justify-content: flex-end;
 		}
 	}
 

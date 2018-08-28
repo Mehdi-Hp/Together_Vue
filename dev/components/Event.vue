@@ -5,13 +5,13 @@
 			'm-event--for-me': data.isCreatedByMyOwn && data.type.toLowerCase() === 'message',
 			'm-event--has-error': data.error
 		}"
-		v-if="data.type.toLowerCase() === 'message' || data.type.toLowerCase() === 'created'"
 	>
 		<div
 			class="m-event__content"
 			:class="{
 				'm-event__content--for-me': data.isCreatedByMyOwn && data.type.toLowerCase() === 'message',
-				'm-event__content--has-error': data.error
+				'm-event__content--has-error': data.error,
+				'm-event__content--narrow': $eq.small
 			}"
 			v-if="data.type.toLowerCase() === 'message'"
 		>
@@ -81,6 +81,7 @@
 			<p
 				class="m-event__text"
 				:class="{
+					'm-event__text--small': $eq.small,
 					'm-event__text--for-me': data.isCreatedByMyOwn,
 					'm-event__text--has-error': data.error
 				}"
@@ -99,7 +100,7 @@
 		</div>
 		<span
 			class="m-event__content | m-event__content--plain"
-			v-if="data.type.toLowerCase() !== 'message'"
+			v-if="data.type.toLowerCase() === 'created'"
 		>
 			{{ persianType(data.type) }} در {{ persianDate(data.time) }}
 		</span>
@@ -120,6 +121,11 @@ const PersianDate = require('persian-date');
 
 export default {
 	name: 'Event',
+	eq: {
+		breakpoints: {
+			small: { maxWidth: 480 }
+		}
+	},
 	components: {
 		IconSeen,
 		IconCheckmark,
@@ -187,6 +193,10 @@ export default {
 		position: relative;
 		border-radius: 0 25px 25px 25px;
 
+		&--narrow {
+			padding: $gutter--thin;
+		}
+
 		&:before {
 			content: '';
 			position: absolute;
@@ -199,6 +209,10 @@ export default {
 			border-left: 1em solid transparent;
 			border-bottom: 1em solid transparent;
 			z-index: g-index('land');
+			@include breakpoint(sm) {
+				border-width: 0.5em;
+				left: -1em;
+			}
 		}
 
 		&:after {
@@ -211,6 +225,9 @@ export default {
 			background: $white;
 			transform: rotateZ(45deg);
 			box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+			@include breakpoint(sm) {
+				display: none;
+			}
 		}
 
 		&--for-me {
@@ -229,6 +246,10 @@ export default {
 				border-right: 1em solid transparent;
 				border-bottom: 1em solid transparent;
 				z-index: g-index('land');
+				@include breakpoint(sm) {
+					border-width: 0.5em;
+					right: -1em;
+				}
 			}
 
 			&:after {
@@ -241,6 +262,9 @@ export default {
 				background: $white;
 				transform: rotateZ(-45deg);
 				box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+				@include breakpoint(sm) {
+					display: none;
+				}
 			}
 		}
 
@@ -368,6 +392,10 @@ export default {
 
 		&--has-error {
 			color: tint($red, 80%);
+		}
+
+		&--small {
+			font-size: ms(-1);
 		}
 	}
 

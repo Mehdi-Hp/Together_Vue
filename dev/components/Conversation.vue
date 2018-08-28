@@ -182,7 +182,20 @@ export default {
 		display: flex;
 		flex-direction: column;
 		margin: $gutter auto $gutter--fat auto;
-		width: $inner-width;
+		width: $general-width;
+		max-width: calc(100% - (#{$gutter--fat} * 2));
+		padding: 0 $gutter;
+		@include breakpoint(lg) {
+			max-width: $general-width--lg;
+		}
+		@include breakpoint(md) {
+			max-width: $general-width--md;
+		}
+		@include breakpoint(sm) {
+			max-width: $general-width--sm;
+			margin: 0 auto;
+			padding: $gutter;
+		}
 	}
 
 	&__content-holder {
@@ -261,6 +274,9 @@ export default {
 		background-color: $white-2;
 		flex-grow: 1;
 		padding: $gutter 0 $gutter--fat 0;
+		@include breakpoint(sm) {
+			padding: 0;
+		}
 	}
 
 	&__events {

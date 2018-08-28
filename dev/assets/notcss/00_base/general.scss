@@ -17,6 +17,9 @@ body {
 	direction: rtl;
 	text-align: right;
 	line-height: 1.2;
+	@include breakpoint(sm) {
+		font-size: ms(-1);
+	}
 }
 
 input,
@@ -40,16 +43,25 @@ h5 {
 h1 {
 	font-size: ms(4);
 	font-family: $default-typeface;
+	@include breakpoint(sm) {
+		font-size: ms(3);
+	}
 }
 
 h2 {
 	font-size: ms(3);
 	font-family: $default-typeface;
+	@include breakpoint(sm) {
+		font-size: ms(2);
+	}
 }
 
 h3 {
 	font-size: ms(2);
 	font-family: $default-typeface;
+	@include breakpoint(sm) {
+		font-size: ms(1);
+	}
 }
 
 h4 {

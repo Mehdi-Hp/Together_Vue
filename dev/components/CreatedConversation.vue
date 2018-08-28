@@ -23,11 +23,13 @@
 					در صورت از دست دادن لینک، راهی برای رسیدن به این گفت‌و‌گو نخواهید داشت.
 				</p>
 			</div>
-			<div class="l-sent__link-holder">
-				<icon-link class="l-sent__link-icon" />
+			<div class="l-sent__message | l-sent__message--success">
+				<div class="l-sent__message-icon-holder">
+					<icon-link class="l-sent__message-icon" />
+				</div>
 				<router-link
 					:to="`/conversations/${conversationId}`"
-					class="l-sent__link"
+					class="l-sent__message-text"
 				>
 					{{ conversationId }}
 				</router-link>
@@ -61,7 +63,7 @@ export default {
 	props: ['conversationId'],
 	data() {
 		return {
-			// conversationId: 'bc5ef7ce-70a5-4c43-8ca1-19a04696e8f5'
+			// conversationId: '2837cbc7-afc8-4883-8f09-a331b3b31586'
 		};
 	},
 	computed: {
@@ -99,53 +101,55 @@ export default {
 		display: flex;
 		font-size: ms(-1);
 		font-weight: 500;
+		background-color: $white-2;
+		border-radius: 10px;
+		overflow: hidden;
+		line-height: 2;
+
+		&:nth-child(n + 1) {
+			margin-bottom: $gutter--thin;
+		}
 
 		&--warning {
 			color: $red;
-			background-color: $white-2;
-			border-radius: 10px;
-			overflow: hidden;
-			line-height: 2;
+			@include breakpoint(xs) {
+				flex-direction: column;
+			}
+		}
+
+		&--success {
+			color: $green;
+			@include breakpoint(xs) {
+				flex-direction: column;
+			}
 		}
 	}
 
 	&__message-icon-holder {
-		margin-left: 0.5em;
 		padding: $gutter--thin $gutter;
 		background-color: $white-3;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		opacity: 0.8;
+
+		@include breakpoint(sm) {
+			padding: $gutter--thin;
+		}
 	}
 
 	&__message-icon {
-		size: 2.5em;
-		color: tint($red, 30%);
+		size: 2rem;
 	}
 
 	&__message-text {
 		padding: $gutter--thin $gutter;
-	}
-
-	&__link-holder {
-		width: 100%;
-		margin-top: $gutter--thin;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: relative;
-		background-color: $white-2;
-		padding: $gutter--thin;
-		color: $green;
-		border-radius: 10px;
-		overflow: hidden;
-	}
-
-	&__link {
-	}
-
-	&__link-icon {
-		margin-left: 0.5em;
+		@include breakpoint(sm) {
+			padding: $gutter--thin;
+		}
+		@include breakpoint(xs) {
+			text-align: center;
+		}
 	}
 
 	&__cta {
