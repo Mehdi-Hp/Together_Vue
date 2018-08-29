@@ -73,6 +73,9 @@ export default {
 		background-size: 45vw;
 		background-position: bottom right;
 		pointer-events: none;
+		@include breakpoint(sm) {
+			background-size: 60vh;
+		}
 	}
 
 	&__logo {

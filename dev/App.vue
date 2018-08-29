@@ -156,6 +156,7 @@ export default {
 	&__navigation {
 		margin-top: $gutter;
 		margin-bottom: $gutter;
+		flex-grow: 1;
 	}
 
 	&__content-holder {

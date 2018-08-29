@@ -231,7 +231,7 @@ export default {
 		}
 
 		&--for-me {
-			background: linear-gradient(to top, tint($green-lighter, 30%) 0%, tint($green-lighter, 60%) 100%);
+			background: linear-gradient(to top, tint($green-lighter, 30%) 0%, tint($green-lighter, 60%) 80%);
 			border-radius: 25px 0 25px 25px;
 
 			&:before {
