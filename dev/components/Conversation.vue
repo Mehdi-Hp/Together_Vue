@@ -9,12 +9,13 @@
 		>
 			<div class="l-conversation__state-management">
 				<span class="l-conversation__current-state">{{ data.state }}</span>
-				<button
-					class="l-conversation__change-state"
-					v-if="false"
-				>
-					Delete
-				</button>
+				<dropdown
+					class="l-conversation__state-changer"
+					name="تغییر وضعیت"
+					:list="getStates"
+					@select="setState"
+					v-if="$store.getters.isEmployee"
+				/>
 			</div>
 			<div class="l-conversation__content-holder">
 				<div
@@ -79,6 +80,7 @@
 </template>
 
 <script>
+import Dropdown from './Dropdown.vue';
 import getImageFromMood from '../services/getImageFromMood';
 import Messages from './Messages.vue';
 import Tags from './Tags.vue';
@@ -87,7 +89,8 @@ export default {
 	name: 'Conversation',
 	components: {
 		Messages,
-		Tags
+		Tags,
+		Dropdown
 	},
 	props: [],
 	data() {
@@ -103,6 +106,22 @@ export default {
 			if (this.data.events.length) {
 				return getImageFromMood(this.data.events[this.data.events.length - 2].mood);
 			}
+		},
+		getStates() {
+			return [
+				{
+					title: 'بستن گفت‌و‌گو',
+					value: 1
+				},
+				{
+					title: 'بررسی بیشتر',
+					value: 2
+				},
+				{
+					title: 'ارجاع دادن',
+					value: 3
+				}
+			];
 		}
 	},
 	created() {
@@ -168,6 +187,9 @@ export default {
 			}
 			messageToSettle.notSettledYet = false;
 			this.$set(messageToSettle, 'error', error);
+		},
+		setState(state) {
+			console.log({ state });
 		}
 	}
 };
@@ -227,18 +249,18 @@ export default {
 		display: flex;
 		margin-bottom: $gutter--fat;
 		margin-right: calc(#{$ant-column} + #{$ant-gutter});
-		justify-content: flex-start;
+		justify-content: space-between;
 	}
 
 	&__current-state {
 		display: flex;
 		align-items: center;
-		border-radius: 5px;
-		font-weight: 400;
-		color: $black-3;
+		color: $black-5;
 		font-size: ms(-1);
-		background-color: $white-5;
-		padding: $gutter--thin / 2 $gutter--thin;
+		font-weight: bold;
+	}
+
+	&__state-changer {
 	}
 
 	&__message-card {

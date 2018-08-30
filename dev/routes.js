@@ -22,8 +22,8 @@ const Search = () => {
 const Login = () => {
 	return import('./components/Login.vue');
 };
-const Error = () => {
-	return import('./components/Error.vue');
+const NotFound = () => {
+	return import('./components/NotFound.vue');
 };
 
 export default [
@@ -66,6 +66,7 @@ export default [
 	},
 	{
 		path: '/conversations/:id',
+		alias: '/conversation/:id',
 		component: Conversation,
 		name: 'conversation',
 		meta: {
@@ -85,7 +86,7 @@ export default [
 	},
 	{
 		path: '*',
-		component: Error,
-		name: 'error'
+		component: NotFound,
+		name: 'notFound'
 	}
 ];
