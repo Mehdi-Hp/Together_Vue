@@ -101,14 +101,14 @@ export default {
 	}
 
 	&:hocus {
-		background-color: $white-2;
+		outline: 4px solid tint($green, 70%);
 		box-shadow: 0 10px 20px 0 transparentize($green, 0.95);
 		z-index: 1;
 	}
 
 	&:active {
 		transform: scale(0.98);
-		background-color: $white-4;
+		background-color: tint($green, 85%);
 	}
 
 	&__main {
@@ -219,11 +219,12 @@ export default {
 		max-height: 0;
 		padding: 0 $gutter--fat;
 		transition: padding 0.15s, max-height 0.15s;
+		perspective: 10em;
 
 		&--is-visible {
 			padding: $gutter $gutter--fat;
 			padding-top: 0;
-			max-height: 100vh;
+			max-height: 300px;
 		}
 	}
 
@@ -234,7 +235,9 @@ export default {
 		cursor: pointer;
 		width: 100%;
 		opacity: 0;
-		transition: opacity 0.15s, border-radius 0.15s 0.1s;
+		border-radius: 0 25px 25px 25px;
+		transition: opacity 0.15s, transform 0.15s;
+		transform: translateY(3em);
 		pointer-events: none;
 
 		&:before {
@@ -252,7 +255,8 @@ export default {
 		}
 
 		&--is-visible {
-			border-radius: 0 25px 25px 25px;
+			transition-timing-function: ease-in;
+			transform: translateY(0);
 			opacity: 1;
 			pointer-events: all;
 		}
