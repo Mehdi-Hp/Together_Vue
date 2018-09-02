@@ -3,6 +3,20 @@
 		class="l-conversation"
 		v-show="$store.state.conversation.data.id"
 	>
+		<nav
+			class="l-conversation__nav"
+			v-if="$store.getters.isAdmin"
+		>
+			<router-link
+				class="l-conversation__go-back"
+				to="/conversations"
+			>
+				<icon-back class="l-conversation__go-back-icon" />
+				<span class="l-conversation__go-back-text">
+					لیست گفت‌و‌گوها
+				</span>
+			</router-link>
+		</nav>
 		<aside
 			class="l-conversation__summary"
 			v-if="!notFound"
@@ -84,13 +98,15 @@ import Dropdown from './Dropdown.vue';
 import getImageFromMood from '../services/getImageFromMood';
 import Messages from './Messages.vue';
 import Tags from './Tags.vue';
+import IconBack from './icons/Back.vue';
 
 export default {
 	name: 'Conversation',
 	components: {
 		Messages,
 		Tags,
-		Dropdown
+		Dropdown,
+		IconBack
 	},
 	props: [],
 	data() {
@@ -200,13 +216,51 @@ export default {
 	padding: 0;
 	max-width: 100%;
 
-	&__summary {
-		display: flex;
-		flex-direction: column;
-		margin: $gutter auto $gutter--fat auto;
+	&__nav {
+		margin: $gutter auto 0 auto;
 		width: $general-width;
 		max-width: calc(100% - (#{$gutter--fat} * 2));
 		padding: 0 $gutter;
+		font-size: ms(-1);
+		@include breakpoint(lg) {
+			max-width: $general-width--lg;
+		}
+		@include breakpoint(md) {
+			max-width: $general-width--md;
+		}
+		@include breakpoint(sm) {
+			max-width: $general-width--sm;
+			margin: 0 auto;
+			padding: $gutter;
+		}
+	}
+
+	&__go-back {
+		color: $black-5;
+		display: flex;
+		align-items: center;
+		padding: 0;
+		background-color: transparent;
+		font-weight: 500;
+	}
+
+	&__go-back-icon {
+		margin-left: 0.5em;
+		position: relative;
+		top: -0.1em;
+		font-size: 1.1em;
+	}
+
+	&__go-back-text {
+	}
+
+	&__summary {
+		display: flex;
+		flex-direction: column;
+		margin: $gutter--fat auto;
+		padding: 0 $gutter;
+		width: $general-width;
+		max-width: calc(100% - (#{$gutter--fat} * 2));
 		@include breakpoint(lg) {
 			max-width: $general-width--lg;
 		}
@@ -247,7 +301,7 @@ export default {
 
 	&__state-management {
 		display: flex;
-		margin-bottom: $gutter--fat;
+		margin-bottom: $gutter;
 		margin-right: calc(#{$ant-column} + #{$ant-gutter});
 		justify-content: space-between;
 	}
@@ -257,7 +311,9 @@ export default {
 		align-items: center;
 		color: $black-5;
 		font-size: ms(-1);
-		font-weight: bold;
+		padding: 1em;
+		background-color: $white-2;
+		border-radius: 5px;
 	}
 
 	&__state-changer {

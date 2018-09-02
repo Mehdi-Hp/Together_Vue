@@ -209,6 +209,9 @@ export default {
 		};
 	},
 	computed: {
+		bypassRecaptcha() {
+			return this.mode === 'mini';
+		},
 		assignees() {
 			return this.$store.state.assignee.data;
 		},
@@ -308,10 +311,12 @@ export default {
 		},
 		onCaptchaExpired() {
 			console.warn('reCaptcha got expired!');
-			this.$refs.invisibleRecaptcha.reset();
+			if (!this.bypassRecaptcha) {
+				this.$refs.invisibleRecaptcha.reset();
+			}
 		},
-		checkIfIsHumanAndSend(bypass) {
-			if (!bypass) {
+		checkIfIsHumanAndSend() {
+			if (!this.bypassRecaptcha) {
 				this.isLoading = true;
 				this.$refs.invisibleRecaptcha.execute();
 			} else {
@@ -324,7 +329,9 @@ export default {
 			this.send();
 		},
 		send() {
-			this.$refs.invisibleRecaptcha.reset();
+			if (!this.bypassRecaptcha) {
+				this.$refs.invisibleRecaptcha.reset();
+			}
 			this.isLoading = true;
 			const messageSenderData = {
 				title: this.message.title,

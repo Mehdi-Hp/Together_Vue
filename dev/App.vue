@@ -99,10 +99,10 @@ export default {
 			this.axios.interceptors.response.use(null, (error) => {
 				if (error.config && error.response && error.response.status === 401) {
 					console.warn('Unauthorized!');
-					this.$store.commit('error', {
-						status: '۴۰۱',
-						message: 'کلید شما باطل شده. لطفا صفحه را رفرش کنید.'
-					});
+					// this.$store.commit('error', {
+					// 	status: '۴۰۱',
+					// 	message: 'کلید شما باطل شده. لطفا صفحه را رفرش کنید.'
+					// });
 					if (this.$store.getters.isEmployee) {
 						this.$ls.remove('token');
 						this.$router.go('/login');

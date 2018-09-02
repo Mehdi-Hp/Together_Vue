@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="o-navigation"
-		v-if="$route.meta.navbar"
+		v-if="$route.meta.navbar && $route.meta.navbar.length"
 	>
 		<nav class="o-navigation__inner">
 			<router-link

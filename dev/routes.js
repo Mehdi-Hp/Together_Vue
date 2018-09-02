@@ -70,7 +70,7 @@ export default [
 		component: Conversation,
 		name: 'conversation',
 		meta: {
-			navbar: ['new', 'conversations']
+			navbar: []
 		}
 	},
 	{

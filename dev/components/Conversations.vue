@@ -1,6 +1,6 @@
 <template>
 	<section class="l-conversations">
-		<keynote>
+		<keynote class="l-conversations__keynote">
 			<template slot="title">
 				لیست گفت‌وگو‌ها
 			</template>
@@ -11,67 +11,36 @@
 
 		<article class="l-conversations__content">
 			<header class="l-conversations__header">
-				<span class="l-conversations__text | l-conversations__text--badge | l-conversations__text--badge--is-header"></span>
-				<span class="l-conversations__text | l-conversations__text--title"></span>
-				<span class="l-conversations__text | l-conversations__text--type"></span>
+				<span class="l-conversations__title | l-conversations__title--badge | l-conversations__title--badge--is-header"></span>
+				<span class="l-conversations__title | l-conversations__title--title"></span>
+				<span class="l-conversations__title | l-conversations__title--type"></span>
 				<span
-					class="l-conversations__text | l-conversations__text--time"
-					@click="() => { sortedBy = 'creationTime'; sortOrder = oppositeOrder; }"
+					class="l-conversations__title | l-conversations__title--time"
 				>
-					<!-- <icon-arrow
-						class="l-conversations__text-arrow"
-						:class="{
-							'l-conversations__text-arrow--asc': sortOrder === 'asc',
-							'l-conversations__text-arrow--desc': sortOrder === 'desc'
-						}"
-						v-if="sortedBy === 'creationTime'"
-					/> -->
 					تاریخ ایجاد
 				</span>
-				<span class="l-conversations__text | l-conversations__text--time">
-					<!-- <icon-arrow
-						class="l-conversations__text-arrow"
-						:class="{
-							'l-conversations__text-arrow--asc': sortOrder === 'asc',
-							'l-conversations__text-arrow--desc': sortOrder === 'desc'
-						}"
-						v-if="sortedBy === 'lastActivity'"
-					/> -->
+				<span class="l-conversations__title | l-conversations__title--time">
 					آخرین فعالیت
 				</span>
 			</header>
 
-			<router-link
-				:to="`/conversations/${conversation.id}`"
-				class="l-conversations__row"
+			<conversation-summary
+				class="l-converations__item"
 				v-for="conversation in conversations"
 				:key="conversation.id"
-			>
-				<span
-					class="l-conversations__text | l-conversations__text--badge"
-					v-visible="conversation.newMessagesCount"
-				>
-					{{ getMessageCount(conversation.newMessagesCount) }}
-				</span>
-				<span class="l-conversations__text | l-conversations__text--title">
-					{{ conversation.title }}
-				</span>
-				<span class="l-conversations__text | l-conversations__text--type">
-					{{ conversation.type }}
-				</span>
-				<span class="l-conversations__text | l-conversations__text--time">
-					{{ persianDate(conversation.time) }}
-				</span>
-				<span class="l-conversations__text | l-conversations__text--time">
-					{{ persianDate(conversation.time) }}
-				</span>
-			</router-link>
+				:id="conversation.id"
+				:new-messages-count="conversation.newMessagesCount"
+				:first-message="conversation.firstMessage"
+				:title="conversation.title"
+				:type="conversation.type"
+				:time="persianDate(conversation.time)"
+			/>
 		</article>
 	</section>
 </template>
 
 <script>
-import toPersianDigit from '../services/toPersianDigits';
+import ConversationSummary from './ConversationSummary.vue';
 import IconArrow from './icons/Arrow.vue';
 
 const PersianDate = require('persian-date');
@@ -79,11 +48,13 @@ const PersianDate = require('persian-date');
 export default {
 	name: 'Conversations',
 	components: {
+		ConversationSummary,
 		IconArrow
 	},
 	props: [],
 	data() {
 		return {
+			hoverOn: null,
 			sortOrder: 'asc',
 			sortedBy: 'creationTime'
 		};
@@ -93,19 +64,19 @@ export default {
 			return this.$store.state.conversation.list;
 		}
 	},
-	watch: {
-		sortedBy() {
-			this.$store.commit('sortConversationsList', {
-				field: this.sortedBy,
-				order: this.sortOrder
-			});
-			this.sortOrder = this.oppositeOrder(this.sortOrder);
+	created() {
+		if (!this.$store.getters.isEmployee) {
+			this.$router.push('/');
 		}
 	},
 	mounted() {
 		this.$store.dispatch('getConversations');
 	},
 	methods: {
+		hoverHandle(conversationId) {
+			console.log(conversationId);
+			this.hoverOn = conversationId;
+		},
 		persianDate(date) {
 			const today = new PersianDate();
 			const eventDate = new PersianDate(new Date(date).getTime());
@@ -113,18 +84,6 @@ export default {
 				return new PersianDate(new Date(date).getTime()).format('HH:mm');
 			}
 			return new PersianDate(new Date(date).getTime()).format('D/MMMM/YYYY - HH:mm');
-		},
-		persianDigit(digit) {
-			return toPersianDigit(digit);
-		},
-		getMessageCount(messageCount) {
-			if (messageCount <= 99) {
-				return this.persianDigit(messageCount);
-			}
-			return '∞';
-		},
-		oppositeOrder(currentOrder) {
-			return currentOrder === 'asc' ? 'desc' : 'asc';
 		}
 	}
 };
@@ -136,9 +95,17 @@ export default {
 	padding-right: 0;
 	padding-left: 0;
 
+	&__keynote {
+		margin-top: $gutter;
+		margin-bottom: 0;
+	}
+
 	&__content {
 		display: flex;
 		flex-direction: column;
+	}
+
+	&__item {
 	}
 
 	&__header {
@@ -150,30 +117,7 @@ export default {
 		padding: $gutter--thin;
 	}
 
-	&__row {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		padding: $gutter--thin;
-		transition: background-color 0.15s, box-shadow 0.15s, transform 0.15s;
-
-		&:nth-child(even) {
-			background-color: $white-1;
-		}
-
-		&:hocus {
-			background-color: $white-3;
-			box-shadow: 0 10px 20px 0 transparentize($green, 0.95);
-			z-index: 1;
-		}
-
-		&:active {
-			transform: scale(0.98);
-			background-color: $white-4;
-		}
-	}
-
-	&__text {
+	&__title {
 		display: flex;
 		align-items: center;
 		flex-grow: 3;
@@ -212,12 +156,14 @@ export default {
 			font-size: ms(-1);
 			flex-grow: 0;
 			max-width: 80px;
+			justify-content: center;
 		}
 
 		&--time {
 			font-size: ms(-1);
 			color: $black-6;
 			flex-grow: 1;
+			justify-content: center;
 		}
 	}
 

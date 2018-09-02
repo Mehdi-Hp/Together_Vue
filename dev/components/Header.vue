@@ -91,25 +91,29 @@ export default {
 	}
 
 	&__logo {
-		height: 60px;
+		width: 246.5px;
 		z-index: g-index('land');
 		margin-left: -1vw;
 		margin-bottom: 0.5rem;
 		@include breakpoint(lg) {
-			margin-left: 0;
+			margin-left: -1vw;
+		}
+		@include breakpoint(md) {
+			margin-left: -3vw;
 		}
 		@include breakpoint(sm) {
-			height: 65px;
+			width: 220px;
+			margin-left: -3vw;
 			margin-bottom: 0;
 		}
 		@include breakpoint(xs) {
-			height: 50px;
+			margin-left: 0;
+			width: 200px;
 		}
 	}
 
 	&__logo-image {
 		max-width: 100%;
-		max-height: 100%;
 	}
 }
 </style>
