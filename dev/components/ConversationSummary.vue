@@ -1,15 +1,24 @@
 <template>
 	<article
 		class="o-conversation-summary"
+		:class="{
+			'o-conversation-summary--card': $eq.large
+		}"
 		@mouseover="isHovered = true"
 		@mouseout="isHovered = false"
 	>
-		<div class="o-conversation-summary__main">
+		<div
+			class="o-conversation-summary__main"
+			:class="{
+				'o-conversation-summary__main--card': $eq.large
+			}"
+		>
 			<button
 				class="o-conversation-summary__expand"
 				:class="{
 					'o-conversation-summary__expand--is-hovered': isHovered,
-					'o-conversation-summary__expand--is-active': isFirstMessageVisible
+					'o-conversation-summary__expand--is-active': isFirstMessageVisible,
+					'o-conversation-summary__expand--card': $eq.large
 				}"
 				@click="toggleFirstMessage"
 			>
@@ -17,38 +26,95 @@
 			</button>
 			<router-link
 				class="o-conversation-summary__content"
+				:class="{
+					'o-conversation-summary__content--card': $eq.large
+				}"
 				:to="`/conversations/${id}`"
 			>
 				<span
 					class="o-conversation-summary__text | o-conversation-summary__text--badge"
+					:class="{
+						'o-conversation-summary__text--badge--card': $eq.large
+					}"
 					v-if="newMessagesCount"
 				>
 					{{ getMessageCount(newMessagesCount) }}
 				</span>
-				<span class="o-conversation-summary__text | o-conversation-summary__text--title">
+				<span
+					class="o-conversation-summary__text | o-conversation-summary__text--title"
+					:class="{
+						'o-conversation-summary__text--title--card': $eq.large,
+						'o-conversation-summary__text--title--card--small': $eq.small
+					}"
+				>
 					{{ title }}
 				</span>
-				<span class="o-conversation-summary__text | o-conversation-summary__text--type">
+				<span
+					class="o-conversation-summary__text | o-conversation-summary__text--type"
+					:class="{
+						'o-conversation-summary__text--type--card': $eq.large
+					}"
+				>
 					{{ type }}
 				</span>
-				<span class="o-conversation-summary__text | o-conversation-summary__text--time">
-					{{ time }}
-				</span>
-				<span class="o-conversation-summary__text | o-conversation-summary__text--time">
-					{{ time }}
-				</span>
+				<div
+					class="o-conversation-summary__times"
+					:class="{
+						'o-conversation-summary__times--card': $eq.large,
+						'o-conversation-summary__times--card--small': $eq.small
+					}"
+				>
+					<span
+						class="o-conversation-summary__times-title"
+						:class="{
+							'o-conversation-summary__times-title--is-visible': $eq.large
+						}"
+					>
+						آخرین فعالیت
+					</span>
+					<span
+						class="o-conversation-summary__text | o-conversation-summary__text--time"
+						:class="{
+							'o-conversation-summary__text--time--card': $eq.large,
+							'o-conversation-summary__text--time--card--small': $eq.small
+						}"
+					>
+						{{ time }}
+					</span>
+					<span
+						class="o-conversation-summary__times-title"
+						:class="{
+							'o-conversation-summary__times-title--is-visible': $eq.large
+						}"
+					>
+						شروع گفت وگو
+					</span>
+					<span
+						class="o-conversation-summary__text | o-conversation-summary__text--time"
+						:class="{
+							'o-conversation-summary__text--time--card': $eq.large,
+							'o-conversation-summary__text--time--card--small': $eq.small
+						}"
+					>
+						{{ time }}
+					</span>
+				</div>
 			</router-link>
 		</div>
 		<div
 			class="o-conversation-summary__first-message"
 			:class="{
-				'o-conversation-summary__first-message--is-visible': isFirstMessageVisible
+				'o-conversation-summary__first-message--is-visible': isFirstMessageVisible,
+				'o-conversation-summary__first-message--card': $eq.large,
+				'o-conversation-summary__first-message--card--small': $eq.small
 			}"
 		>
 			<span
 				class="o-conversation-summary__message"
 				:class="{
-					'o-conversation-summary__message--is-visible': isFirstMessageVisible
+					'o-conversation-summary__message--is-visible': isFirstMessageVisible,
+					'o-conversation-summary__message--card': $eq.large,
+					'o-conversation-summary__message--card--small': $eq.small
 				}"
 			>
 				{{ firstMessage }}
@@ -63,6 +129,13 @@ import IconSpeech from './icons/Speech.vue';
 
 export default {
 	name: 'ConversationSummary',
+	eq: {
+		breakpoints: {
+			large: { maxWidth: 700 },
+			medium: { maxWidth: 600 },
+			small: { maxWidth: 400 }
+		}
+	},
 	components: {
 		IconSpeech
 	},
@@ -111,8 +184,17 @@ export default {
 		background-color: tint($green, 85%);
 	}
 
+	&--card {
+		background-color: $white-1;
+		margin-bottom: $gutter--thin;
+	}
+
 	&__main {
 		display: flex;
+
+		&--card {
+			align-items: flex-start;
+		}
 	}
 
 	&__expand {
@@ -141,6 +223,10 @@ export default {
 			color: $green;
 			stroke-width: 4px;
 		}
+
+		&--card {
+			align-self: flex-start;
+		}
 	}
 
 	&__expand-icon {
@@ -162,6 +248,11 @@ export default {
 		transition: background-color 0.15s, box-shadow 0.15s, transform 0.15s;
 		flex-grow: 1;
 		padding-right: 0;
+
+		&--card {
+			flex-wrap: wrap;
+			position: relative;
+		}
 	}
 
 	&__text {
@@ -193,6 +284,16 @@ export default {
 		&--title {
 			color: $green;
 			flex-grow: 3;
+
+			&--card {
+				width: 100%;
+				margin-top: $gutter--thin / 2 + 2px;
+				margin-left: 8.5em;
+
+				&--small {
+					margin-left: 0;
+				}
+			}
 		}
 
 		&--type {
@@ -200,6 +301,14 @@ export default {
 			flex-grow: 0;
 			max-width: 60px;
 			justify-content: center;
+
+			&--card {
+				margin-top: $gutter--thin;
+				background-color: $white-2;
+				border-radius: 5px;
+				padding: 0.5em;
+				font-size: ms(-2);
+			}
 		}
 
 		&--time {
@@ -207,6 +316,68 @@ export default {
 			color: $black-6;
 			flex-grow: 1;
 			justify-content: center;
+
+			&--card {
+				font-size: ms(-2);
+				margin-left: 0;
+				justify-content: flex-end;
+				line-height: 1;
+				flex-grow: 0;
+				flex-shrink: 0;
+				padding-bottom: $gutter--thin / 2;
+				margin-bottom: $gutter--thin / 2;
+				border-bottom: 1px solid $white-3;
+				width: auto;
+
+				&--small {
+					width: 100%;
+					justify-content: flex-start;
+					border-bottom: none;
+				}
+
+				&:last-of-type {
+					border-bottom: none;
+					padding-bottom: 0;
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
+	&__times {
+		display: flex;
+		flex-grow: 1;
+
+		&--card {
+			position: absolute 0 auto 0 0;
+			flex-direction: column;
+			text-align: left;
+			justify-content: center;
+			align-items: flex-end;
+			padding: $gutter--thin;
+
+			&--small {
+				flex-direction: row;
+				position: static;
+				width: 100%;
+				padding: 15px 0;
+				justify-content: flex-start;
+				flex-wrap: wrap;
+			}
+		}
+	}
+
+	&__times-title {
+		flex-shrink: 0;
+		font-size: ms(-3);
+		font-weight: 500;
+		margin-bottom: 0.5em;
+		color: $black-5;
+		line-height: 1;
+		display: none;
+
+		&--is-visible {
+			display: inline-flex;
 		}
 	}
 
@@ -219,12 +390,18 @@ export default {
 		max-height: 0;
 		padding: 0 $gutter--fat;
 		transition: padding 0.15s, max-height 0.15s;
-		perspective: 10em;
+		transition-timing-function: linear;
 
 		&--is-visible {
 			padding: $gutter $gutter--fat;
 			padding-top: 0;
-			max-height: 300px;
+			max-height: 20em;
+		}
+
+		&--card {
+			&--small {
+				padding: 0;
+			}
 		}
 	}
 
@@ -239,6 +416,7 @@ export default {
 		transition: opacity 0.15s, transform 0.15s;
 		transform: translateY(3em);
 		pointer-events: none;
+		overflow: hidden;
 
 		&:before {
 			content: '';
@@ -254,11 +432,29 @@ export default {
 			z-index: 3;
 		}
 
+		&:after {
+			content: '';
+			position: absolute auto 0 0 0;
+			height: 2em;
+			background: linear-gradient(to top, tint($green, 80%) 0%, transparentize(white, 1) 100%);
+		}
+
 		&--is-visible {
 			transition-timing-function: ease-in;
 			transform: translateY(0);
 			opacity: 1;
 			pointer-events: all;
+		}
+
+		&--card {
+			margin-top: $gutter;
+			font-size: ms(-1);
+
+			&--small {
+				border-radius: 25px 25px 0 0;
+				margin-top: 0;
+				font-size: ms(-2);
+			}
 		}
 	}
 }

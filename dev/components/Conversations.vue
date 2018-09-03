@@ -91,9 +91,20 @@ export default {
 
 <style scoped lang="scss">
 .l-conversations {
-	width: $general-width;
-	padding-right: 0;
+	max-width: $general-width;
 	padding-left: 0;
+	padding-right: 0;
+
+	@include breakpoint(lg) {
+		padding-left: $gutter;
+		padding-right: $gutter;
+		line-height: 1.5;
+	}
+	@include breakpoint(md) {
+		max-width: 100%;
+		padding-left: $gutter--fat;
+		padding-right: $gutter--fat;
+	}
 
 	&__keynote {
 		margin-top: $gutter;
@@ -115,6 +126,9 @@ export default {
 		margin-bottom: $gutter--thin;
 		border-bottom: 1px solid $white-2;
 		padding: $gutter--thin;
+		@include breakpoint(md) {
+			display: none;
+		}
 	}
 
 	&__title {
