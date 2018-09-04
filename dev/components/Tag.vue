@@ -2,7 +2,7 @@
 	<li
 		class="m-tag"
 		:class="{
-			'm-tag--is-hovered': isHovered && $store.getters.isEmployee,
+			'm-tag--is-hovered': isHovered && !data.isAdding && $store.getters.isEmployee,
 			'm-tag--is-removing': data.isRemoving,
 			'm-tag--is-adding': data.isAdding,
 			'm-tag--is-visible': data.isSelected,
@@ -21,7 +21,7 @@
 		<button
 			class="m-tag__remove"
 			:class="{
-				'm-tag__remove--is-hovered': isHovered,
+				'm-tag__remove--is-hovered': !data.isAdding && isHovered,
 				'm-tag__remove--is-removing': data.isRemoving
 			}"
 			v-if="$store.getters.isEmployee"
@@ -151,9 +151,12 @@ $tag-height: 1.8rem;
 	}
 
 	&__remove {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: calc(#{$tag-height} - 0.3rem);
 		height: calc(#{$tag-height} - 0.3rem);
-		padding: 0.6em;
+		padding: 0.3em;
 		background-color: transparent;
 		display: flex;
 		align-items: center;
@@ -175,7 +178,7 @@ $tag-height: 1.8rem;
 	}
 
 	&__remove-icon {
-		size: 100%;
+		size: 50%;
 		stroke-width: 0.75em;
 		display: none;
 

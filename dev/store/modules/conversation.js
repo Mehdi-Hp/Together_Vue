@@ -187,6 +187,7 @@ export default {
 								message: 'مشکلی در برچسب زدن بوجود آمده.'
 							});
 							console.error(response);
+							commit('removeConversationTag', tagId);
 							state.data.tags[tagIndexToSelect].isAdding = false;
 							reject(response);
 						}, 1000);
