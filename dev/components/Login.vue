@@ -76,7 +76,7 @@ export default {
 				.then(({ data: { token, employeeId, fullName, role } }) => {
 					console.table({ token, employeeId, fullName, role });
 					this.$ls.set('token', `Bearer ${token}`);
-					this.$store.commit('setUser', {
+					this.$store.commit('user/setInformation', {
 						employeeId,
 						name: fullName,
 						role

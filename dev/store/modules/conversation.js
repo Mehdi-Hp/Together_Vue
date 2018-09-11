@@ -2,51 +2,39 @@ import Vue from 'vue';
 import sort from 'fast-sort';
 
 export default {
+	namespaced: true,
 	state: {
 		data: {},
 		list: []
 	},
 	getters: {},
 	mutations: {
-		listConversations(state, conversations) {
+		setAll(state, conversations) {
 			const sortedConversations = sort(conversations).asc((conversation) => {
 				return conversation.time;
 			});
 			state.list = sortedConversations;
 		},
-		addConversation(state, conversation) {
+		add(state, conversation) {
 			state.data = conversation;
 		},
-		addConversationTag(state, tagId) {
+		addTag(state, tagId) {
 			const tagIndexToSelect = state.data.tags.findIndex((tag) => {
 				return tag.id === tagId;
 			});
 			state.data.tags[tagIndexToSelect].isSelected = true;
 		},
-		removeConversationTag(state, tagId) {
+		removeTag(state, tagId) {
 			const tagIndexToUnselect = state.data.tags.findIndex((tag) => {
 				return tag.id === tagId;
 			});
 			state.data.tags[tagIndexToUnselect].isSelected = false;
-		},
-		sortConversationsList(state, { field, order }) {
-			let sortedConversations;
-			if (order === 'asc') {
-				sortedConversations = sort(state.list).asc((conversation) => {
-					return conversation.time;
-				});
-			} else {
-				sortedConversations = sort(state.list).desc((conversation) => {
-					return conversation.time;
-				});
-			}
-			state.list = sortedConversations;
 		}
 	},
 	actions: {
-		createConversation({ state, commit }, { title, description, typeId, assigneeId, mood, captcha }) {
+		create({ state, commit }, { title, description, typeId, assigneeId, mood, captcha }) {
 			return new Promise((resolve, reject) => {
-				commit('clearError');
+				commit('error/clear');
 				console.table({
 					title,
 					description,
@@ -65,7 +53,7 @@ export default {
 						captcha
 					})
 					.then(({ data: { id: conversationId } }) => {
-						commit('addConversation', {
+						commit('add', {
 							title,
 							description,
 							typeId,
@@ -76,7 +64,7 @@ export default {
 						resolve(conversationId);
 					})
 					.catch((error) => {
-						commit('error', {
+						commit('error/set', {
 							status: '۵۰۰',
 							message: 'متاسفانه مشکلی برای ساختن گفت وگو پیش آمده.'
 						});
@@ -84,17 +72,17 @@ export default {
 					});
 			});
 		},
-		getConversations({ state, commit }) {
+		getAll({ state, commit }) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
 					.get(`/conversations`)
 					.then(({ data: { data: conversations } }) => {
-						commit('listConversations', conversations);
+						commit('setAll', conversations);
 					})
 					.catch((response) => {});
 			});
 		},
-		getConversation({ state, commit }, conversationId) {
+		getOne({ state, commit }, conversationId) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
 					.get(`/conversations/${conversationId}`)
@@ -117,11 +105,11 @@ export default {
 						newConversation.tags.forEach((tag) => {
 							tag.isRemoving = false;
 						});
-						commit('addConversation', newConversation);
+						commit('add', newConversation);
 						resolve(newConversation);
 					})
 					.catch((response) => {
-						commit('error', {
+						commit('error/set', {
 							status: '۵۰۰',
 							message: 'متاسفانه پیام شما ارسال نشد.'
 						});
@@ -129,8 +117,8 @@ export default {
 					});
 			});
 		},
-		createMessage({ state, commit, dispatch }, { text, replyToMessageId, mood, conversationId }) {
-			commit('clearError');
+		addMessage({ state, commit }, { text, replyToMessageId, mood, conversationId }) {
+			commit('error/clear');
 			return new Promise((resolve, reject) => {
 				console.table({
 					text,
@@ -150,7 +138,7 @@ export default {
 						resolve(response.data);
 					})
 					.catch((error) => {
-						commit('error', {
+						commit('error/set', {
 							status: '۵۰۰',
 							message: 'متاسفانه پیام شما ارسال نشد.'
 						});
@@ -159,13 +147,13 @@ export default {
 					});
 			});
 		},
-		addConversationTag({ state, commit }, { tagId, conversationId }) {
-			commit('clearError');
+		addTag({ state, commit }, { tagId, conversationId }) {
+			commit('error/clear');
 			return new Promise((resolve, reject) => {
 				const tagIndexToSelect = state.data.tags.findIndex((tag) => {
 					return tag.id === tagId;
 				});
-				commit('addConversationTag', tagId);
+				commit('addTag', tagId);
 				state.data.tags[tagIndexToSelect].isAdding = true;
 				Vue.$axios
 					.patch(`conversations/${conversationId}`, {
@@ -175,27 +163,26 @@ export default {
 					})
 					.then((response) => {
 						setTimeout(() => {
-							commit('addConversationTag', tagId);
 							state.data.tags[tagIndexToSelect].isAdding = false;
 							resolve(conversationId);
 						}, 1000);
 					})
 					.catch((response) => {
 						setTimeout(() => {
-							commit('error', {
+							commit('error/set', {
 								status: '۵۰۰',
 								message: 'مشکلی در برچسب زدن بوجود آمده.'
 							});
 							console.error(response);
-							commit('removeConversationTag', tagId);
+							commit('removeTag', tagId);
 							state.data.tags[tagIndexToSelect].isAdding = false;
 							reject(response);
 						}, 1000);
 					});
 			});
 		},
-		removeConversationTag({ state, commit }, { tagId, conversationId }) {
-			commit('clearError');
+		removeTag({ state, commit }, { tagId, conversationId }) {
+			commit('error/clear');
 			return new Promise((resolve, reject) => {
 				const tagIndexToUnselect = state.data.tags.findIndex((tag) => {
 					return tag.id === tagId;
@@ -209,13 +196,13 @@ export default {
 					})
 					.then((response) => {
 						setTimeout(() => {
-							commit('removeConversationTag', tagId);
+							commit('removeTag', tagId);
 							state.data.tags[tagIndexToUnselect].isRemoving = false;
 							resolve(conversationId);
 						}, 1000);
 					})
 					.catch(({ response }) => {
-						commit('error', {
+						commit('error/set', {
 							status: '۵۰۰',
 							message: 'مشکلی در حذف برچسب بوجود آمده'
 						});
@@ -224,7 +211,7 @@ export default {
 					});
 			});
 		},
-		markConversationAsRead({ state, commit }, conversationId) {
+		markAsRead({ state, commit }, conversationId) {
 			Vue.$axios
 				.patch(`conversations/${conversationId}`, {
 					op: 'replace',
@@ -233,7 +220,7 @@ export default {
 				})
 				.then((response) => {})
 				.catch(({ response }) => {
-					commit('error', {
+					commit('error/set', {
 						message: 'ارتباط نامطمئن با سرور'
 					});
 					console.error(response);

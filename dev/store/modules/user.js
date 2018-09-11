@@ -2,6 +2,7 @@ import Vue from 'vue';
 import jwtDecode from 'jwt-decode';
 
 export default {
+	namespaced: true,
 	state: {
 		employeeId: null,
 		name: null,
@@ -9,14 +10,6 @@ export default {
 		email: null
 	},
 	getters: {
-		user(state) {
-			return {
-				employeeId: state.employeeId,
-				name: state.name,
-				role: state.role,
-				email: state.email
-			};
-		},
 		isAdmin(state) {
 			return state.role.toLowerCase() === 'agent';
 		},
@@ -25,7 +18,7 @@ export default {
 		}
 	},
 	mutations: {
-		setUser(state) {
+		setInformation(state) {
 			const token = Vue.ls.get('token');
 			const decodedUser = jwtDecode(token.split(' ')[1]);
 			Vue.$axios.defaults.headers.common.Authorization = token;
@@ -49,11 +42,11 @@ export default {
 					.then(({ data: { token, employeeId, fullName, role } }) => {
 						console.table({ token, employeeId, fullName, role });
 						Vue.ls.set('token', `Bearer ${token}`);
-						commit('setUser');
+						commit('setInformation');
 						resolve(state);
 					})
 					.catch((error) => {
-						this.$store.commit('error', {
+						this.$store.commit('error/set', {
 							message: 'در تولید کلید ارتباط با سرور مشکلی پیش آمده'
 						});
 						reject(error);

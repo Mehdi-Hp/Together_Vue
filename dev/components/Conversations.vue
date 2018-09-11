@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ConversationSummary from './ConversationSummary.vue';
 import IconArrow from './icons/Arrow.vue';
 
@@ -54,27 +55,27 @@ export default {
 	props: [],
 	data() {
 		return {
-			hoverOn: null,
-			sortOrder: 'asc',
-			sortedBy: 'creationTime'
+			hoverOn: null
 		};
 	},
 	computed: {
+		...mapGetters({
+			isEmployee: 'user/isEmployee'
+		}),
 		conversations() {
 			return this.$store.state.conversation.list;
 		}
 	},
 	created() {
-		if (!this.$store.getters.isEmployee) {
+		if (!this.isEmployee) {
 			this.$router.push('/');
 		}
 	},
 	mounted() {
-		this.$store.dispatch('getConversations');
+		this.$store.dispatch('conversation/getAll');
 	},
 	methods: {
 		hoverHandle(conversationId) {
-			console.log(conversationId);
 			this.hoverOn = conversationId;
 		},
 		persianDate(date) {

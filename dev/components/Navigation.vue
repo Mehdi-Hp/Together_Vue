@@ -15,14 +15,14 @@
 				<router-link
 					to="/new"
 					class="o-navigation__link | o-navigation__link--first"
-					v-if="!$store.getters.isAdmin && $route.meta.navbar.includes('new')"
+					v-if="!isEmployee && $route.meta.navbar.includes('new')"
 				>
 					ایجاد گفت‌و‌گو
 				</router-link>
 				<router-link
 					to="/conversations"
 					class="o-navigation__link | o-navigation__link--first"
-					v-if="$store.getters.isAdmin && $route.meta.navbar.includes('conversations')"
+					v-if="isEmployee && $route.meta.navbar.includes('conversations')"
 				>
 					لیست گفت‌وگوها
 				</router-link>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import IconBack from './icons/Back.vue';
 
 export default {
@@ -53,6 +54,11 @@ export default {
 		return {
 			backIsTogether: false
 		};
+	},
+	computed: {
+		...mapGetters({
+			isEmployee: 'user/isEmployee'
+		})
 	},
 	watch: {
 		$route() {

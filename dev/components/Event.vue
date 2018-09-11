@@ -28,7 +28,7 @@
 				<span
 					class="m-event__writer"
 					:class="{
-						'm-event__writer--is-admin': $store.getters.isEmployee
+						'm-event__writer--is-admin': isAdmin
 					}"
 				>
 					{{ data.user }}
@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import getImageFromMood from '../services/getImageFromMood';
 import IconSeen from './icons/Seen.vue';
 import IconCheckmark from './icons/Checkmark.vue';
@@ -140,6 +141,9 @@ export default {
 		return {};
 	},
 	computed: {
+		...mapGetters({
+			isAdmin: 'user/isEmployee'
+		}),
 		messageTime() {
 			const today = new PersianDate();
 			const eventDate = new PersianDate(new Date(this.data.time).getTime());

@@ -1,22 +1,23 @@
 import Vue from 'vue';
 
 export default {
+	namespaced: true,
 	state: {
 		data: []
 	},
 	getters: {},
 	mutations: {
-		setAssignees(state, assignees) {
+		setAll(state, assignees) {
 			state.data = assignees;
 		}
 	},
 	actions: {
-		getAllAssignees({ state, commit }) {
+		getAll({ state, commit }) {
 			return new Promise((resolve, reject) => {
 				Vue.$axios
 					.get('/conversationassignees')
 					.then((response) => {
-						commit('setAssignees', response.data);
+						commit('setAll', response.data);
 						resolve(response.data);
 					})
 					.catch((error) => {

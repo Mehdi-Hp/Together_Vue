@@ -77,18 +77,18 @@ export default {
 			};
 			this.$emit('addMessage', message);
 			this.$store
-				.dispatch('createMessage', message)
+				.dispatch('conversation/addMessage', message)
 				.then((message) => {
 					setTimeout(() => {
 						this.isBusy = false;
 						this.$emit('messageSettled');
-					}, 2000);
+					}, 1000);
 				})
 				.catch((error) => {
 					setTimeout(() => {
 						this.isBusy = false;
 						this.$emit('messageFailed', { error });
-					}, 2000);
+					}, 1000);
 				});
 		},
 		sendMessageAgain(messageIndex) {
@@ -100,7 +100,7 @@ export default {
 			this.$store.state.conversation.data.events[messageIndex].notSettledYet = true;
 			this.$store.state.conversation.data.events[messageIndex].error = null;
 			this.$store
-				.dispatch('createMessage', message)
+				.dispatch('conversation/addMessage', message)
 				.then((message) => {
 					setTimeout(() => {
 						this.$emit('messageSettled', messageIndex);

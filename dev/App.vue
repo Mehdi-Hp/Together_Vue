@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import './assets/notcss/00_base/base.scss';
 import './assets/images/emoji--pure.png';
 import Error from './components/Error.vue';
@@ -55,14 +57,16 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			hasError: 'error/state',
+			hasCriticalError: 'error/criticalState',
+			isEmployee: 'user/isEmployee'
+		}),
 		isLoading() {
 			return !this.hasNeseccaryData && !this.hasFreshToken;
 		},
 		hasNeseccaryData() {
 			return !!this.$store.state.user.name && !!this.$store.state.assignee.data.length && !!this.$store.state.type.data.length;
-		},
-		hasCriticalError() {
-			return this.$store.getters.hasCriticalError;
 		}
 	},
 	mounted() {
@@ -78,9 +82,10 @@ export default {
 	},
 	methods: {
 		initToken() {
+			// debugger;
 			if (this.$ls.get('token')) {
-				this.$store.commit('setUser');
-				if (!this.$store.getters.isEmployee) {
+				this.$store.commit('user/setInformation');
+				if (!this.isEmployee) {
 					return this.getToken()
 						.then(() => {
 							this.hasFreshToken = true;
@@ -99,11 +104,7 @@ export default {
 			this.axios.interceptors.response.use(null, (error) => {
 				if (error.config && error.response && error.response.status === 401) {
 					console.warn('Unauthorized!');
-					// this.$store.commit('error', {
-					// 	status: '۴۰۱',
-					// 	message: 'کلید شما باطل شده. لطفا صفحه را رفرش کنید.'
-					// });
-					if (this.$store.getters.isEmployee) {
+					if (this.isEmployee) {
 						this.$ls.remove('token');
 						this.$router.go('/login');
 						return Promise.resolve();
@@ -123,14 +124,14 @@ export default {
 			PersianDate.toLocale('fa');
 		},
 		getToken() {
-			return this.$store.dispatch('getToken');
+			return this.$store.dispatch('user/getToken');
 		},
 		getNessecaryData() {
-			Promise.all([this.$store.dispatch('getAllTypes'), this.$store.dispatch('getAllAssignees')]).catch(() => {
-				this.$store.commit('error', {
-					message: 'متاسفیم! ارتباط اولیه با سرور برقرار نشد.',
-					isCritical: true
-				});
+			Promise.all([this.$store.dispatch('type/getAll'), this.$store.dispatch('assignee/getAll')]).catch(() => {
+				// this.$store.commit('error', {
+				// 	message: 'متاسفیم! ارتباط اولیه با سرور برقرار نشد.',
+				// 	isCritical: true
+				// });
 			});
 		}
 	}

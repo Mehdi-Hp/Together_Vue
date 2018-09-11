@@ -28,18 +28,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
 	name: 'Error',
 	props: [],
 	data() {
-		return {
-			// hasError: true
-		};
+		return {};
 	},
 	computed: {
-		...mapGetters(['error', 'hasError'])
+		...mapState(['error']),
+		...mapGetters({
+			hasError: 'error/state'
+		})
 	}
 };
 </script>

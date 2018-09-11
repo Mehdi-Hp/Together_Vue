@@ -1,7 +1,7 @@
 <template>
 	<section
 		class="l-start"
-		v-if="!isAdmin"
+		v-if="!isEmployee"
 	>
 		<keynote class="l-start__keynote">
 			<template slot="title">
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Keynote from './Keynote.vue';
 import VButton from './Button.vue';
 
@@ -49,15 +50,15 @@ export default {
 		return {};
 	},
 	computed: {
+		...mapGetters({
+			isEmployee: 'user/isEmployee'
+		}),
 		hasToken() {
 			return !!this.$ls.get('token');
-		},
-		isAdmin() {
-			return !!this.$store.getters.isAdmin;
 		}
 	},
 	mounted() {
-		if (this.isAdmin) {
+		if (this.isEmployee) {
 			this.$router.replace('/conversations');
 		}
 	}

@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
 	next();
 });
 router.beforeEach((to, from, next) => {
-	store.commit('clearError');
+	store.commit('error/clear');
 	next();
 });
 

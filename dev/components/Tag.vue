@@ -2,18 +2,18 @@
 	<li
 		class="m-tag"
 		:class="{
-			'm-tag--is-hovered': isHovered && !data.isAdding && $store.getters.isEmployee,
+			'm-tag--is-hovered': isHovered && !data.isAdding && isEmployee,
 			'm-tag--is-removing': data.isRemoving,
 			'm-tag--is-adding': data.isAdding,
 			'm-tag--is-visible': data.isSelected,
-			'm-tag--is-anonym': !$store.getters.isEmployee
+			'm-tag--is-anonym': !isEmployee
 		}"
 	>
 		<span
 			class="m-tag__text"
 			:class="{
 				'm-tag__text--is-removing': data.isRemoving,
-				'm-tag__text--is-anonym': !$store.getters.isEmployee
+				'm-tag__text--is-anonym': !isEmployee
 			}"
 		>
 			{{ data.title }}
@@ -24,7 +24,7 @@
 				'm-tag__remove--is-hovered': !data.isAdding && isHovered,
 				'm-tag__remove--is-removing': data.isRemoving
 			}"
-			v-if="$store.getters.isEmployee"
+			v-if="isEmployee"
 			@click="remove"
 			@mouseover="isHovered = true"
 			@mouseleave="isHovered = false"
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import IconClose from './icons/Close.vue';
 import LoadSpinner from './icons/MaterialLoadSpinner.vue';
 
@@ -70,6 +71,11 @@ export default {
 		return {
 			isHovered: false
 		};
+	},
+	computed: {
+		...mapGetters({
+			isEmployee: 'user/isEmployee'
+		})
 	},
 	methods: {
 		remove() {

@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Keynote from './Keynote.vue';
 import Textfield from './Textfield.vue';
 import Messages from './Messages.vue';
@@ -50,6 +51,9 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			isEmployee: 'user/isEmployee'
+		}),
 		types() {
 			return this.$store.state.type.data;
 		},
@@ -58,12 +62,12 @@ export default {
 		}
 	},
 	created() {
-		if (this.$store.getters.isEmployee) {
+		if (this.isEmployee) {
 			this.$router.push('/conversations');
 		}
 	},
 	mounted() {
-		if (this.$store.getters.isEmployee) {
+		if (this.isEmployee) {
 			this.$bus.$emit('error', {
 				status: 403,
 				message: 'شما نمی‌توانید گفت‌وگویی را ایجاد کنید.'
@@ -74,7 +78,7 @@ export default {
 		createConversation(message) {
 			this.isBusy = true;
 			return this.$store
-				.dispatch('createConversation', message)
+				.dispatch('conversation/create', message)
 				.then((conversationId) => {
 					this.isBusy = false;
 					this.hasError = false;

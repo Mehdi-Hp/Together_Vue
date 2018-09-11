@@ -1,11 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
-const postcssPlugins = require('./postcss.dev.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const postcssPlugins = require('./postcss.dev.config');
 
 const smp = new SpeedMeasurePlugin();
 

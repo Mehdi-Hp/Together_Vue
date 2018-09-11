@@ -5,7 +5,7 @@
 	>
 		<nav
 			class="l-conversation__nav"
-			v-if="$store.getters.isAdmin"
+			v-if="isEmployee"
 		>
 			<router-link
 				class="l-conversation__go-back"
@@ -28,7 +28,7 @@
 					name="تغییر وضعیت"
 					:list="getStates"
 					@select="setState"
-					v-if="$store.getters.isEmployee"
+					v-if="isEmployee"
 				/>
 			</div>
 			<div class="l-conversation__content-holder">
@@ -74,7 +74,7 @@
 						<tags
 							class="l-conversation__tags"
 							:tags="data.tags"
-							v-if="$store.getters.isEmployee"
+							v-if="isEmployee"
 						>
 						</tags>
 					</div>
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Dropdown from './Dropdown.vue';
 import getImageFromMood from '../services/getImageFromMood';
 import Messages from './Messages.vue';
@@ -118,6 +119,9 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			isEmployee: 'user/isEmployee'
+		}),
 		getSlecetedMoodImage() {
 			if (this.data.events.length) {
 				return getImageFromMood(this.data.events[this.data.events.length - 2].mood);
@@ -142,10 +146,10 @@ export default {
 	},
 	created() {
 		this.$store
-			.dispatch('getConversation', this.$route.params.id)
+			.dispatch('conversation/getOne', this.$route.params.id)
 			.then((conversation) => {
 				this.data = conversation;
-				this.$store.dispatch('markConversationAsRead', this.data.id);
+				this.$store.dispatch('conversation/markAsRead', this.data.id);
 			})
 			.catch((error) => {
 				this.$bus.$emit('error', {
@@ -156,7 +160,7 @@ export default {
 	},
 	mounted() {
 		this.$bus.$on('addTag', (tagId) => {
-			this.$store.dispatch('addConversationTag', {
+			this.$store.dispatch('conversation/addTag', {
 				tagId,
 				conversationId: this.data.id
 			});
@@ -167,13 +171,13 @@ export default {
 	},
 	methods: {
 		addTag(tagId) {
-			this.$store.dispatch('addConversationTag', {
+			this.$store.dispatch('conversation/addTag', {
 				tagId,
 				conversationId: this.data.id
 			});
 		},
 		removeTag(tagId) {
-			this.$store.dispatch('removeConversationTag', {
+			this.$store.dispatch('conversation/removeTag', {
 				tagId,
 				conversationId: this.data.id
 			});
