@@ -3,7 +3,6 @@ module.exports = [
 	require('postcss-fontpath'),
 	require('postcss-discard-duplicates')(),
 	require('postcss-atrule-bem'),
-	// require('postcss-color-palette')(),
 	require('postcss-media-minmax')(),
 	require('postcss-g-index')(),
 	require('rucksack-css')(),

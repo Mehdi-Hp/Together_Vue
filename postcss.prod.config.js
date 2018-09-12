@@ -2,9 +2,7 @@ module.exports = [
 	require('postcss-font-magician')(),
 	require('postcss-fontpath'),
 	require('postcss-discard-duplicates')(),
-	// require('postcss-uncss')(),
 	require('postcss-atrule-bem'),
-	// require('postcss-color-palette')(),
 	require('postcss-media-minmax')(),
 	require('postcss-g-index')(),
 	require('rucksack-css')(),
@@ -23,9 +21,5 @@ module.exports = [
 	require('postcss-ant')(),
 	require('autoprefixer')({
 		browsers: ['last 2 versions']
-	}),
-	require('cssnano')({
-		preset: 'default',
-		reduceIdents: false
 	})
 ];

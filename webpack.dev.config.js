@@ -95,10 +95,6 @@ module.exports = smp.wrap({
 			}
 		]
 	},
-	mode: 'development',
-	optimization: {
-		namedModules: true
-	},
 	plugins: [
 		new VueLoaderPlugin(),
 		new HtmlWebpackPlugin({
@@ -146,8 +142,12 @@ module.exports = smp.wrap({
 			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
 		}
 	},
+	optimization: {
+		namedModules: true
+	},
 	performance: {
 		hints: false
 	},
+	mode: 'development',
 	devtool: 'cheap-module-source-map'
 });

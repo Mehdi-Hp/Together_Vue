@@ -3,15 +3,14 @@ const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const postcssPlugins = require('./postcss.prod.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const postcssPlugins = require('./postcss.prod.config');
 
 require('pretty-error').start();
 
 const nodeModulesPath = path.resolve(__dirname, 'node_modules');
-const productionPath = path.resolve(__dirname, 'build');
+const productionPath = path.resolve(__dirname, '../', 'wwwroot');
 const mainJSPath = path.resolve(__dirname, 'dev', 'main.js');
 
 module.exports = {
@@ -59,7 +58,6 @@ module.exports = {
 			{
 				test: /(\.scss|\.pcss|\.css)$/,
 				use: [
-					// MiniCssExtractPlugin.loader,
 					{
 						loader: 'vue-style-loader'
 					},
@@ -92,21 +90,7 @@ module.exports = {
 			{
 				test: /\.js$/,
 				use: {
-					loader: 'babel-loader',
-					options: {
-						plugins: ['lodash'],
-						presets: [
-							[
-								'@babel/preset-env',
-								{
-									targets: {
-										browsers: ['last 2 versions']
-									},
-									spec: true
-								}
-							]
-						]
-					}
+					loader: 'babel-loader'
 				},
 				exclude: [nodeModulesPath]
 			}
@@ -118,13 +102,6 @@ module.exports = {
 			template: 'index.prod.html',
 			inject: false,
 			filename: 'index.html'
-		}),
-		new LodashModuleReplacementPlugin({
-			shorthands: true,
-			cloning: true,
-			collections: true,
-			paths: true,
-			flattening: true
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'bundle.css'
