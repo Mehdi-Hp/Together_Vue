@@ -82,7 +82,6 @@ export default {
 	},
 	methods: {
 		initToken() {
-			// debugger;
 			if (this.$ls.get('token')) {
 				this.$store.commit('user/setInformation');
 				if (!this.isEmployee) {
@@ -112,8 +111,6 @@ export default {
 					this.getToken()
 						.then(() => {
 							error.config.baseURL = undefined;
-							// this.axios.request(error.config).then((response) => {
-							// });
 						})
 						.catch(() => {});
 				}
@@ -127,12 +124,7 @@ export default {
 			return this.$store.dispatch('user/getToken');
 		},
 		getNessecaryData() {
-			Promise.all([this.$store.dispatch('type/getAll'), this.$store.dispatch('assignee/getAll')]).catch(() => {
-				// this.$store.commit('error', {
-				// 	message: 'متاسفیم! ارتباط اولیه با سرور برقرار نشد.',
-				// 	isCritical: true
-				// });
-			});
+			Promise.all([this.$store.dispatch('type/getAll'), this.$store.dispatch('assignee/getAll')]).catch(() => {});
 		}
 	}
 };
