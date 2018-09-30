@@ -46,9 +46,14 @@ export default {
 						resolve(state);
 					})
 					.catch((error) => {
-						this.$store.commit('error/set', {
-							message: 'در تولید کلید ارتباط با سرور مشکلی پیش آمده'
-						});
+						commit(
+							'error/set',
+							{
+								message: 'در تولید کلید ارتباط با سرور مشکلی پیش آمده',
+								isCritical: true
+							},
+							{ root: true }
+						);
 						reject(error);
 					});
 			});
